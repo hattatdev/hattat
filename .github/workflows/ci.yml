@@ -1,0 +1,92 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, edited]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  TURBO_TELEMETRY_DISABLED: "1"
+  DO_NOT_TRACK: "1"
+
+jobs:
+  main-policy:
+    name: Main requires a merged PR
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reject direct pushes (GIT-06)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          merged=$(gh api "repos/$REPOSITORY/commits/$COMMIT_SHA/pulls" --jq 'any(.[]; .merged_at != null and .base.ref == "main")')
+          if [ "$merged" != "true" ]; then
+            echo "GIT-06: main commits must arrive through a merged pull request."
+            exit 1
+          fi
+
+  bootstrap:
+    name: Checks (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.25.0
+          run_install: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - name: Install from lockfile
+        run: pnpm install --frozen-lockfile
+      - name: Validate pull request (GIT-01, GIT-03, GIT-06)
+        if: github.event_name == 'pull_request'
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: node scripts/check-pr.ts
+      - name: Check workspace and distribution
+        run: pnpm check
+      - name: Core unit tests and coverage (TEST-01)
+        run: pnpm test
+      - name: Audit dependency licenses (DEP-02)
+        run: pnpm licenses list --json > dependency-licenses.json
+      - name: Validate dependency licenses
+        run: node scripts/check-licenses.ts dependency-licenses.json
+
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Packaged browser, CLI and visual regressions
+        run: pnpm test:browser
+      - name: Diagnostic CPU and allocation profiles
+        run: pnpm profile:runtime
+      - name: Enforce idle/offscreen budgets and report advisory timing
+        run: pnpm test:performance
+      - name: Upload runtime evidence, including failed gates
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase-1-evidence-${{ matrix.os }}
+          path: |
+            artifacts/
+            test-results/
+            coverage/coverage-summary.json
+          if-no-files-found: warn

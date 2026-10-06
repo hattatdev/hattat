@@ -1,0 +1,24 @@
+{
+  "name": "@hattatdev/cli",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "description": "Private Phase 1 headless figure preview CLI.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hattatdev/hattat.git",
+    "directory": "packages/cli"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@hattatdev/core": "workspace:*",
+    "@hattatdev/figures": "workspace:*"
+  },
+  "bin": {
+    "hattat": "./dist/index.js"
+  }
+}

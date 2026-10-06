@@ -1,0 +1,7 @@
+packages:
+  - "packages/*"
+  - "apps/*"
+
+# No dependency installation scripts are needed by the bootstrap.
+onlyBuiltDependencies: []
+autoInstallPeers: false

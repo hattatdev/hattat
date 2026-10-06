@@ -1,0 +1,42 @@
+{
+  "name": "hattat-workspace",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "packageManager": "pnpm@10.25.0",
+  "engines": {
+    "node": "24.13.x",
+    "pnpm": "10.25.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hattatdev/hattat.git"
+  },
+  "scripts": {
+    "build": "node scripts/run-turbo.ts build",
+    "typecheck": "node scripts/run-turbo.ts typecheck && tsc -p scripts/tsconfig.json --noEmit && tsc -p tests/tsconfig.json",
+    "lint": "biome check .",
+    "format": "biome check --write .",
+    "check:bootstrap": "node scripts/check-bootstrap.ts",
+    "check": "pnpm lint && pnpm typecheck && pnpm build && pnpm check:bootstrap",
+    "changeset": "changeset",
+    "test": "vitest run --coverage",
+    "look": "node packages/cli/dist/index.js look",
+    "test:browser": "playwright test --grep-invert @performance",
+    "test:performance": "playwright test --grep @performance",
+    "profile:runtime": "node scripts/profile.ts"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.15",
+    "@changesets/cli": "3.0.3",
+    "@playwright/test": "1.63.0",
+    "@types/node": "24.19.1",
+    "@vitest/coverage-v8": "4.0.18",
+    "esbuild": "0.28.2",
+    "happy-dom": "20.14.5",
+    "turbo": "2.11.7",
+    "typescript": "7.0.2",
+    "vitest": "4.0.18"
+  }
+}

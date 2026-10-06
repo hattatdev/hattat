@@ -1,0 +1,20 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "globalDependencies": ["tsconfig.base.json", "scripts/build-package.ts"],
+  "globalPassThroughEnv": ["PR_TITLE", "PR_BODY"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "hattat#build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"],
+      "cache": false
+    }
+  }
+}

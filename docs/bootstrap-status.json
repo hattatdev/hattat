@@ -1,0 +1,72 @@
+{
+  "stage": "phase-1",
+  "phase1Approved": true,
+  "runtimeChecks": [
+    {
+      "id": "visual-look",
+      "status": "pending",
+      "phase": 1,
+      "reason": "Five figures render at three intensities with 15 unchanged regression references. Agent inspection recognizes all five; independent human blind review is not claimed or requested again per owner preference."
+    },
+    {
+      "id": "performance-budgets",
+      "status": "measured",
+      "phase": 1,
+      "reason": "Core 6144 gzip bytes. CI on 787746d: Ubuntu max frame 3.3 ms / first draw 19.4 ms; Windows max frame 5.2 ms / first draw 22.5 ms; idle/offscreen zero. Owner authorized advisory Phase 1 frame/first-draw timing and merging. Original timing targets are not claimed as passed; other budgets remain enforced."
+    },
+    {
+      "id": "core-coverage",
+      "status": "measured",
+      "phase": 1,
+      "reason": "56 unit tests pass; core V8 line coverage is 99.6%."
+    },
+    {
+      "id": "runtime-accessibility",
+      "status": "pending",
+      "phase": 1,
+      "reason": "Computed hi/edge contrast is 10.3:1 on white; keyboard and reduced-motion references pass. Formal flashing audit remains pending."
+    },
+    {
+      "id": "agent-evals",
+      "status": "pending",
+      "phase": 2,
+      "reason": "No skills, public CLI, catalog, starter projects, or eval runner exist."
+    },
+    {
+      "id": "wrapper-hydration-cls",
+      "status": "pending",
+      "phase": 3,
+      "reason": "Framework wrappers and hydration are not implemented."
+    }
+  ],
+  "exceptions": [
+    {
+      "rule": "GIT-06",
+      "status": "closed",
+      "scope": "Initial README commit ea0bbd8 on main only",
+      "reason": "The owner explicitly selected one initial main push; every subsequent change must use a PR.",
+      "authorization": "Owner's approved bootstrap plan, 2026-10-06"
+    },
+    {
+      "rule": "AGT-07",
+      "status": "active",
+      "scope": "Proposed future examples in SPEC and planned installation commands in README",
+      "reason": "The actual README vanilla example is compiled and browser-tested. Future spec APIs and unpublished installation commands remain planned.",
+      "authorization": "Owner's approved bootstrap plan, 2026-10-06"
+    },
+    {
+      "rule": "CODE-07",
+      "status": "active",
+      "scope": "docs/SPEC.md only",
+      "reason": "Preserve the complete canonical specification as one document despite the 300-line SHOULD.",
+      "authorization": "Owner's approved bootstrap plan, 2026-10-06"
+    },
+    {
+      "rule": "PERF-01–05",
+      "status": "active",
+      "scope": "Phase 1 frame time and first-draw CI assertions only",
+      "reason": "The owner requested removal of the timing merge blocker and merging into main. Keep durations in JSON and warn on exceeded targets; size, idle/offscreen and functional checks remain mandatory.",
+      "authorization": "Explicit owner instruction to remove the blocker and merge into main, 2026-10-06"
+    }
+  ]
+}

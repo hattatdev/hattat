@@ -1,0 +1,23 @@
+{
+  "name": "@hattatdev/core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "license": "MIT",
+  "description": "Projection, scene buffers, SVG rendering, signals, springs, and the shared loop.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hattatdev/hattat.git",
+    "directory": "packages/core"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  }
+}
