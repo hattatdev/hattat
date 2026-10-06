@@ -9,7 +9,8 @@ projection, depth-based hidden-line clipping, critical springs, shared schedulin
 SVG, and the vanilla mount/update/destroy lifecycle. Five original figures have default and
 named ESM entries. The private headless CLI produces images and JSON from trusted modules.
 Framework wrappers, Canvas, full signals, named themes, catalog generation, installable
-skills, and agent evals remain later-phase work.
+skills, and agent evals remain later-phase work. The owner separately authorized a public
+gallery/playground and temporary GitHub Pages hosting; see [the gallery notes](../apps/docs/README.md).
 
 ## Verification
 

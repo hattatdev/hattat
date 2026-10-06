@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en" data-theme="paper">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5f3ec" />
+    <meta name="description" content="Small lines. Living figures. Explore Hattat, an open-source collection of interactive isometric illustrations for the web." />
+    <title>Hattat — Small lines. Living figures.</title>
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
+    <link rel="stylesheet" href="./assets/styles.css" />
+    <script type="module" src="./assets/app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#collection">Skip to figures</a>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="wordmark" href="./" aria-label="Hattat home"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 4v24m0-13 9-5 9 5v13M7 20l9-5 9 5M16 10v18" /></svg>hattat<span class="wordmark-dot">.</span></a>
+        <nav aria-label="Main navigation"><a href="#collection">Collection</a><a href="#playground">Playground</a><a class="github-link" href="https://github.com/hattatdev/hattat">GitHub <span aria-hidden="true">↗</span></a></nav>
+      </header>
+      <main>
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> An open collection, in motion</p>
+            <h1 id="hero-title">Small lines.<br /><em>Living figures.</em></h1>
+            <p class="hero-description">A little geometry. A little curiosity. Thin-line illustrations that respond to you and bring quiet character to the web.</p>
+            <div class="hero-actions"><a class="button button-primary" href="#collection">Explore the collection <span aria-hidden="true">↘</span></a><a class="text-link" href="#playground">Make it yours <span aria-hidden="true">→</span></a></div>
+            <p class="hero-footnote">Isometric by nature. Interactive by design.</p>
+          </div>
+          <div class="hero-art">
+            <div class="art-label"><span>FIG. 004 / GEAR TRAIN</span><span>30° ISO</span></div>
+            <div class="hero-figure" id="hero-figure"></div>
+            <span class="art-cross cross-top" aria-hidden="true">+</span><span class="art-cross cross-bottom" aria-hidden="true">+</span>
+            <p class="art-caption"><span class="small-arrow" aria-hidden="true">↖</span> Go on. Give it a nudge.</p>
+          </div>
+        </section>
+        <div class="principle-strip"><span><b>01</b> Just the essential lines</span><span><b>02</b> Made to respond</span><span><b>03</b> Free &amp; open source</span><a href="https://github.com/hattatdev/hattat/blob/main/LICENSE">MIT licensed <span aria-hidden="true">↗</span></a></div>
+        <section class="collection section" id="collection" aria-labelledby="collection-title">
+          <div class="section-heading"><div><p class="eyebrow">01 / The collection</p><h2 id="collection-title">Objects with <em>a pulse.</em></h2></div><p>Five figures. Five small stories.<br />Hover, focus, and see what happens.</p></div>
+          <div class="collection-toolbar">
+            <fieldset class="category-filters"><legend class="sr-only">Filter by category</legend><button type="button" data-category="all" aria-pressed="true">All figures</button><button type="button" data-category="technology" aria-pressed="false">Technology</button><button type="button" data-category="security" aria-pressed="false">Security</button><button type="button" data-category="objects" aria-pressed="false">Objects</button><button type="button" data-category="mechanics" aria-pressed="false">Mechanics</button><button type="button" data-category="nature-abstract" aria-pressed="false">Abstract</button></fieldset>
+            <label class="search-label"><span class="sr-only">Search figures by name or intent</span><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8" cy="8" r="5" /><path d="m12 12 5 5" /></svg><input id="search" type="search" placeholder="Find a figure or intent…" autocomplete="off" /></label>
+          </div>
+          <div class="collection-summary"><span>THE FIRST EDITION</span><output id="result-count" aria-live="polite">05 / 05 figures</output></div>
+          <div id="figure-grid" class="figure-grid"></div>
+          <div class="empty-state" id="empty-state" hidden><h3>No lines found.</h3><p>Try a different name or intent, like “security” or “workflow”.</p><button class="button" id="reset-search" type="button">Show all figures</button></div>
+          <noscript><p>The interactive collection needs JavaScript. Browse the <a href="https://github.com/hattatdev/hattat/tree/main/tests/references">figure previews on GitHub</a>.</p></noscript>
+          <div class="collection-end"><span>More stories are taking shape.</span><a class="text-link" href="https://github.com/hattatdev/hattat">Follow the project <span aria-hidden="true">↗</span></a></div>
+        </section>
+        <section class="playground section" id="playground" aria-labelledby="playground-heading">
+          <div class="section-heading"><div><p class="eyebrow">02 / The playground</p><h2 id="playground-heading">A line of <em>your own.</em></h2></div><p>Pick a figure. Set the mood.<br />Find the right amount of movement.</p></div>
+          <div class="playground-panel">
+            <div class="playground-stage"><div class="stage-meta"><span id="playground-category">mechanics</span><span>LIVE PREVIEW <span class="status-dot" aria-hidden="true"></span></span></div><div id="playground-figure" class="playground-figure"></div><div class="stage-caption"><h3 id="playground-title">Gear train</h3><p id="interaction">Horizontal pointer movement rotates three coupled gears.</p></div></div>
+            <div class="playground-controls">
+              <div class="control-group"><label for="figure-select">The figure</label><select id="figure-select"></select></div>
+              <div class="control-group"><div class="control-label"><label for="intensity">Intensity</label><output id="intensity-value" for="intensity">60%</output></div><input id="intensity" type="range" min="0" max="100" step="1" value="60" /><div class="range-labels"><span>A quiet presence</span><span>A little more life</span></div></div>
+              <fieldset class="control-group theme-control"><legend>The palette</legend><div class="theme-choices"><button type="button" data-theme-choice="paper" aria-pressed="true"><span class="swatch swatch-paper" aria-hidden="true"></span>Paper</button><button type="button" data-theme-choice="ink" aria-pressed="false"><span class="swatch swatch-ink" aria-hidden="true"></span>Ink</button><button type="button" data-theme-choice="blue" aria-pressed="false"><span class="swatch swatch-blue" aria-hidden="true"></span>Blueprint</button></div></fieldset>
+              <div class="motion-control"><div><h4>Let it move</h4><p>A slow, hands-free demonstration.</p></div><button type="button" class="button" id="animate" aria-pressed="false">Play demo</button></div>
+              <p class="motion-note" id="motion-note">Move your pointer over the figure, or focus it and use the arrow keys.</p>
+            </div>
+          </div>
+          <div class="code-panel"><div class="code-heading"><span>THE VANILLA EXAMPLE <span class="preview-label">API PREVIEW</span></span><button type="button" id="copy-code">Copy code</button></div>
+<!-- biome-ignore lint/a11y/noNoninteractiveTabindex: Keyboard users need to focus the horizontally scrollable example. -->
+<section class="code-scroll" tabindex="0" aria-label="Current figure integration example"><pre><code id="code"></code></pre></section><div class="code-note"><p>Early preview. The npm package is not published yet.</p><a href="https://github.com/hattatdev/hattat/blob/main/docs/core.md">Read the API notes <span aria-hidden="true">↗</span></a></div><span class="sr-only" id="copy-status" role="status"></span></div>
+        </section>
+        <section class="closing-note"><span class="closing-mark" aria-hidden="true">h.</span><div><p class="eyebrow">Less noise. More character.</p><h2>Some things say more<br /><em>with fewer lines.</em></h2></div><a class="button" href="https://github.com/hattatdev/hattat">Build with us <span aria-hidden="true">↗</span></a></section>
+      </main>
+      <footer class="site-footer"><span>hattat. <span class="footer-description">Drawn with intention.</span></span><div><span>Free forever. MIT licensed.</span><a href="https://github.com/hattatdev/hattat">Source <span aria-hidden="true">↗</span></a><a href="https://github.com/hattatdev/hattat/blob/main/docs/core.md">Documentation <span aria-hidden="true">↗</span></a></div></footer>
+    </div>
+  </body>
+</html>

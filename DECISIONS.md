@@ -137,3 +137,17 @@ the original budgets. Enforce nonempty finite measurements, zero idle/offscreen 
 bundle sizes, functional tests, and accessibility checks. Merge through the existing PR,
 without direct pushes to main. This scoped owner override does not revise the canonical rules
 or authorize npm publication, Phase 2, or claims of completed independent visual/flashing audits.
+
+## 2026-10-06 — Public gallery and temporary GitHub Pages hosting
+
+The owner requested a user-facing UI and temporary GitHub Pages hosting, with a custom
+domain to follow. Build only the requested gallery/playground from the five existing figures;
+this explicitly authorizes that docs UI before the full Phase 3 rollout, without authorizing
+Phase 2 agent-layer work or claiming wrapper/catalog completion. Use an original paper-and-ink
+editorial layout, local font fallbacks, and existing theme objects. Add no runtime dependencies,
+tracking, remote fonts, or runtime network requests. Keep the package unpublished and label
+copied code as an API preview. Build a self-contained static directory with relative URLs so
+hosting can change later without core changes. Deploy via GitHub Actions after PR merge;
+never push directly to main. CI exercises the actual built site under `/hattat/` and executes
+its generated example. Preserve prior figure references; gallery images are separate UI review
+artifacts. GEN-03, GEN-04, CODE-03, API-06, A11Y-01–04, AGT-07, GIT-03–06, DEP-03–04, DOC-01.

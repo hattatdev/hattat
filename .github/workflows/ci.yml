@@ -76,6 +76,8 @@ jobs:
         run: pnpm exec playwright install --with-deps chromium
       - name: Packaged browser, CLI and visual regressions
         run: pnpm test:browser
+      - name: Gallery interactions and GitHub Pages subpath
+        run: pnpm test:docs
       - name: Diagnostic CPU and allocation profiles
         run: pnpm profile:runtime
       - name: Enforce idle/offscreen budgets and report advisory timing
