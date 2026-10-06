@@ -1,13 +1,43 @@
 import { mount } from "hattat";
 import type { FigureDefinition, FigureHandle, Theme } from "hattat/core";
+import { barCity } from "hattat/figures/bar-city";
+import { bridge } from "hattat/figures/bridge";
+import { deskLamp } from "hattat/figures/desk-lamp";
 import { drawerStack } from "hattat/figures/drawer-stack";
+import { emptyBox } from "hattat/figures/empty-box";
+import { envelope } from "hattat/figures/envelope";
 import { gearTrain } from "hattat/figures/gear-train";
 import { padlock } from "hattat/figures/padlock";
+import { pendulum } from "hattat/figures/pendulum";
 import { serverRack } from "hattat/figures/server-rack";
 import { waveField } from "hattat/figures/wave-field";
+import { windTurbine } from "hattat/figures/wind-turbine";
 
-const FIGURES = [serverRack, padlock, drawerStack, gearTrain, waveField];
-const TITLES = ["Server rack", "Padlock", "Drawer stack", "Gear train", "Wave field"];
+const FIGURES = [
+  serverRack,
+  padlock,
+  drawerStack,
+  gearTrain,
+  waveField,
+  barCity,
+  bridge,
+  deskLamp,
+  windTurbine,
+  pendulum,
+  envelope,
+  emptyBox,
+];
+const TITLES = FIGURES.map((figure) =>
+  figure.name.replace(
+    /(^|-)([a-z])/g,
+    (_, separator: string, letter: string) => `${separator ? " " : ""}${letter.toUpperCase()}`,
+  ),
+);
+const TOTAL = String(FIGURES.length).padStart(2, "0");
+const CATEGORY_TITLES: Record<string, string> = {
+  "nature-abstract": "nature",
+  "ui-concepts": "interface",
+};
 const THEMES: Record<string, Theme> = {
   paper: {
     plate: "#f5f3ec",
@@ -86,7 +116,7 @@ function showFigure(figure: FigureDefinition): void {
   element("#playground-title").textContent =
     TITLES[FIGURES.findIndex((item) => item.name === figure.name)] ?? figure.name;
   element("#interaction").textContent = figure.interaction;
-  element("#playground-category").textContent = figure.category;
+  element("#playground-category").textContent = CATEGORY_TITLES[figure.category] ?? figure.category;
   playground = mount(host, figure, { intensity: Number(intensity.value) / 100, autoplay, theme });
   updateCode();
 }
@@ -100,8 +130,8 @@ FIGURES.forEach((figure, index) => {
   card.className = "figure-card";
   card.dataset.name = figure.name;
   const header = addText(card, "div", "", "card-meta");
-  addText(header, "span", `0${index + 1}`);
-  addText(header, "span", figure.category);
+  addText(header, "span", String(index + 1).padStart(2, "0"));
+  addText(header, "span", CATEGORY_TITLES[figure.category] ?? figure.category);
   const preview = addText(card, "div", "", "card-figure");
   handles.push(mount(preview, figure, { theme }));
   const details = addText(card, "div", "", "card-details");
@@ -137,7 +167,7 @@ function filter(): void {
     if (card) card.hidden = !match;
     if (match) visible++;
   });
-  count.textContent = `${String(visible).padStart(2, "0")} / 05 figures`;
+  count.textContent = `${String(visible).padStart(2, "0")} / ${TOTAL} figures`;
   element("#empty-state").hidden = visible !== 0;
 }
 search.addEventListener("input", filter);

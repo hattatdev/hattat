@@ -30,3 +30,5 @@ Do not interpret the numerical preview timing as the full 20-instance performanc
 Regression references live in `tests/references` and are compared against the bundled public
 entries in Chromium. Initial references and intentional simplification are documented in
 [visual changes](visual-changes/README.md). Human blind recognition remains a separate review.
+The expanded twelve-figure collection and intentional before/after images are recorded in
+[collection review](collection-review.md). All built-in entries are accepted by name.

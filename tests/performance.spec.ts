@@ -51,7 +51,7 @@ test("@performance 20 real animated figures at 4x CPU: timing, idle and offscree
       host.style.cssText = "width:120px;height:120px";
       document.body.append(host);
       const start = performance.now();
-      const figure = f.figures[i % 5];
+      const figure = f.figures[i % f.figures.length];
       if (!figure) throw Error("Missing figure");
       f.handles.push(f.mount(host, figure, { autoplay: true }));
       mounts.push(performance.now() - start);

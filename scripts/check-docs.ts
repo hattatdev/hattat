@@ -19,18 +19,18 @@ try {
     if (response.status() >= 400) errors.push(response.url());
   });
   await page.goto(url);
-  await expect(page.locator(".figure-card svg")).toHaveCount(5);
+  await expect(page.locator(".figure-card svg")).toHaveCount(12);
   await expect(page.locator("#hero-figure svg")).toBeVisible();
   await page.locator("#search").fill("workflow");
   await expect(page.locator(".figure-card:visible")).toHaveCount(1);
-  await expect(page.locator(".figure-card:visible h3")).toHaveText("Gear train");
+  await expect(page.locator(".figure-card:visible h3")).toHaveText("Gear Train");
   await page.locator("#search").fill("no-such-figure");
   await expect(page.locator("#empty-state")).toBeVisible();
   await page.locator("#reset-search").click();
   await page.getByRole("button", { name: "Security", exact: true }).click();
   await expect(page.locator(".figure-card:visible h3")).toHaveText("Padlock");
-  await page.getByRole("button", { name: "Abstract", exact: true }).click();
-  await expect(page.locator(".figure-card:visible h3")).toHaveText("Wave field");
+  await page.getByRole("button", { name: "Nature", exact: true }).click();
+  await expect(page.locator(".figure-card:visible h3")).toHaveText(["Wave Field", "Wind Turbine"]);
   await page.getByRole("button", { name: "All figures", exact: true }).click();
   await page.getByRole("button", { name: "Try Padlock in playground", exact: true }).click();
   await expect(page.locator("#figure-select")).toHaveValue("padlock");
@@ -48,7 +48,11 @@ try {
   await page.getByRole("button", { name: "Blueprint", exact: true }).click();
   await expect(page.locator("#playground-figure svg")).toHaveCSS("--hattat-plate", "#eaf0f4");
   await page.getByRole("button", { name: "Paper", exact: true }).click();
-  for (const name of ["server-rack", "padlock", "drawer-stack", "gear-train", "wave-field"]) {
+  const names = await page
+    .locator("#figure-select option")
+    .evaluateAll((options) => options.map((option) => (option as HTMLOptionElement).value));
+  expect(names).toHaveLength(12);
+  for (const name of names) {
     await page.locator("#figure-select").selectOption(name);
     await expect(page.locator("#code")).toContainText(`hattat/figures/${name}`);
     await expect(page.locator("#playground-figure svg")).toHaveCount(1);
@@ -94,7 +98,7 @@ try {
   }
   assert.deepEqual(errors, []);
   console.log(
-    `PASS: gallery assets, search, filters, five figures, controls, example execution, clipboard feedback, reduced motion, and responsive layout (${url}).`,
+    `PASS: gallery assets, search, filters, twelve figures, controls, example execution, clipboard feedback, reduced motion, and responsive layout (${url}).`,
   );
   console.log(`Screenshots: ${resolve("artifacts/gallery")}`);
 } finally {

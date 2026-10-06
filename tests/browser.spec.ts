@@ -24,7 +24,8 @@ test.beforeEach(async ({ page }) => {
 test("packaged imports, pointer, keyboard, cleanup and reduced motion", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  for (let i = 0; i < 5; i++) {
+  const figureCount = await page.evaluate(() => window.fixture.figures.length);
+  for (let i = 0; i < figureCount; i++) {
     await page.evaluate((index) => {
       const f = window.fixture;
       f.handles.forEach((h) => {

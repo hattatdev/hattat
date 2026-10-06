@@ -55,6 +55,13 @@ export const padlock = defineFigure({
       B[2] = 2.5;
       ctx.line(A, B, HI);
     }
+    for (let i = 0; i <= 16; i += 8) {
+      A[0] = B[0] = 1.5 + (SHACKLE[i * 2] as number);
+      A[1] = 0.5;
+      B[1] = 1;
+      A[2] = B[2] = 3.5 + lift + (SHACKLE[i * 2 + 1] as number);
+      ctx.line(A, B, MID);
+    }
     for (let i = 0; i < 12; i++) {
       const a = (i * Math.PI * 2) / 12,
         b = ((i + 1) * Math.PI * 2) / 12;

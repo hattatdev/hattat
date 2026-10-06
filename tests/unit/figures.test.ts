@@ -4,7 +4,7 @@ import { Scene } from "../../packages/core/src/scene.js";
 import { renderSVG } from "../../packages/core/src/svg.js";
 import { FIGURES } from "../../packages/figures/src/index.js";
 
-describe("original Phase 1 figures", () => {
+describe("original figure collection", () => {
   for (const figure of Object.values(FIGURES)) {
     it(
       figure.name +

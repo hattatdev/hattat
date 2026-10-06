@@ -27,7 +27,7 @@ try {
     const f = window.fixture;
     for (let i = 0; i < 20; i++) {
       const host = document.createElement("div"),
-        figure = f.figures[i % 5];
+        figure = f.figures[i % f.figures.length];
       host.style.cssText = "width:120px;height:120px";
       document.body.append(host);
       if (!figure) throw Error("Missing figure");
