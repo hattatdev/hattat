@@ -62,7 +62,7 @@
       "authorization": "Owner's approved bootstrap plan, 2026-10-06"
     },
     {
-      "rule": "PERF-01â€“05",
+      "rule": "PERF-01–05",
       "status": "active",
       "scope": "Phase 1 frame time and first-draw CI assertions only",
       "reason": "The owner requested removal of the timing merge blocker and merging into main. Keep durations in JSON and warn on exceeded targets; size, idle/offscreen and functional checks remain mandatory.",

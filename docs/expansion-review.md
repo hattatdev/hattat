@@ -38,8 +38,8 @@ Core remains exactly 6,144 gzip bytes and each new entry is below 2,048. The tim
 owner exception remains scoped as previously documented; measured durations are
 reported with warnings, not described as satisfying the original timing budgets.
 
-Applicable review rules: GEN-01â€“05, CODE-03â€“08, API-02/03/06, VIS-01â€“09, MOT-01â€“06,
-FIG-01â€“06, PERF-01â€“06, A11Y-01â€“05, TEST-01/03/04, GIT-01â€“06, DEP-01â€“04, DOC-01.
+Applicable review rules: GEN-01–05, CODE-03–08, API-02/03/06, VIS-01–09, MOT-01–06,
+FIG-01–06, PERF-01–06, A11Y-01–05, TEST-01/03/04, GIT-01–06, DEP-01–04, DOC-01.
 
 The final local fourteen-definition, twenty-instance sample at 4x CPU records p95
 5.8 ms, maximum 6.2 ms, first draw 13.0 ms, and zero idle/offscreen callbacks. See
