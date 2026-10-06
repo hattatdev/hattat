@@ -1,8 +1,8 @@
 # Collection expansion: twelve to thirty-two figures
 
-Status: proposed delivery plan, requested by the owner on 2026-10-06. This document
-plans the next collection increments; it does not implement or approve later-phase
-engine, agent-layer, wrapper, or publication work.
+Status: collection implementation authorized by the owner on 2026-10-06 by asking
+to start. This plan does not authorize later-phase engine, agent-layer, wrapper,
+or publication work.
 
 ## Outcome and scope
 

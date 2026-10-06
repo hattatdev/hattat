@@ -181,3 +181,16 @@ its input balance gate. Retain bundle limits, required review evidence, the scop
 timing exception, and pending independent recognition/flashing audits. This change
 records a plan only and starts no engine or later-phase implementation. GEN-03/04,
 FIG-02/03/06, MOT-01, PERF-01–06, GIT-02/06.
+
+## 2026-10-06 — Begin expansion with database and protection figures
+
+The owner asked to start the collection expansion. Implement db-stack and
+shield-layers first: common database/backups and protection/compliance intentions
+gain distinct alternatives in the two least-populated categories. Use only the
+current geometry and pointer/keyboard spring system; keep all static dimensions
+unit-aligned and core unchanged. The gallery and its executable examples include
+both models. Derive expected model membership in its checker from the existing
+typed registry, and let introductory copy and the runtime count accommodate growth.
+Keep the independent human recognition/flashing limitations and timing-only owner
+exception visible. New models receive six references; existing images are untouched.
+GEN-03/04, FIG-01–06, VIS-02/08, API-06, TEST-03, GIT-02–06.

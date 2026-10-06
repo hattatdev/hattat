@@ -2,6 +2,7 @@ import { mount } from "hattat";
 import type { FigureDefinition, FigureHandle, Theme } from "hattat/core";
 import { barCity } from "hattat/figures/bar-city";
 import { bridge } from "hattat/figures/bridge";
+import { dbStack } from "hattat/figures/db-stack";
 import { deskLamp } from "hattat/figures/desk-lamp";
 import { drawerStack } from "hattat/figures/drawer-stack";
 import { emptyBox } from "hattat/figures/empty-box";
@@ -10,6 +11,7 @@ import { gearTrain } from "hattat/figures/gear-train";
 import { padlock } from "hattat/figures/padlock";
 import { pendulum } from "hattat/figures/pendulum";
 import { serverRack } from "hattat/figures/server-rack";
+import { shieldLayers } from "hattat/figures/shield-layers";
 import { waveField } from "hattat/figures/wave-field";
 import { windTurbine } from "hattat/figures/wind-turbine";
 
@@ -26,6 +28,8 @@ const FIGURES = [
   pendulum,
   envelope,
   emptyBox,
+  dbStack,
+  shieldLayers,
 ];
 const TITLES = FIGURES.map((figure) =>
   figure.name.replace(

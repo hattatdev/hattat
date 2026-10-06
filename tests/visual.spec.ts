@@ -26,6 +26,8 @@ for (const [index, name] of [
   "pendulum",
   "envelope",
   "empty-box",
+  "db-stack",
+  "shield-layers",
 ].entries()) {
   test(`${name}: rest, full and reduced-motion references`, async ({ page }) => {
     await page.setViewportSize({ width: 240, height: 240 });

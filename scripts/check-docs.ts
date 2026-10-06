@@ -4,6 +4,7 @@ import type { AddressInfo } from "node:net";
 import { resolve } from "node:path";
 import { chromium, expect } from "@playwright/test";
 import { build } from "esbuild";
+import { FIGURES } from "../packages/figures/dist/index.js";
 import { createDocsServer } from "./serve-docs.ts";
 
 const server = createDocsServer();
@@ -19,7 +20,7 @@ try {
     if (response.status() >= 400) errors.push(response.url());
   });
   await page.goto(url);
-  await expect(page.locator(".figure-card svg")).toHaveCount(12);
+  await expect(page.locator(".figure-card svg")).toHaveCount(Object.keys(FIGURES).length);
   await expect(page.locator("#hero-figure svg")).toBeVisible();
   await page.locator("#search").fill("workflow");
   await expect(page.locator(".figure-card:visible")).toHaveCount(1);
@@ -28,7 +29,7 @@ try {
   await expect(page.locator("#empty-state")).toBeVisible();
   await page.locator("#reset-search").click();
   await page.getByRole("button", { name: "Security", exact: true }).click();
-  await expect(page.locator(".figure-card:visible h3")).toHaveText("Padlock");
+  await expect(page.locator(".figure-card:visible h3")).toHaveText(["Padlock", "Shield Layers"]);
   await page.getByRole("button", { name: "Nature", exact: true }).click();
   await expect(page.locator(".figure-card:visible h3")).toHaveText(["Wave Field", "Wind Turbine"]);
   await page.getByRole("button", { name: "All figures", exact: true }).click();
@@ -51,7 +52,7 @@ try {
   const names = await page
     .locator("#figure-select option")
     .evaluateAll((options) => options.map((option) => (option as HTMLOptionElement).value));
-  expect(names).toHaveLength(12);
+  expect(new Set(names)).toEqual(new Set(Object.keys(FIGURES)));
   for (const name of names) {
     await page.locator("#figure-select").selectOption(name);
     await expect(page.locator("#code")).toContainText(`hattat/figures/${name}`);
@@ -98,7 +99,7 @@ try {
   }
   assert.deepEqual(errors, []);
   console.log(
-    `PASS: gallery assets, search, filters, twelve figures, controls, example execution, clipboard feedback, reduced motion, and responsive layout (${url}).`,
+    `PASS: gallery assets, search, filters, ${names.length} figures, controls, example execution, clipboard feedback, reduced motion, and responsive layout (${url}).`,
   );
   console.log(`Screenshots: ${resolve("artifacts/gallery")}`);
 } finally {
