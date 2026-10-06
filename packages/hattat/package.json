@@ -1,0 +1,22 @@
+{
+  "name": "hattat",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "description": "The future single npm distribution facade and its public subpath entries.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hattatdev/hattat.git",
+    "directory": "packages/hattat"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@hattatdev/core": "workspace:*",
+    "@hattatdev/figures": "workspace:*",
+    "@hattatdev/cli": "workspace:*"
+  }
+}

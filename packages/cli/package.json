@@ -1,0 +1,21 @@
+{
+  "name": "@hattatdev/cli",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "description": "The agent CLI; Phase 1 introduces look, and Phase 2 expands commands.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hattatdev/hattat.git",
+    "directory": "packages/cli"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@hattatdev/core": "workspace:*",
+    "@hattatdev/figures": "workspace:*"
+  }
+}

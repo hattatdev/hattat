@@ -1,0 +1,65 @@
+{
+  "stage": "bootstrap",
+  "phase1Approved": false,
+  "runtimeChecks": [
+    {
+      "id": "visual-look",
+      "status": "pending",
+      "phase": 1,
+      "reason": "No engine, figure geometry, look command, or regression references exist."
+    },
+    {
+      "id": "performance-budgets",
+      "status": "pending",
+      "phase": 1,
+      "reason": "No real runtime exists to measure; placeholder sizes and build timings are not evidence."
+    },
+    {
+      "id": "core-coverage",
+      "status": "pending",
+      "phase": 1,
+      "reason": "Core contains only an empty module; 90% coverage is not claimed."
+    },
+    {
+      "id": "runtime-accessibility",
+      "status": "pending",
+      "phase": 1,
+      "reason": "Reduced motion, keyboard, contrast, and flashing need implemented figures."
+    },
+    {
+      "id": "agent-evals",
+      "status": "pending",
+      "phase": 2,
+      "reason": "No skills, public CLI, catalog, starter projects, or eval runner exist."
+    },
+    {
+      "id": "wrapper-hydration-cls",
+      "status": "pending",
+      "phase": 3,
+      "reason": "Framework wrappers and hydration are not implemented."
+    }
+  ],
+  "exceptions": [
+    {
+      "rule": "GIT-06",
+      "status": "closed",
+      "scope": "Initial README commit ea0bbd8 on main only",
+      "reason": "The owner explicitly selected one initial main push; every subsequent change must use a PR.",
+      "authorization": "Owner's approved bootstrap plan, 2026-10-06"
+    },
+    {
+      "rule": "AGT-07",
+      "status": "active",
+      "scope": "Proposed API examples in SPEC and README during bootstrap only",
+      "reason": "Preserve the complete source specification; label unpublished API examples as planned. Compile actual examples in Phase 1.",
+      "authorization": "Owner's approved bootstrap plan, 2026-10-06"
+    },
+    {
+      "rule": "CODE-07",
+      "status": "active",
+      "scope": "docs/SPEC.md only",
+      "reason": "Preserve the complete canonical specification as one document despite the 300-line SHOULD.",
+      "authorization": "Owner's approved bootstrap plan, 2026-10-06"
+    }
+  ]
+}
