@@ -31,4 +31,5 @@ Regression references live in `tests/references` and are compared against the bu
 entries in Chromium. Initial references and intentional simplification are documented in
 [visual changes](visual-changes/README.md). Human blind recognition remains a separate review.
 The expanded twelve-figure collection and intentional before/after images are recorded in
-[collection review](collection-review.md). All built-in entries are accepted by name.
+[collection review](collection-review.md). See [expansion review](expansion-review.md) for subsequent additions.
+All built-in entries are accepted by name.

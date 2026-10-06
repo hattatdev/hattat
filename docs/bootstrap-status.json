@@ -6,19 +6,19 @@
       "id": "visual-look",
       "status": "pending",
       "phase": 1,
-      "reason": "Twelve figures have 36 rest/full/reduced-motion regression references. Nine changed figures pass look at three intensities. Agent inspection covers new rest/full poses; independent human blind review is not claimed or requested again per owner preference."
+      "reason": "Fourteen figures have 42 rest/full/reduced references. db-stack and shield-layers pass look at all three intensities and agent visual inspection. Independent human blind review is not claimed or requested again per owner preference."
     },
     {
       "id": "performance-budgets",
       "status": "measured",
       "phase": 1,
-      "reason": "Core 6144 gzip bytes; each figure below 2048. Local Windows Chromium 153, 20 instances cycling twelve figures at 4x CPU: p95 4.2 ms, max frame 5.1 ms, first draw 11.9 ms, idle/offscreen zero. Existing owner-authorized advisory timing exception applies; frame target is exceeded. This workload differs from the original five-figure fixture; CI reports separate raw measurements."
+      "reason": "Core 6144 gzip bytes; all entries below 2048. Local twenty-instance cohort cycling fourteen definitions at 4x CPU: p95 5.8 ms, max 6.2 ms, first draw 13.0 ms, idle/offscreen zero. The changed workload exceeds the advisory frame target; raw evidence and comparison caveats are in docs/expansion-review.md. Existing timing-only exception applies."
     },
     {
       "id": "core-coverage",
       "status": "measured",
       "phase": 1,
-      "reason": "63 unit tests pass; core V8 line coverage is 99.62%."
+      "reason": "65 unit tests pass; core V8 line coverage is 99.62%."
     },
     {
       "id": "runtime-accessibility",
@@ -62,7 +62,7 @@
       "authorization": "Owner's approved bootstrap plan, 2026-10-06"
     },
     {
-      "rule": "PERF-01–05",
+      "rule": "PERF-01â€“05",
       "status": "active",
       "scope": "Phase 1 frame time and first-draw CI assertions only",
       "reason": "The owner requested removal of the timing merge blocker and merging into main. Keep durations in JSON and warn on exceeded targets; size, idle/offscreen and functional checks remain mandatory.",
