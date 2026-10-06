@@ -26,8 +26,9 @@ if (hero instanceof HTMLElement) {
 }
 ```
 
-The example is compiled and run in Chromium in CI. Available entries are `server-rack`,
-`padlock`, `drawer-stack`, `gear-train`, and `wave-field`, with default and named exports.
+The example is compiled and run in Chromium in CI. Twelve entries have default and named
+exports: `server-rack`, `padlock`, `drawer-stack`, `gear-train`, `wave-field`, `bar-city`,
+`bridge`, `desk-lamp`, `wind-turbine`, `pendulum`, `envelope`, and `empty-box`.
 Pointer movement and arrow keys drive the figures. Reduced motion shows their resting poses.
 See [core API](docs/core.md) and [preview CLI](docs/look.md) for options and lifecycle behavior.
 
@@ -47,11 +48,12 @@ pnpm look padlock --yes --json
 
 `pnpm check` validates formatting, strict types, workspace builds, distribution sizes,
 repository rules, and the README example. Unit coverage exceeds 90%; browser checks cover
-packaged imports, interaction, accessibility, and 15 visual references.
+packaged imports, interaction, accessibility, and 36 visual references.
 The owner authorized advisory frame/first-draw timing for Phase 1; measurements and warnings
 remain visible in CI while size and idle/offscreen budgets stay enforced.
 Human blind recognition and later-phase agent evals are also pending. See the
 [Phase 1 evidence](docs/phase-1-report.md) for measured results and limitations.
+See [collection review](docs/collection-review.md) for the seven additions and visual changes.
 
 ## Project documents
 

@@ -52,6 +52,14 @@ export const gearTrain = defineFigure({
         B[1] = cy + bx * sine + by * cosine;
         B[2] = 0.5;
         ctx.line(A, B, g === 1 ? HI : EDGE);
+        A[2] = B[2] = 0.25;
+        ctx.line(A, B, MID);
+        if (i % 4 === 1) {
+          B[0] = A[0];
+          B[1] = A[1];
+          B[2] = 0.5;
+          ctx.line(A, B, EDGE);
+        }
       }
       O[0] = cx;
       O[1] = cy;

@@ -11,6 +11,8 @@ named ESM entries. The private headless CLI produces images and JSON from truste
 Framework wrappers, Canvas, full signals, named themes, catalog generation, installable
 skills, and agent evals remain later-phase work. The owner separately authorized a public
 gallery/playground and temporary GitHub Pages hosting; see [the gallery notes](../apps/docs/README.md).
+The five-figure measurements below describe the original Phase 1 candidate; the later
+[collection review](collection-review.md) records the twelve-figure expansion.
 
 ## Verification
 

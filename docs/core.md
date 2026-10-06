@@ -1,7 +1,7 @@
 # Core foundation
 
-Phase 1's numerical foundation and vanilla lifecycle are implemented; real-browser evidence
-and the five figure acceptance checks are being completed. The package remains private and unpublished.
+Phase 1's numerical foundation and vanilla lifecycle are implemented. The collection now has
+twelve figures; see [collection evidence](collection-review.md). The package remains private and unpublished.
 
 `defineFigure` validates and freezes metadata. `Scene` offers reusable geometry buffers and
 seeded helpers. `project` writes into caller-owned storage. `advance` integrates a critically
@@ -22,8 +22,9 @@ Stable poses stop scheduling; only explicit autoplay keeps animating. Reduced mo
 the resting pose. Unsupported Canvas, signals, and preset themes fail explicitly in Phase 1.
 The modeling unit is 0.5 world units; fixed dimensions must be multiples of 0.25.
 
-Five built-ins are available through the bundled private `hattat/figures/<name>` entries:
-`server-rack`, `padlock`, `drawer-stack`, `gear-train`, and `wave-field`.
+Twelve built-ins are available through the bundled private `hattat/figures/<name>` entries:
+`server-rack`, `padlock`, `drawer-stack`, `gear-train`, `wave-field`, `bar-city`, `bridge`,
+`desk-lamp`, `wind-turbine`, `pendulum`, `envelope`, and `empty-box`.
 Each has a named camelCase export and an identical default export. The public core entry
 exports `defineFigure`, `mount`, `renderSVG`, and their shared types. Numerical helpers
 are implementation workspace APIs, excluded from the distribution's public exports.

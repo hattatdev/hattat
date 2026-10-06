@@ -126,6 +126,9 @@
   .search-label {
     max-width: none;
   }
+  .figure-grid {
+    grid-template-columns: 1fr;
+  }
   .figure-card {
     padding: 18px;
   }
@@ -139,11 +142,11 @@
     font-size: 21px;
   }
   .card-details p {
-    min-height: 66px;
-    font-size: 11px;
+    min-height: 0;
+    font-size: 12px;
   }
   .try-button {
-    font-size: 10px;
+    font-size: 12px;
   }
   .collection-end {
     gap: 16px;

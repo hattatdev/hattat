@@ -151,3 +151,20 @@ hosting can change later without core changes. Deploy via GitHub Actions after P
 never push directly to main. CI exercises the actual built site under `/hattat/` and executes
 its generated example. Preserve prior figure references; gallery images are separate UI review
 artifacts. GEN-03, GEN-04, CODE-03, API-06, A11Y-01–04, AGT-07, GIT-03–06, DEP-03–04, DOC-01.
+
+## 2026-10-06 — Prioritize collection variety and visual quality
+
+The owner chose collection variety and quality before later-phase agent work. Add seven
+original figures using the existing engine: bar-city, bridge, desk-lamp, wind-turbine,
+pendulum, envelope, and empty-box. This gives twelve figures across eight categories and
+more intent-specific choices toward the north star, without new runtime dependencies or
+core/API changes. Give gears a second tooth contour and padlock explicit shackle depth
+connectors. Preserve before images and initialize rest/full/reduced references only for
+intentional changes. Enlarge phone gallery previews with a single-column layout and verify
+every copied example. Generalize bundled entries and private look name recognition so
+new figures are included without a second hardcoded catalog. Keep public catalog/skills
+generation in Phase 2. Cycle all twelve definitions in 20-instance timing and diagnostic
+fixtures, retaining the scoped advisory duration exception and raw evidence; do not claim
+an identical workload to the old five-figure measurements. Agent visual inspection does
+not satisfy an independent human blind audit. Publish the gallery through PR merge and
+the existing Pages workflow. GEN-03/04, FIG-01–06, VIS-08, TEST-03, PERF-01–06, GIT-03–06.

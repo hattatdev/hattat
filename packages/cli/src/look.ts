@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -18,9 +19,9 @@ export interface LookReport {
 }
 /** Render a trusted local figure or built-in figure. @example await look("padlock", "artifacts/look"); */
 export async function look(name: string, out = resolve("artifacts/look")): Promise<LookReport[]> {
-  const builtin = ["server-rack", "drawer-stack", "padlock", "gear-train", "wave-field"].includes(
-    name,
-  );
+  const builtin =
+    /^[a-z]+(?:-[a-z]+)*$/.test(name) &&
+    existsSync(resolve(ROOT, "packages/figures/src", `${name}.ts`));
   const entry = builtin ? resolve(ROOT, "packages/figures/src", `${name}.ts`) : resolve(name);
   const core = resolve(ROOT, "packages/core/src/index.ts");
   const bundle = await build({

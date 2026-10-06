@@ -34,7 +34,9 @@ await writeFile(
   'export { mount } from "./core/index.js";\nexport type { FigureHandle, FigureOptions } from "./core/index.js";\n',
 );
 const sizes: Record<string, number> = { core: gzipSync(CODE).length };
-for (const name of ["server-rack", "padlock", "drawer-stack", "gear-train", "wave-field"]) {
+const FIGURE_FILES = await readdir(resolve(ROOT, "packages/figures/src"));
+for (const file of FIGURE_FILES.filter((file) => file.endsWith(".ts") && file !== "index.ts")) {
+  const name = file.slice(0, -3);
   const result = await build({
     entryPoints: [resolve(ROOT, "packages/figures/src", `${name}.ts`)],
     bundle: true,

@@ -19,6 +19,13 @@ for (const [index, name] of [
   "drawer-stack",
   "gear-train",
   "wave-field",
+  "bar-city",
+  "bridge",
+  "desk-lamp",
+  "wind-turbine",
+  "pendulum",
+  "envelope",
+  "empty-box",
 ].entries()) {
   test(`${name}: rest, full and reduced-motion references`, async ({ page }) => {
     await page.setViewportSize({ width: 240, height: 240 });

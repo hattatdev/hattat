@@ -2,12 +2,14 @@
 
 Live preview: https://hattatdev.github.io/hattat/
 
-A static gallery built from the existing public vanilla API. Explore five figures, search by
+A static gallery built from the existing public vanilla API. Explore twelve figures, search by
 name or intent, filter categories, and use the playground to change figure, intensity,
 autoplay, and the Paper/Ink/Blueprint color palettes. Palettes use the existing theme object;
 these are gallery presets, not new library theme names. Reduced motion remains automatic.
 The copyable example follows the current selection, including palette and intensity.
 The npm package is not published; the site labels examples as an API preview.
+The collection covers eight categories, with larger single-column previews on phones.
+See [collection review](../../docs/collection-review.md) for the additions and screenshots.
 
 ## Local preview and checks
 
