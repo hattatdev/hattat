@@ -12,7 +12,7 @@
       "id": "performance-budgets",
       "status": "pending",
       "phase": 1,
-      "reason": "Core 6142 gzip bytes. Latest local 4x CPU max frame 2.4 ms, first SVG generation 13.3 ms, idle/offscreen zero. CI on 3be6952 passes frame timing (Ubuntu 3.3 ms, Windows 2.3 ms) but fails first mount (22.0/16.9 ms); latest setup changes await CI."
+      "reason": "Core 6144 gzip bytes. Latest local 4x CPU max frame 2.5 ms, first SVG generation 12.7 ms, idle/offscreen zero. CI on 78eaef6 passes frame timing (Ubuntu 3.2 ms, Windows 3.9 ms) but fails first mount (21.3/24.0 ms); detached setup changes await CI."
     },
     {
       "id": "core-coverage",

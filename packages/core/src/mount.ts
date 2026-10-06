@@ -77,6 +77,9 @@ class Instance implements FigureHandle {
       ).value;
     this.internalValues.intensity = this.internalOptions.intensity;
     this.internalBuild();
+    const view = host.ownerDocument.defaultView;
+    this.internalReduced = view?.matchMedia?.("(prefers-reduced-motion: reduce)");
+    this.internalDark = view?.matchMedia?.("(prefers-color-scheme: dark)");
     // Trusted generated SVG; markup escapes the accessibility label.
     const fragment = host.ownerDocument
       .createRange()
@@ -86,10 +89,8 @@ class Instance implements FigureHandle {
     this.internalSvg = fragment.firstElementChild as SVGSVGElement;
     this.internalPaths = Array.from(this.internalSvg.querySelectorAll("path"));
     host.style.aspectRatio = figure.aspect.replace(":", "/");
+    this.internalConfigure();
     host.append(this.internalSvg);
-    const view = host.ownerDocument.defaultView;
-    this.internalReduced = view?.matchMedia?.("(prefers-reduced-motion: reduce)");
-    this.internalDark = view?.matchMedia?.("(prefers-color-scheme: dark)");
     this.internalReduced?.addEventListener("change", this.internalPreference);
     this.internalDark?.addEventListener("change", this.internalPreference);
     view?.addEventListener("scroll", this.internalMeasure, true);
@@ -104,7 +105,6 @@ class Instance implements FigureHandle {
     this.internalGeometry.internalRefs++;
     GEOMETRY.set(figure, this.internalGeometry);
     register(this);
-    this.internalConfigure();
     this.internalDirty = false;
     if (this.internalOptions.autoplay && !this.internalFrozen) wake(this);
   }

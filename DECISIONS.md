@@ -114,3 +114,14 @@ markup into a fragment in the live document, avoiding an inert template document
 reset follows the private-property mangling convention. Keep stable error codes and fixes.
 The combined local sample is p95 2.0 ms, maximum 2.4 ms, first mount 13.3 ms; core 6,142 gzip
 bytes. Visual references remain unchanged. These are local results, not CI acceptance.
+
+## 2026-10-06 — Prepare SVG before insertion
+
+Read motion/color preferences before SVG insertion, and apply label/theme/input attributes
+while the SVG is detached. Insert the fully configured owned SVG once, then observe and
+register it. Geometry/option errors still precede DOM changes. Existing lifecycle, keyboard,
+reduced-motion, theme-width, resize, cleanup, and visual tests pass. Local max frame is 2.5 ms,
+first mount 12.7 ms; core is exactly 6,144 gzip bytes. CI on 78eaef6 still fails cold first
+mount on both platforms (21.3/24.0 ms); do not substitute local results for that gate.
+An event-listener-object variant was measured and removed: it increased bundle size without
+a material startup benefit. Preserve the established listeners and their removal semantics.

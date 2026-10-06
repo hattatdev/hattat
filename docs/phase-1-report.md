@@ -27,7 +27,7 @@ skills, and agent evals remain later-phase work.
 
 | Entry | Gzip bytes | Raw segments | Limit |
 | --- | ---: | ---: | ---: |
-| Complete public core | 6,142 | — | 6,144 bytes |
+| Complete public core | 6,144 | — | 6,144 bytes |
 | server-rack | 587 | 97 | 2,048 bytes / 400 segments |
 | padlock | 672 | 61 | 2,048 bytes / 400 segments |
 | drawer-stack | 551 | 72 | 2,048 bytes / 400 segments |
@@ -41,15 +41,15 @@ upstream compilation uses Turbo cache. Coordinates round to 0.001 only at serial
 ## Runtime budget and remaining gate
 
 The latest local 20-instance Chromium run used a 1200×900 viewport and 4× CPU throttling.
-It recorded p95 2.0 ms/frame, maximum 2.4 ms/frame, first SVG generation 13.3 ms,
+It recorded p95 2.0 ms/frame, maximum 2.5 ms/frame, first SVG generation 12.7 ms,
 zero idle callbacks, and zero offscreen callbacks. Local budgets pass.
 The test enforces the maximum, not just the percentile. Raw JSON and error context live in
 `artifacts/performance.json` and `test-results`. CPU/heap profiles, including cold mount,
 run separately; timing enforcement disables Playwright screenshot/DOM tracing to isolate it
 from recording work. Functional and visual failures retain their traces.
 
-CI on 3be6952 passes frame timing but fails first mount: Ubuntu p95 2.9 ms, maximum 3.3 ms,
-first generation 22.0 ms; Windows p95 1.7 ms, maximum 2.3 ms, first generation 16.9 ms.
+CI on 78eaef6 passes frame timing but fails first mount: Ubuntu p95 3.0 ms, maximum 3.2 ms,
+first generation 21.3 ms; Windows p95 3.6 ms, maximum 3.9 ms, first generation 24.0 ms.
 Both have zero idle/offscreen callbacks. The latest setup/clipping changes require fresh CI;
 the acceptance gate remains open. All five first mounts are recorded, including the cold one;
 there is no prewarming of the measured mount or weakened threshold.
@@ -65,6 +65,7 @@ to observation or first input. Unchanged SVG paths are not rewritten; plate orie
 computed once per plate instead of once per segment/plate pair. Signed edge coefficients
 are also prepared once in reusable storage. Common SVG fill/stroke-width attributes live on
 the root, preserving non-scaling path strokes and theme overrides with fewer parsed attributes.
+Read preferences before inserting SVG; prepare label/theme/input attributes on the detached SVG.
 Custom-theme/input validation is split into functions called only when supplied. Agent visual inspection recognizes the lock, coupled gears, rack, wave grid, and drawer
 cabinet at 240 px. This is informed agent review; an independent human blind test has not
 been performed. The owner asked the agent to evaluate the images and not request this
