@@ -18,7 +18,7 @@
       "id": "core-coverage",
       "status": "measured",
       "phase": 1,
-      "reason": "51 unit tests pass; core V8 line coverage is 99.6%."
+      "reason": "52 unit tests pass; core V8 line coverage is 99.6%."
     },
     {
       "id": "runtime-accessibility",

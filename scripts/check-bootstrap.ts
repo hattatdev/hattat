@@ -78,7 +78,15 @@ const EDGES: Record<string, string[]> = {
 };
 
 function read(path: string): string {
-  return readFileSync(path, "utf8").replace(/\r\n/g, "\n");
+  try {
+    return new TextDecoder("utf-8", { fatal: true })
+      .decode(readFileSync(path))
+      .replace(/\r\n/g, "\n");
+  } catch {
+    throw new Error(
+      `GEN-01: ${path} must contain valid UTF-8 text. Save it as UTF-8 and rerun pnpm check.`,
+    );
+  }
 }
 
 function manifest(path: string): Manifest {
