@@ -21,19 +21,10 @@ export const drawerStack = defineFigure({
       open = p.open ?? 0.5;
     SIZE[0] = 4;
     SIZE[1] = 3;
-    SIZE[2] = 0.5;
+    SIZE[2] = 6.5;
     ORIGIN[0] = 0;
     ORIGIN[1] = 0;
     ORIGIN[2] = 0;
-    ctx.box(ORIGIN, SIZE, EDGE);
-    ORIGIN[2] = 6;
-    ctx.box(ORIGIN, SIZE, EDGE);
-    SIZE[0] = 0.5;
-    SIZE[1] = 3;
-    SIZE[2] = 5.5;
-    ORIGIN[2] = 0.5;
-    ctx.box(ORIGIN, SIZE, EDGE);
-    ORIGIN[0] = 3.5;
     ctx.box(ORIGIN, SIZE, EDGE);
     for (let i = 0; i < 4; i++) {
       const pull = ctx.falloff(open, 1 - i / 3) * intensity * 2;
@@ -47,10 +38,16 @@ export const drawerStack = defineFigure({
       ORIGIN[0] = 1.5;
       ORIGIN[1] = 3 + pull;
       ORIGIN[2] += 0.5;
-      SIZE[0] = 1;
-      SIZE[1] = 0.5;
-      SIZE[2] = 0.5;
-      ctx.box(ORIGIN, SIZE, EDGE);
+      SIZE[0] = 1.5;
+      SIZE[1] = ORIGIN[1] + 0.5;
+      SIZE[2] = ORIGIN[2];
+      ctx.line(ORIGIN, SIZE, EDGE);
+      ORIGIN[1] += 0.5;
+      SIZE[0] = 2.5;
+      ctx.line(ORIGIN, SIZE, EDGE);
+      ORIGIN[0] = 2.5;
+      SIZE[1] -= 0.5;
+      ctx.line(ORIGIN, SIZE, EDGE);
     }
   },
 });

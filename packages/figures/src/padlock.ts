@@ -7,6 +7,11 @@ const A: [number, number, number] = [0, 0, 0],
 const EDGE: Style = { tone: "edge" },
   HI: Style = { tone: "hi" },
   MID: Style = { tone: "mid" };
+const SHACKLE = new Float64Array(17 * 2);
+for (let i = 0; i <= 16; i++) {
+  SHACKLE[i * 2] = Math.cos((Math.PI * i) / 16);
+  SHACKLE[i * 2 + 1] = Math.sin((Math.PI * i) / 16);
+}
 /** A lock that opens on approach. @example mount(host, padlock); */
 export const padlock = defineFigure({
   name: "padlock",
@@ -29,15 +34,13 @@ export const padlock = defineFigure({
     ctx.box(O, S, EDGE);
     for (let layer = 0; layer < 2; layer++) {
       const y = 0.5 + layer * 0.5;
-      for (let i = 0; i < 24; i++) {
-        const a = (Math.PI * i) / 24,
-          b = (Math.PI * (i + 1)) / 24;
-        A[0] = 1.5 + Math.cos(a);
+      for (let i = 0; i < 16; i++) {
+        A[0] = 1.5 + (SHACKLE[i * 2] as number);
         A[1] = y;
-        A[2] = 3.5 + lift + Math.sin(a);
-        B[0] = 1.5 + Math.cos(b);
+        A[2] = 3.5 + lift + (SHACKLE[i * 2 + 1] as number);
+        B[0] = 1.5 + (SHACKLE[(i + 1) * 2] as number);
         B[1] = y;
-        B[2] = 3.5 + lift + Math.sin(b);
+        B[2] = 3.5 + lift + (SHACKLE[(i + 1) * 2 + 1] as number);
         ctx.line(A, B, HI);
       }
       A[0] = 0.5;

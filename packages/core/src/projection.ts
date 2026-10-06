@@ -7,8 +7,8 @@ function decimal(n: number): number {
   return Math.round(n * 1000) / 1000;
 }
 export class Projection {
-  readonly planes = new Float64Array(160 * 11);
-  readonly intervals = new Float64Array(322);
+  readonly internalPlanes = new Float64Array(160 * 11);
+  readonly internalIntervals = new Float64Array(322);
   readonly paths = ["", "", "", "", ""];
   platePath = "";
   visibleCount = 0;
@@ -17,7 +17,7 @@ export class Projection {
   minY = Infinity;
   maxY = -Infinity;
 
-  render(scene: Scene): void {
+  render(scene: Scene, measure = true): void {
     this.paths.fill("");
     this.platePath = "";
     this.visibleCount = 0;
@@ -36,24 +36,26 @@ export class Projection {
         const x = scene.plates[k] as number;
         const y = scene.plates[k + 1] as number;
         const z = scene.plates[k + 2] as number;
-        this.planes[o + j * 2] = (x - y) * COS_30;
-        this.planes[o + j * 2 + 1] = (x + y) / 2 - z;
+        this.internalPlanes[o + j * 2] = (x - y) * COS_30;
+        this.internalPlanes[o + j * 2 + 1] = (x + y) / 2 - z;
         if (j === 0) d0 = x + y + z;
         if (j === 1) d1 = x + y + z;
         if (j === 3) d3 = x + y + z;
       }
-      const x = this.planes[o] as number,
-        y = this.planes[o + 1] as number;
-      const ax = (this.planes[o + 2] as number) - x,
-        ay = (this.planes[o + 3] as number) - y;
-      const bx = (this.planes[o + 6] as number) - x,
-        by = (this.planes[o + 7] as number) - y;
+      const x = this.internalPlanes[o] as number,
+        y = this.internalPlanes[o + 1] as number;
+      const ax = (this.internalPlanes[o + 2] as number) - x,
+        ay = (this.internalPlanes[o + 3] as number) - y;
+      const bx = (this.internalPlanes[o + 6] as number) - x,
+        by = (this.internalPlanes[o + 7] as number) - y;
       const det = ax * by - ay * bx;
-      this.planes[o + 8] = ((d1 - d0) * by - (d3 - d0) * ay) / det;
-      this.planes[o + 9] = (ax * (d3 - d0) - bx * (d1 - d0)) / det;
-      this.planes[o + 10] =
-        d0 - (this.planes[o + 8] as number) * x - (this.planes[o + 9] as number) * y;
-      this.platePath += `M${decimal(x as number)},${decimal(y as number)}L${decimal(this.planes[o + 2] as number)},${decimal(this.planes[o + 3] as number)}L${decimal(this.planes[o + 4] as number)},${decimal(this.planes[o + 5] as number)}L${decimal(this.planes[o + 6] as number)},${decimal(this.planes[o + 7] as number)}Z`;
+      this.internalPlanes[o + 8] = ((d1 - d0) * by - (d3 - d0) * ay) / det;
+      this.internalPlanes[o + 9] = (ax * (d3 - d0) - bx * (d1 - d0)) / det;
+      this.internalPlanes[o + 10] =
+        d0 -
+        (this.internalPlanes[o + 8] as number) * x -
+        (this.internalPlanes[o + 9] as number) * y;
+      this.platePath += `M${decimal(x as number)},${decimal(y as number)}L${decimal(this.internalPlanes[o + 2] as number)},${decimal(this.internalPlanes[o + 3] as number)}L${decimal(this.internalPlanes[o + 4] as number)},${decimal(this.internalPlanes[o + 5] as number)}L${decimal(this.internalPlanes[o + 6] as number)},${decimal(this.internalPlanes[o + 7] as number)}Z`;
     }
     for (let i = 0; i < scene.count; i++) {
       const o = i * 6;
@@ -70,18 +72,20 @@ export class Projection {
         by = (xx + yy) / 2 - zz;
       if (!Number.isFinite(ax + ay + bx + by))
         throw failure(4, "Non-finite geometry", "Use finite coordinates in build.");
-      this.minX = Math.min(this.minX, ax, bx);
-      this.maxX = Math.max(this.maxX, ax, bx);
-      this.minY = Math.min(this.minY, ay, by);
-      this.maxY = Math.max(this.maxY, ay, by);
+      if (measure) {
+        this.minX = Math.min(this.minX, ax, bx);
+        this.maxX = Math.max(this.maxX, ax, bx);
+        this.minY = Math.min(this.minY, ay, by);
+        this.maxY = Math.max(this.maxY, ay, by);
+      }
       let count = 1;
-      this.intervals[0] = 0;
-      this.intervals[1] = 1;
+      this.internalIntervals[0] = 0;
+      this.internalIntervals[1] = 1;
       for (let j = 0; j < scene.plateCount && count; j++) {
         const p = j * 11;
         let lo = 0,
           hi = 1;
-        const q = this.planes;
+        const q = this.internalPlanes;
         const da =
           x +
           y +
@@ -122,20 +126,20 @@ export class Projection {
         if (dl >= 0) lo = Math.max(lo, -da / (db - da));
         if (dh >= 0) hi = Math.min(hi, -da / (db - da));
         for (let k = 0; k < count; k++) {
-          const a = this.intervals[k * 2] as number,
-            b = this.intervals[k * 2 + 1] as number;
+          const a = this.internalIntervals[k * 2] as number,
+            b = this.internalIntervals[k * 2 + 1] as number;
           if (lo >= b || hi <= a) continue;
           if (lo <= a && hi >= b) {
-            this.intervals.copyWithin(k * 2, (k + 1) * 2, count * 2);
+            this.internalIntervals.copyWithin(k * 2, (k + 1) * 2, count * 2);
             count--;
             k--;
-          } else if (lo <= a) this.intervals[k * 2] = hi;
-          else if (hi >= b) this.intervals[k * 2 + 1] = lo;
+          } else if (lo <= a) this.internalIntervals[k * 2] = hi;
+          else if (hi >= b) this.internalIntervals[k * 2 + 1] = lo;
           else {
-            this.intervals.copyWithin((k + 2) * 2, (k + 1) * 2, count * 2);
-            this.intervals[k * 2 + 1] = lo;
-            this.intervals[(k + 1) * 2] = hi;
-            this.intervals[(k + 1) * 2 + 1] = b;
+            this.internalIntervals.copyWithin((k + 2) * 2, (k + 1) * 2, count * 2);
+            this.internalIntervals[k * 2 + 1] = lo;
+            this.internalIntervals[(k + 1) * 2] = hi;
+            this.internalIntervals[(k + 1) * 2 + 1] = b;
             count++;
             k++;
           }
@@ -143,8 +147,8 @@ export class Projection {
       }
       const tone = scene.tones[i] as number;
       for (let j = 0; j < count; j++) {
-        const a = this.intervals[j * 2] as number,
-          b = this.intervals[j * 2 + 1] as number;
+        const a = this.internalIntervals[j * 2] as number,
+          b = this.internalIntervals[j * 2 + 1] as number;
         if (b - a < 1e-6) continue;
         this.paths[tone] +=
           `M${decimal(ax + (bx - ax) * a)},${decimal(ay + (by - ay) * a)}L${decimal(ax + (bx - ax) * b)},${decimal(ay + (by - ay) * b)}`;

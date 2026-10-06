@@ -1,6 +1,6 @@
 # Hattat figures
 
-Original, deterministic figure definitions with separate tree-shakable entries.
+Five original isometric figures with deterministic build functions and named/default exports.
 
-Status: private bootstrap placeholder; no runtime API or public exports exist yet.
-`pnpm build` compiles the placeholder to verify the toolchain, not library behavior.
+See [Phase 1 evidence](../../docs/phase-1-report.md) and [preview CLI](../../docs/look.md).
+This workspace remains private and unpublished; timing and human review gates are pending.

@@ -174,6 +174,13 @@ try {
   assert(AGENTS.includes("<!-- CODEGRAPH_START -->") && AGENTS.includes("<!-- CODEGRAPH_END -->"));
   assert(read("docs/design/phase-1.md").includes("approved by the owner"));
   assert(read("README.md").includes("not published"));
+  assert.equal(
+    read("README.md")
+      .match(/```js\n([\s\S]*?)```/)?.[1]
+      ?.trim(),
+    read("apps/docs/src/vanilla.ts").trim(),
+    "AGT-07: README example must match the compiled vanilla source",
+  );
   assert(read("LICENSE").startsWith("MIT License"));
   const TEMPLATE = read(".github/PULL_REQUEST_TEMPLATE.md");
   for (const title of [
@@ -218,7 +225,7 @@ try {
     assert(check.reason.length > 0);
   }
   console.log(
-    "PASS: workspace layering, zero core runtime dependencies, strict types, private packages, built placeholders, English text, canonical rules, and tracked-file hygiene.",
+    "PASS: workspace layering, zero core runtime dependencies, strict types, private packages, compiled workspaces, English text, canonical rules, and tracked-file hygiene.",
   );
   for (const exception of STATUS.exceptions) {
     assert(exception.authorization && exception.scope && exception.reason);

@@ -138,7 +138,7 @@ class Instance implements FigureHandle {
     this.internalFigure.build(this.internalScene, this.internalValues);
     if (this.internalScene.count > 400)
       throw failure(4, "SVG exceeds 400 segments", "Use fewer segments.");
-    this.internalProjection.render(this.internalScene);
+    this.internalProjection.render(this.internalScene, false);
     this.internalPaths[0]?.setAttribute("d", this.internalProjection.platePath);
     for (let i = 0; i < 5; i++)
       this.internalPaths[i + 1]?.setAttribute("d", this.internalProjection.paths[i] ?? "");
@@ -234,7 +234,7 @@ class Instance implements FigureHandle {
     this.internalSignals.key = v;
     this.internalSignals["pointer.x"] = v;
     this.internalSignals["pointer.y"] = v;
-    this.internalSignals["pointer.inside"] = 1;
+    this.internalSignals["pointer.inside"] = v;
     this.internalTarget();
   };
   private internalMeasure = (): void => {

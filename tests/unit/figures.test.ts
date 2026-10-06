@@ -15,8 +15,10 @@ describe("original Phase 1 figures", () => {
           values: Record<string, number> = { intensity: 0 };
         for (const intensity of [0, 0.5, 1]) {
           values.intensity = intensity;
-          for (let pose = 0; pose <= 20; pose++) {
-            for (const key of Object.keys(figure.params)) values[key] = pose / 20;
+          const keys = Object.keys(figure.params);
+          for (let pose = 0; pose <= 20 + 2 ** keys.length; pose++) {
+            for (let k = 0; k < keys.length; k++)
+              values[keys[k] as string] = pose <= 20 ? pose / 20 : ((pose - 21) >> k) & 1;
             s.reset();
             figure.build(s, values);
             p.render(s);

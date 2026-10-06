@@ -39,7 +39,7 @@ jobs:
           fi
 
   bootstrap:
-    name: Bootstrap (${{ matrix.os }})
+    name: Checks (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -63,7 +63,7 @@ jobs:
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_BODY: ${{ github.event.pull_request.body }}
         run: node scripts/check-pr.ts
-      - name: Check bootstrap
+      - name: Check workspace and distribution
         run: pnpm check
       - name: Core unit tests and coverage (TEST-01)
         run: pnpm test
@@ -71,3 +71,22 @@ jobs:
         run: pnpm licenses list --json > dependency-licenses.json
       - name: Validate dependency licenses
         run: node scripts/check-licenses.ts dependency-licenses.json
+
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Packaged browser, CLI and visual regressions
+        run: pnpm test:browser
+      - name: Diagnostic CPU and allocation profiles
+        run: pnpm profile:runtime
+      - name: Enforce runtime budgets
+        run: pnpm test:performance
+      - name: Upload runtime evidence, including failed gates
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase-1-evidence-${{ matrix.os }}
+          path: |
+            artifacts/
+            test-results/
+            coverage/coverage-summary.json
+          if-no-files-found: warn

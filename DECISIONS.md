@@ -41,3 +41,20 @@ Recheck the name at publication; no name reservation or package publication has 
 - CPU measurements remain above 4 ms/frame. A precomputed plate-edge/bounds variant did not
   materially improve measured timing and was removed. The phase gate remains pending;
   passing size/unit checks does not authorize Phase 2 or merging.
+
+## 2026-10-06 — Phase 1 evidence and clean-checkout checks
+
+- Simplify occluding cabinet/rack shells and ornamental subdivision in response to measured
+  CPU cost. Preserve before/after images; keep first regression references under review.
+- Cache immutable curve samples and reusable wave heights, and omit diagnostic bounds scans
+  during mounted rendering. `look` and unit acceptance still calculate the original bounds.
+- Enforce maximum sampled frame time, retaining p95 as a diagnostic. Sampling CPU/heap occurs
+  separately so profiler overhead cannot inflate the enforcement run. The frame gate still fails.
+- Typecheck tasks depend on upstream builds: private workspace exports point to declarations
+  in dist, which do not exist on a fresh checkout. CI caught the missing build dependency.
+- Skip dependency declaration checking in the test-only tsconfig because happy-dom's Node
+  stream declaration is incompatible with the pinned Node types. Authored tests and production
+  sources retain strict and noUncheckedIndexedAccess checks; production does not skip libs.
+- CODE-07 SHOULD departure: the mounted instance and lifecycle test exceed 300 lines after
+  explicit property mangling and regressions. Keep paired setup/teardown and shared fixtures
+  together during this candidate; review/refactor remains required before final acceptance.

@@ -43,7 +43,7 @@ export function restSVG(
   for (const [name, p] of Object.entries(figure.params)) params[name] = p.rest ?? 0.5;
   figure.build(scene, params);
   if (scene.count > 400) throw failure(4, "SVG exceeds 400 segments", "Use fewer segments.");
-  projection.render(scene);
+  projection.render(scene, false);
   const b = figure.bounds;
   let result = `<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${escapeText(label)}" viewBox="${b.x} ${b.y} ${b.width} ${b.height}" style="width:100%;height:100%;aspect-ratio:${figure.aspect.replace(":", "/")}"><path fill="var(--hattat-plate,${LIGHT.plate})" d="${projection.platePath}"/>`;
   for (let i = 0; i < TONES.length; i++) {

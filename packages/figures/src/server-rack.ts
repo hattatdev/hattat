@@ -27,15 +27,7 @@ export const serverRack = defineFigure({
     O[2] = 0;
     S[0] = 4;
     S[1] = 3;
-    S[2] = 0.5;
-    ctx.box(O, S, EDGE);
-    O[2] = 6;
-    ctx.box(O, S, EDGE);
-    O[2] = 0.5;
-    S[0] = 0.5;
-    S[2] = 5.5;
-    ctx.box(O, S, EDGE);
-    O[0] = 3.5;
+    S[2] = 6.5;
     ctx.box(O, S, EDGE);
     for (let i = 0; i < 5; i++) {
       const pull = ctx.falloff(select, 1 - i / 4, 0.3) * intensity * 1.5;

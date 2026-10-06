@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "license": "MIT",
-  "description": "The agent CLI; Phase 1 introduces look, and Phase 2 expands commands.",
+  "description": "Private Phase 1 headless figure preview CLI.",
   "repository": {
     "type": "git",
     "url": "https://github.com/hattatdev/hattat.git",
@@ -17,5 +17,8 @@
   "dependencies": {
     "@hattatdev/core": "workspace:*",
     "@hattatdev/figures": "workspace:*"
+  },
+  "bin": {
+    "hattat": "./dist/index.js"
   }
 }

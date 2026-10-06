@@ -15,13 +15,17 @@
   },
   "scripts": {
     "build": "node scripts/run-turbo.ts build",
-    "typecheck": "node scripts/run-turbo.ts typecheck && tsc -p scripts/tsconfig.json --noEmit",
+    "typecheck": "node scripts/run-turbo.ts typecheck && tsc -p scripts/tsconfig.json --noEmit && tsc -p tests/tsconfig.json",
     "lint": "biome check .",
     "format": "biome check --write .",
     "check:bootstrap": "node scripts/check-bootstrap.ts",
     "check": "pnpm lint && pnpm typecheck && pnpm build && pnpm check:bootstrap",
     "changeset": "changeset",
-    "test": "vitest run --coverage"
+    "test": "vitest run --coverage",
+    "look": "node packages/cli/dist/index.js look",
+    "test:browser": "playwright test --grep-invert @performance",
+    "test:performance": "playwright test --grep @performance",
+    "profile:runtime": "node scripts/profile.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.15",
