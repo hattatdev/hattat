@@ -168,3 +168,16 @@ fixtures, retaining the scoped advisory duration exception and raw evidence; do 
 an identical workload to the old five-figure measurements. Agent visual inspection does
 not satisfy an independent human blind audit. Publish the gallery through PR merge and
 the existing Pages workflow. GEN-03/04, FIG-01–06, VIS-08, TEST-03, PERF-01–06, GIT-03–06.
+
+## 2026-10-06 — Plan collection growth to thirty-two figures
+
+The owner requested a plan for more models. Record a proposed 8 + 8 + 4 expansion
+in docs/design/collection-expansion.md, reaching four figures in each existing
+category. Prioritize database, protection, knowledge, relationships, and progress
+intentions while keeping silhouettes distinct. Deliver focused figure PRs using
+the current pointer/keyboard engine; plan scroll and drag separately because those
+signals do not exist yet. Thirty-two geometries alone do not complete Phase 3 or
+its input balance gate. Retain bundle limits, required review evidence, the scoped
+timing exception, and pending independent recognition/flashing audits. This change
+records a plan only and starts no engine or later-phase implementation. GEN-03/04,
+FIG-02/03/06, MOT-01, PERF-01–06, GIT-02/06.
