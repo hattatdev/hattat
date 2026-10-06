@@ -22,5 +22,7 @@ The owner approved Phase 1 on 2026-10-06 and requested verified incremental comm
 Development tools added: Vitest 4.0.18, V8 coverage 4.0.18, Playwright 1.63.0, and esbuild 0.28.2.
 Vitest 5's Vite dependency introduced MPL-2.0 lightningcss; use the compatible Vitest 4 toolchain to satisfy DEP-02 without weakening the license policy.
 These are development-only dependencies; core continues to have zero runtime dependencies.
+The shared modeling unit is 0.5 world units; fixed geometry dimensions use whole or half multiples of that unit. Quarter-world-unit details therefore remain consistent with VIS-02.
+Happy DOM 20.14.5 is development-only, providing lifecycle coverage alongside real Chromium verification.
 npm lookup returned E404 for `hattat` on 2026-10-06; this does not prove registration rights.
 Recheck the name at publication; no name reservation or package publication has occurred.

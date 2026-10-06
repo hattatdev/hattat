@@ -5,7 +5,7 @@ export const TONES: readonly Tone[] = ["hi", "edge", "mid", "lo", "accent"];
 const EMPTY: Style = {};
 /** Fixed-capacity scene. Allocate once on mount; reset reuses all numeric storage. */
 export class Scene implements BuildContext {
-  readonly unit = 1;
+  readonly unit = 0.5;
   readonly lines = new Float64Array(600 * 6);
   readonly tones = new Uint8Array(600);
   readonly plates = new Float64Array(160 * 12);

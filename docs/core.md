@@ -1,7 +1,7 @@
 # Core foundation
 
-Phase 1's numerical foundation is implemented. The DOM lifecycle and five production figures
-are still being built; the package remains private and unpublished.
+Phase 1's numerical foundation and vanilla lifecycle are implemented; real-browser evidence
+and the five figure acceptance checks are being completed. The package remains private and unpublished.
 
 `defineFigure` validates and freezes metadata. `Scene` offers reusable geometry buffers and
 seeded helpers. `project` writes into caller-owned storage. `advance` integrates a critically
@@ -14,3 +14,10 @@ determinism, and escaped SVG output. Run `pnpm test` to execute them with V8 cov
 Hidden-line plates use camera depth to clip visible intervals before global tone batching.
 SVG path strings allocate at the renderer boundary; numerical storage is reused.
 Runtime errors E003/E004 explain incomplete metadata, non-finite geometry, or capacity overflow.
+
+`mount` reserves aspect ratio, appends owned SVG, and returns `update` and idempotent `destroy`.
+It preserves unrelated host content, shares one rAF, sleeps offscreen, and restores previous
+layout/focus attributes on destruction. Pointer and arrow keys drive the same parameters.
+Stable poses stop scheduling; only explicit autoplay keeps animating. Reduced motion freezes
+the resting pose. Unsupported Canvas, signals, and preset themes fail explicitly in Phase 1.
+The modeling unit is 0.5 world units; fixed dimensions must be multiples of 0.25.
