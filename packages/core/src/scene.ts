@@ -12,7 +12,7 @@ export class Scene implements BuildContext {
   internalCount = 0;
   internalPlateCount = 0;
   private internalSeed = 1;
-  reset(): void {
+  internalReset(): void {
     this.internalCount = 0;
     this.internalPlateCount = 0;
     this.internalSeed = 1;

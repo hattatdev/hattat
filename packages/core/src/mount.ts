@@ -75,16 +75,15 @@ class Instance implements FigureHandle {
       this.internalValues[this.internalNames[i] as string] = (
         this.internalSprings[i] as Spring
       ).value;
-    const template = host.ownerDocument.createElement("template");
     this.internalValues.intensity = this.internalOptions.intensity;
     this.internalBuild();
     // Trusted generated SVG; markup escapes the accessibility label.
-    template.innerHTML = markup(
-      figure,
-      this.internalOptions.label,
-      this.internalGeometry.internalProjection,
-    );
-    this.internalSvg = template.content.firstElementChild as unknown as SVGSVGElement;
+    const fragment = host.ownerDocument
+      .createRange()
+      .createContextualFragment(
+        markup(figure, this.internalOptions.label, this.internalGeometry.internalProjection),
+      );
+    this.internalSvg = fragment.firstElementChild as SVGSVGElement;
     this.internalPaths = Array.from(this.internalSvg.querySelectorAll("path"));
     host.style.aspectRatio = figure.aspect.replace(":", "/");
     host.append(this.internalSvg);
@@ -155,7 +154,7 @@ class Instance implements FigureHandle {
     if (same) return;
     previous.fill(NaN);
 
-    this.internalGeometry.internalScene.reset();
+    this.internalGeometry.internalScene.internalReset();
     this.internalFigure.build(this.internalGeometry.internalScene, this.internalValues);
     if (this.internalGeometry.internalScene.internalCount > 400)
       throw failure(4, "SVG exceeds 400 segments", "Use fewer segments.");
@@ -328,8 +327,8 @@ export function mount(
 ): FigureHandle {
   const view = host?.ownerDocument?.defaultView;
   if (!view || !(host instanceof view.HTMLElement))
-    throw failure(2, "Invalid mount target", "Use a live HTMLElement.");
-  if (OWNERS.has(host)) throw failure(5, "Host already has a figure", "Destroy its handle first.");
+    throw failure(2, "Invalid host", "Use a live HTMLElement.");
+  if (OWNERS.has(host)) throw failure(5, "Duplicate mount", "Destroy its handle first.");
   const instance = new Instance(host, figure, options);
   OWNERS.set(host, instance);
   return instance;

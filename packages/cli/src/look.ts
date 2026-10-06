@@ -109,7 +109,7 @@ export async function look(name: string, out = resolve("artifacts/look")): Promi
           for (let k = 0; k < keys.length; k++)
             params[keys[k] as string] = i <= 20 ? i / 20 : ((i - 21) >> k) & 1;
           const start = performance.now();
-          scene.reset();
+          scene.internalReset();
           w.figure.build(scene, params);
           projection.internalRender(scene);
           frameMs = Math.max(frameMs, performance.now() - start);

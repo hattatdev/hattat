@@ -100,3 +100,17 @@ profiles. Functional/visual cases retain failure traces. Add all twenty mount du
 the report instead of only their maximum. Do not relax timing limits: CI on 5780787 failed
 both platforms, while the latest isolated local sample is max 3.1 ms and first generation
 14.2 ms. Fresh CI must confirm these changes before the gate can pass.
+
+## 2026-10-06 — Cold setup and clipping work
+
+CI on 3be6952 meets the frame budget on both platforms (Ubuntu max 3.3 ms, Windows 2.3 ms)
+but cold first mount remains above 16 ms (22.0/16.9 ms). Keep that sample in the report.
+Precompute signed edge coefficients in reusable projection storage to remove repeated edge
+arithmetic. This adds 14,080 bytes of numeric storage per shared definition and no frame
+objects. Split optional custom theme/input validation from the default path. Inherit shared
+fill and stroke width from the SVG root; preserve per-path non-scaling strokes, covered by
+a real browser regression including theme updates and resizing. Parse generated escaped
+markup into a fragment in the live document, avoiding an inert template document. Internal
+reset follows the private-property mangling convention. Keep stable error codes and fixes.
+The combined local sample is p95 2.0 ms, maximum 2.4 ms, first mount 13.3 ms; core 6,142 gzip
+bytes. Visual references remain unchanged. These are local results, not CI acceptance.

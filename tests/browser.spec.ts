@@ -97,3 +97,41 @@ test("README example reserves layout and mounts through public package entries",
   expect(bounds?.height).toBe(240);
   expect(bounds?.width).toBe(240);
 });
+
+test("SVG paths inherit the shared stroke and preserve non-scaling width", async ({ page }) => {
+  await page.evaluate(() => {
+    const f = window.fixture,
+      figure = f.figures[0];
+    if (!figure) throw Error("Missing figure");
+    f.handles.push(f.mount(document.querySelector("#host") as HTMLElement, figure));
+  });
+  const paths = page.locator("#host svg path");
+  const styles = () =>
+    page.locator("#host svg path").evaluateAll((paths) =>
+      paths.slice(1).map((path) => ({
+        fill: getComputedStyle(path).fill,
+        stroke: getComputedStyle(path).strokeWidth,
+        vector: getComputedStyle(path).vectorEffect,
+      })),
+    );
+  expect(await styles()).toEqual(
+    Array.from({ length: 5 }, () => ({
+      fill: "none",
+      stroke: "1px",
+      vector: "non-scaling-stroke",
+    })),
+  );
+  await page.evaluate(() => {
+    window.fixture.handles[0]?.update({ theme: { stroke: 2 } });
+    (document.querySelector("#host") as HTMLElement).style.width = "120px";
+  });
+  expect(await styles()).toEqual(
+    Array.from({ length: 5 }, () => ({
+      fill: "none",
+      stroke: "2px",
+      vector: "non-scaling-stroke",
+    })),
+  );
+  await expect(paths).toHaveCount(6);
+  await page.evaluate(() => window.fixture.handles[0]?.destroy());
+});

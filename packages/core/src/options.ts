@@ -22,9 +22,26 @@ export function normalize(figure: FigureDefinition, options: FigureOptions): Opt
   for (const key of ["autoplay", "interactive"] as const)
     if (options[key] !== undefined && typeof options[key] !== "boolean")
       throw failure(2, "Invalid boolean", "Use boolean values.");
-  const theme = options.theme === undefined || options.theme === "mono" ? {} : options.theme;
+  const theme =
+    options.theme === undefined || options.theme === "mono" ? {} : validateTheme(options.theme);
+  if (options.label !== undefined && (typeof options.label !== "string" || !options.label.trim()))
+    throw failure(2, "Empty label", "Use meaningful text.");
+  const input = options.input;
+  if (input !== undefined) validateInput(figure, input);
+  return {
+    intensity,
+    input,
+    theme,
+    autoplay: options.autoplay ?? false,
+    motion: options.motion ?? "auto",
+    label: options.label ?? figure.a11y.label,
+    interactive: options.interactive ?? true,
+  };
+}
+
+function validateTheme(theme: Theme): Theme {
   if (!theme || typeof theme !== "object" || Array.isArray(theme))
-    throw failure(2, "Unsupported theme", "Use mono or a theme object.");
+    throw failure(2, "Invalid theme", "Use mono or a theme object.");
   for (const [key, value] of Object.entries(theme)) {
     if (key === "stroke") {
       if (typeof value !== "number" || !Number.isFinite(value) || value <= 0)
@@ -38,26 +55,18 @@ export function normalize(figure: FigureDefinition, options: FigureOptions): Opt
       throw failure(2, "Invalid theme token", "Use color tokens; omit URLs and markup.");
     }
   }
-  if (options.label !== undefined && (typeof options.label !== "string" || !options.label.trim()))
-    throw failure(2, "Empty label", "Use meaningful text.");
-  const input = options.input;
+  return theme;
+}
+
+function validateInput(figure: FigureDefinition, input: NonNullable<FigureOptions["input"]>): void {
   if (typeof input === "string") {
     if (input !== "pointer" && !SIGNALS.includes(input as SignalName))
-      throw failure(2, "Unsupported input", "Use pointer, focus, key, or time.");
-  } else if (input !== undefined) {
+      throw failure(2, "Invalid input", "Use pointer, focus, key, or time.");
+  } else {
     if (!input || typeof input !== "object" || Array.isArray(input))
       throw failure(2, "Invalid mapping", "Map parameters to supported signals.");
     for (const [name, signal] of Object.entries(input))
       if (!(name in figure.params) || !SIGNALS.includes(signal))
         throw failure(2, "Invalid mapping", "Map parameters to supported signals.");
   }
-  return {
-    intensity,
-    input,
-    theme,
-    autoplay: options.autoplay ?? false,
-    motion: options.motion ?? "auto",
-    label: options.label ?? figure.a11y.label,
-    interactive: options.interactive ?? true,
-  };
 }

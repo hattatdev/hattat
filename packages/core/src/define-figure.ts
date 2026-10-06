@@ -26,15 +26,11 @@ export function defineFigure<const Name extends string>(
     typeof d.build !== "function" ||
     !["1:1", "4:3", "16:9", "3:4"].includes(d.aspect)
   ) {
-    throw failure(
-      3,
-      "Incomplete figure metadata",
-      "Supply all metadata, ≥3 intents and 1–3 moods.",
-    );
+    throw failure(3, "Invalid metadata", "Add metadata, ≥3 intents and 1–3 moods.");
   }
   const b = d.bounds;
   if (![b.x, b.y, b.width, b.height].every(Number.isFinite) || b.width <= 0 || b.height <= 0) {
-    throw failure(3, "Invalid projected bounds", "Use finite bounds and positive size.");
+    throw failure(3, "Invalid bounds", "Use finite bounds and positive size.");
   }
   for (const p of Object.values(d.params)) {
     if (
@@ -42,11 +38,7 @@ export function defineFigure<const Name extends string>(
       (p.spring !== undefined && !(p.spring in FREQUENCIES)) ||
       (p.rest !== undefined && (!Number.isFinite(p.rest) || p.rest < 0 || p.rest > 1))
     ) {
-      throw failure(
-        3,
-        "Invalid parameter mapping",
-        "Use a supported signal, spring and rest in 0–1.",
-      );
+      throw failure(3, "Invalid parameter", "Use a supported signal, spring and rest in 0–1.");
     }
     Object.freeze(p);
   }

@@ -42,10 +42,10 @@ export function renderSVG(
 }
 export function markup(figure: FigureDefinition, label: string, projection: Projection): string {
   const b = figure.bounds;
-  let result = `<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${escapeText(label)}" viewBox="${b.x} ${b.y} ${b.width} ${b.height}" style="width:100%;height:100%;aspect-ratio:${figure.aspect.replace(":", "/")}"><path fill="var(--hattat-plate,${LIGHT.plate})" d="${projection.internalPlatePath}"/>`;
+  let result = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="var(--hattat-stroke,1)" role="img" aria-label="${escapeText(label)}" viewBox="${b.x} ${b.y} ${b.width} ${b.height}" style="width:100%;height:100%;aspect-ratio:${figure.aspect.replace(":", "/")}"><path fill="var(--hattat-plate,${LIGHT.plate})" d="${projection.internalPlatePath}"/>`;
   for (let i = 0; i < TONES.length; i++) {
     const tone = TONES[i] as keyof typeof LIGHT;
-    result += `<path fill="none" stroke="var(--hattat-${tone},${LIGHT[tone]})" stroke-width="var(--hattat-stroke,1)" vector-effect="non-scaling-stroke" d="${projection.internalPaths[i]}"/>`;
+    result += `<path stroke="var(--hattat-${tone},${LIGHT[tone]})" vector-effect="non-scaling-stroke" d="${projection.internalPaths[i]}"/>`;
   }
   return `${result}</svg>`;
 }

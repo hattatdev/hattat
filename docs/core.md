@@ -40,3 +40,7 @@ The shared result is invalidated before rebuilding and released when the last co
 Layout bounds are observed and measured on first pointer input if observation has not run yet.
 
 Projection computes plate orientation once; mounted rendering skips unchanged SVG path writes.
+
+Signed clipping edges use fixed numeric storage. Shared fill and stroke width inherit from
+the SVG root, while non-scaling stroke remains on each path; changing theme stroke and host
+size is browser-tested. Default setup invokes custom theme/input validators only when supplied.

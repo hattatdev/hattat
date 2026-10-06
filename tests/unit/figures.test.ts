@@ -19,11 +19,11 @@ describe("original Phase 1 figures", () => {
           for (let pose = 0; pose <= 20 + 2 ** keys.length; pose++) {
             for (let k = 0; k < keys.length; k++)
               values[keys[k] as string] = pose <= 20 ? pose / 20 : ((pose - 21) >> k) & 1;
-            s.reset();
+            s.internalReset();
             figure.build(s, values);
             p.internalRender(s);
             const first = p.internalPaths.join("");
-            s.reset();
+            s.internalReset();
             figure.build(s, values);
             p.internalRender(s);
             expect(p.internalPaths.join("")).toBe(first);
