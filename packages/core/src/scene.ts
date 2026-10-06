@@ -49,8 +49,7 @@ export class Scene implements BuildContext {
     by: number,
     bz: number,
   ): void {
-    if (this.plateCount === 160)
-      throw failure(4, "Scene exceeds plate capacity", "Simplify hidden-line geometry.");
+    if (this.plateCount === 160) throw failure(4, "Too many plates", "Simplify figure geometry.");
     const i = this.plateCount++ * 12;
     const p = this.plates;
     p[i] = x;

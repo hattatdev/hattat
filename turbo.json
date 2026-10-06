@@ -1,6 +1,6 @@
 {
   "$schema": "https://turborepo.com/schema.json",
-  "globalDependencies": ["tsconfig.base.json"],
+  "globalDependencies": ["tsconfig.base.json", "scripts/build-package.ts"],
   "globalPassThroughEnv": ["PR_TITLE", "PR_BODY"],
   "tasks": {
     "build": {

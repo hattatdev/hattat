@@ -3,6 +3,9 @@ import { COS_30 } from "./math.js";
 import type { Scene } from "./scene.js";
 
 /** Projects and clips into reusable storage; strings are only created at the SVG boundary. */
+function decimal(n: number): number {
+  return Math.round(n * 1000) / 1000;
+}
 export class Projection {
   readonly planes = new Float64Array(160 * 11);
   readonly intervals = new Float64Array(322);
@@ -50,7 +53,7 @@ export class Projection {
       this.planes[o + 9] = (ax * (d3 - d0) - bx * (d1 - d0)) / det;
       this.planes[o + 10] =
         d0 - (this.planes[o + 8] as number) * x - (this.planes[o + 9] as number) * y;
-      this.platePath += `M${x},${y}L${this.planes[o + 2]},${this.planes[o + 3]}L${this.planes[o + 4]},${this.planes[o + 5]}L${this.planes[o + 6]},${this.planes[o + 7]}Z`;
+      this.platePath += `M${decimal(x as number)},${decimal(y as number)}L${decimal(this.planes[o + 2] as number)},${decimal(this.planes[o + 3] as number)}L${decimal(this.planes[o + 4] as number)},${decimal(this.planes[o + 5] as number)}L${decimal(this.planes[o + 6] as number)},${decimal(this.planes[o + 7] as number)}Z`;
     }
     for (let i = 0; i < scene.count; i++) {
       const o = i * 6;
@@ -79,6 +82,19 @@ export class Projection {
         let lo = 0,
           hi = 1;
         const q = this.planes;
+        const da =
+          x +
+          y +
+          z -
+          ((q[p + 8] as number) * ax + (q[p + 9] as number) * ay + (q[p + 10] as number)) +
+          1e-7;
+        const db =
+          xx +
+          yy +
+          zz -
+          ((q[p + 8] as number) * bx + (q[p + 9] as number) * by + (q[p + 10] as number)) +
+          1e-7;
+        if (da >= 0 && db >= 0) continue;
         const sign =
           ((q[p + 2] as number) - (q[p] as number)) *
             ((q[p + 7] as number) - (q[p + 1] as number)) -
@@ -100,18 +116,6 @@ export class Projection {
           if (c1 < 0) hi = Math.min(hi, c0 / (c0 - c1));
         }
         if (lo >= hi) continue;
-        const da =
-          x +
-          y +
-          z -
-          ((q[p + 8] as number) * ax + (q[p + 9] as number) * ay + (q[p + 10] as number)) +
-          1e-7;
-        const db =
-          xx +
-          yy +
-          zz -
-          ((q[p + 8] as number) * bx + (q[p + 9] as number) * by + (q[p + 10] as number)) +
-          1e-7;
         const dl = da + (db - da) * lo,
           dh = da + (db - da) * hi;
         if (dl >= 0 && dh >= 0) continue;
@@ -143,7 +147,7 @@ export class Projection {
           b = this.intervals[j * 2 + 1] as number;
         if (b - a < 1e-6) continue;
         this.paths[tone] +=
-          `M${ax + (bx - ax) * a},${ay + (by - ay) * a}L${ax + (bx - ax) * b},${ay + (by - ay) * b}`;
+          `M${decimal(ax + (bx - ax) * a)},${decimal(ay + (by - ay) * a)}L${decimal(ax + (bx - ax) * b)},${decimal(ay + (by - ay) * b)}`;
         this.visibleCount++;
       }
     }

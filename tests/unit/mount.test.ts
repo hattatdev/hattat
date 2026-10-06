@@ -141,6 +141,21 @@ describe("shared DOM lifecycle", () => {
     expect(() => h.update({})).toThrow("HATTAT_E005");
     expect(() => mount(null as unknown as HTMLElement, FIGURE)).toThrow("HATTAT_E002");
   });
+  it("rejects over-budget figures before changing the host or registering work", () => {
+    const element = host();
+    element.style.aspectRatio = "4/3";
+    const excessive: FigureDefinition = {
+      ...FIGURE,
+      build(ctx) {
+        for (let i = 0; i < 401; i++) ctx.line(POINT, POINT);
+      },
+    };
+    expect(() => mount(element, excessive)).toThrow("HATTAT_E004");
+    expect(element.querySelector("svg")).toBeNull();
+    expect(element.style.aspectRatio.replace(/\s/g, "")).toBe("4/3");
+    expect(frames.size).toBe(0);
+    add(element).destroy();
+  });
   it("rejects duplicate mounts and rejects invalid updates atomically", () => {
     const element = host(),
       h = add(element);
@@ -170,6 +185,7 @@ describe("shared DOM lifecycle", () => {
     tick();
     expect(a.innerHTML).not.toBe(old);
     expect(frames.size).toBe(0);
+    expect(POINT[2]).toBe(20 / 240);
     b.dispatchEvent(new PointerEvent("pointerup", { clientY: 20 }));
     a.dispatchEvent(new PointerEvent("pointerleave"));
     b.dispatchEvent(new PointerEvent("pointercancel"));

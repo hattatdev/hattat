@@ -1,7 +1,7 @@
 export interface ActiveFigure {
-  active: boolean;
-  destroyed: boolean;
-  step(dt: number, time: number): boolean;
+  internalActive: boolean;
+  internalDestroyed: boolean;
+  internalStep(dt: number, time: number): boolean;
 }
 const FIGURES: ActiveFigure[] = [];
 let token = 0,
@@ -13,9 +13,9 @@ function frame(time: number): void {
   let running = false;
   for (let i = 0; i < FIGURES.length; i++) {
     const figure = FIGURES[i] as ActiveFigure;
-    if (figure.active && !figure.destroyed) {
-      figure.active = figure.step(dt, time);
-      if (figure.active) running = true;
+    if (figure.internalActive && !figure.internalDestroyed) {
+      figure.internalActive = figure.internalStep(dt, time);
+      if (figure.internalActive) running = true;
     }
   }
   if (running) token = requestAnimationFrame(frame);
@@ -25,13 +25,13 @@ export function register(figure: ActiveFigure): void {
   FIGURES.push(figure);
 }
 export function wake(figure: ActiveFigure): void {
-  figure.active = true;
+  figure.internalActive = true;
   if (!token && typeof requestAnimationFrame === "function") token = requestAnimationFrame(frame);
 }
 export function unregister(figure: ActiveFigure): void {
   const i = FIGURES.indexOf(figure);
   if (i >= 0) FIGURES.splice(i, 1);
-  if (!FIGURES.some((f) => f.active) && token) {
+  if (!FIGURES.some((f) => f.internalActive) && token) {
     cancelAnimationFrame(token);
     token = 0;
     last = 0;

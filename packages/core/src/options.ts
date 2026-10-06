@@ -17,19 +17,15 @@ export function normalize(figure: FigureDefinition, options: FigureOptions): Opt
   if (!Number.isFinite(intensity) || intensity < 0 || intensity > 1)
     throw failure(2, "Invalid intensity", "Use a finite number between 0 and 1.");
   if (options.renderer !== undefined && !["auto", "svg"].includes(options.renderer))
-    throw failure(
-      2,
-      "Unsupported renderer",
-      "Phase 1 supports svg or auto; Canvas is a later phase.",
-    );
+    throw failure(2, "Unsupported renderer", "Use svg or auto; Canvas is pending.");
   if (options.motion !== undefined && !["auto", "reduce", "full"].includes(options.motion))
     throw failure(2, "Unsupported motion", "Use auto, reduce, or full.");
   for (const key of ["autoplay", "interactive"] as const)
     if (options[key] !== undefined && typeof options[key] !== "boolean")
-      throw failure(2, "Invalid boolean option", "Use a boolean for autoplay and interactive.");
+      throw failure(2, "Invalid boolean", "Use boolean autoplay and interactive.");
   const theme = options.theme === undefined || options.theme === "mono" ? {} : options.theme;
   if (!theme || typeof theme !== "object" || Array.isArray(theme))
-    throw failure(2, "Unsupported theme", "Use mono or a theme object in Phase 1.");
+    throw failure(2, "Unsupported theme", "Use mono or a theme object.");
   for (const [key, value] of Object.entries(theme)) {
     if (key === "stroke") {
       if (typeof value !== "number" || !Number.isFinite(value) || value <= 0)
@@ -40,29 +36,21 @@ export function normalize(figure: FigureDefinition, options: FigureOptions): Opt
       !value.trim() ||
       /[;{}<>]|url\s*\(/i.test(value)
     ) {
-      throw failure(
-        2,
-        "Invalid theme token",
-        "Use supported color tokens with CSS color values, without URLs or markup.",
-      );
+      throw failure(2, "Invalid theme token", "Use color tokens without URLs or markup.");
     }
   }
   if (options.label !== undefined && (typeof options.label !== "string" || !options.label.trim()))
-    throw failure(2, "Invalid accessibility label", "Use a meaningful nonempty string.");
+    throw failure(2, "Empty label", "Use a meaningful string.");
   const input = options.input;
   if (typeof input === "string") {
     if (input !== "pointer" && !SIGNALS.includes(input as SignalName))
-      throw failure(2, "Unsupported input", "Use a Phase 1 pointer, focus, key, or time signal.");
+      throw failure(2, "Unsupported input", "Use pointer, focus, key, or time.");
   } else if (input !== undefined) {
     if (!input || typeof input !== "object" || Array.isArray(input))
-      throw failure(2, "Invalid input mapping", "Map figure parameters to supported signal names.");
+      throw failure(2, "Invalid mapping", "Map parameters to supported signals.");
     for (const [name, signal] of Object.entries(input))
       if (!(name in figure.params) || !SIGNALS.includes(signal))
-        throw failure(
-          2,
-          "Invalid input mapping",
-          "Use existing figure parameter names and Phase 1 signals.",
-        );
+        throw failure(2, "Invalid mapping", "Map figure params to supported signals.");
   }
   return {
     intensity,

@@ -3,6 +3,21 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./core": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.js"
+    },
+    "./figures/*": {
+      "types": "./dist/figures/*.d.ts",
+      "import": "./dist/figures/*.js"
+    }
+  },
   "license": "MIT",
   "description": "The future single npm distribution facade and its public subpath entries.",
   "repository": {
@@ -11,7 +26,7 @@
     "directory": "packages/hattat"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && node ../../scripts/build-package.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {

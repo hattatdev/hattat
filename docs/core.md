@@ -21,3 +21,14 @@ layout/focus attributes on destruction. Pointer and arrow keys drive the same pa
 Stable poses stop scheduling; only explicit autoplay keeps animating. Reduced motion freezes
 the resting pose. Unsupported Canvas, signals, and preset themes fail explicitly in Phase 1.
 The modeling unit is 0.5 world units; fixed dimensions must be multiples of 0.25.
+
+Five built-ins are available through the bundled private `hattat/figures/<name>` entries:
+`server-rack`, `padlock`, `drawer-stack`, `gear-train`, and `wave-field`.
+Each has a named camelCase export and an identical default export. The public core entry
+exports `defineFigure`, `mount`, `renderSVG`, and their shared types. Numerical helpers
+are implementation workspace APIs, excluded from the distribution's public exports.
+
+The build enforces 6,144 gzip bytes for the complete public core entry and 2,048 for each
+figure excluding core. SVG coordinates round to 0.001 world units at serialization;
+projection, clipping, spring state, and padding measurements retain double precision.
+Private instance properties alone are mangled; DOM APIs and figure contracts remain intact.

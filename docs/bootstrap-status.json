@@ -6,25 +6,25 @@
       "id": "visual-look",
       "status": "pending",
       "phase": 1,
-      "reason": "No engine, figure geometry, look command, or regression references exist."
+      "reason": "Five figures render at three intensities; deterministic regression references and human blind review are being completed."
     },
     {
       "id": "performance-budgets",
       "status": "pending",
       "phase": 1,
-      "reason": "No real runtime exists to measure; placeholder sizes and build timings are not evidence."
+      "reason": "Gzip budgets pass. Real Chromium 4x CPU frame and first-draw measurements exceed their limits; phase gate remains blocked."
     },
     {
       "id": "core-coverage",
-      "status": "pending",
+      "status": "measured",
       "phase": 1,
-      "reason": "Core contains only an empty module; 90% coverage is not claimed."
+      "reason": "50 unit tests pass; core line coverage is 99.6% (V8)."
     },
     {
       "id": "runtime-accessibility",
       "status": "pending",
       "phase": 1,
-      "reason": "Reduced motion, keyboard, contrast, and flashing need implemented figures."
+      "reason": "Unit checks and packaged Chromium pointer, keyboard, cleanup and reduced-motion checks pass; full visual/contrast evidence is pending."
     },
     {
       "id": "agent-evals",

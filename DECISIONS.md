@@ -26,3 +26,18 @@ The shared modeling unit is 0.5 world units; fixed geometry dimensions use whole
 Happy DOM 20.14.5 is development-only, providing lifecycle coverage alongside real Chromium verification.
 npm lookup returned E404 for `hattat` on 2026-10-06; this does not prove registration rights.
 Recheck the name at publication; no name reservation or package publication has occurred.
+
+## 2026-10-06 — Phase 1 distribution and measured optimization
+
+- Bundle the approved public core surface (`mount`, `defineFigure`, `renderSVG`, shared types)
+  separately from internal numerical workspace exports. Figures share `hattat/core`; importing
+  two entries must not duplicate the shared scheduler. All workspaces remain private.
+- Mangle only explicitly prefixed instance implementation properties. Native DOM property
+  names and author-facing metadata/helpers must never be mangled.
+- Round SVG coordinates to 0.001 world units; numerical geometry and clipping remain exact.
+  This reduces oversized path strings without a visible displacement at 240 px.
+- Reuse mount buffers for first render and reject oversized geometry before DOM side effects.
+  Draw the final snapped spring pose even when the scheduler reports settlement.
+- CPU measurements remain above 4 ms/frame. A precomputed plate-edge/bounds variant did not
+  materially improve measured timing and was removed. The phase gate remains pending;
+  passing size/unit checks does not authorize Phase 2 or merging.

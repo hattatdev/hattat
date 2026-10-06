@@ -1,2 +1,2 @@
-// Bootstrap placeholder. The approved phase design will introduce this package's API.
-export {};
+export type { FigureHandle, FigureOptions } from "@hattatdev/core";
+export { mount } from "@hattatdev/core";
