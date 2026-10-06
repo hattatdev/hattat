@@ -38,3 +38,5 @@ match. Springs, signals, options, labels, and SVG nodes remain independent. Keep
 results must depend on numeric values, not parameter-object identity or invocation count.
 The shared result is invalidated before rebuilding and released when the last copy is destroyed.
 Layout bounds are observed and measured on first pointer input if observation has not run yet.
+
+Projection computes plate orientation once; mounted rendering skips unchanged SVG path writes.

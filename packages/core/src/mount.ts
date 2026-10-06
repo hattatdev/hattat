@@ -168,15 +168,12 @@ class Instance implements FigureHandle {
   }
   private internalDraw(): void {
     this.internalBuild();
-    this.internalPaths[0]?.setAttribute(
-      "d",
-      this.internalGeometry.internalProjection.internalPlatePath,
-    );
-    for (let i = 0; i < 5; i++)
-      this.internalPaths[i + 1]?.setAttribute(
-        "d",
-        this.internalGeometry.internalProjection.internalPaths[i] ?? "",
-      );
+    const projection = this.internalGeometry.internalProjection;
+    for (let i = 0; i < 6; i++) {
+      const path = this.internalPaths[i] as SVGPathElement;
+      const value = i ? (projection.internalPaths[i - 1] ?? "") : projection.internalPlatePath;
+      if (path.getAttribute("d") !== value) path.setAttribute("d", value);
+    }
     this.internalDirty = false;
   }
   internalStep(dt: number, time: number): boolean {

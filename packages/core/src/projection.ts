@@ -7,7 +7,7 @@ function decimal(n: number): number {
   return Math.round(n * 1000) / 1000;
 }
 export class Projection {
-  readonly internalPlanes = new Float64Array(160 * 11);
+  readonly internalPlanes = new Float64Array(160 * 12);
   readonly internalIntervals = new Float64Array(322);
   readonly internalPaths = ["", "", "", "", ""];
   internalPlatePath = "";
@@ -26,7 +26,7 @@ export class Projection {
     this.internalMinY = Infinity;
     this.internalMaxY = -Infinity;
     for (let i = 0; i < scene.internalPlateCount; i++) {
-      const o = i * 11;
+      const o = i * 12;
       const p = i * 12;
       let d0 = 0,
         d1 = 0,
@@ -49,6 +49,7 @@ export class Projection {
       const bx = (this.internalPlanes[o + 6] as number) - x,
         by = (this.internalPlanes[o + 7] as number) - y;
       const det = ax * by - ay * bx;
+      this.internalPlanes[o + 11] = Math.sign(det);
       this.internalPlanes[o + 8] = ((d1 - d0) * by - (d3 - d0) * ay) / det;
       this.internalPlanes[o + 9] = (ax * (d3 - d0) - bx * (d1 - d0)) / det;
       this.internalPlanes[o + 10] =
@@ -82,7 +83,7 @@ export class Projection {
       this.internalIntervals[0] = 0;
       this.internalIntervals[1] = 1;
       for (let j = 0; j < scene.internalPlateCount && count; j++) {
-        const p = j * 11;
+        const p = j * 12;
         let lo = 0,
           hi = 1;
         const q = this.internalPlanes;
@@ -99,19 +100,14 @@ export class Projection {
           ((q[p + 8] as number) * bx + (q[p + 9] as number) * by + (q[p + 10] as number)) +
           1e-7;
         if (da >= 0 && db >= 0) continue;
-        const sign =
-          ((q[p + 2] as number) - (q[p] as number)) *
-            ((q[p + 7] as number) - (q[p + 1] as number)) -
-          ((q[p + 3] as number) - (q[p + 1] as number)) * ((q[p + 6] as number) - (q[p] as number));
+        const sign = q[p + 11] as number;
         for (let k = 0; k < 4; k++) {
           const a = p + k * 2,
             b = p + ((k + 1) % 4) * 2;
           const ex = (q[b] as number) - (q[a] as number),
             ey = (q[b + 1] as number) - (q[a + 1] as number);
-          const c0 =
-            (ex * (ay - (q[a + 1] as number)) - ey * (ax - (q[a] as number))) * Math.sign(sign);
-          const c1 =
-            (ex * (by - (q[a + 1] as number)) - ey * (bx - (q[a] as number))) * Math.sign(sign);
+          const c0 = (ex * (ay - (q[a + 1] as number)) - ey * (ax - (q[a] as number))) * sign;
+          const c1 = (ex * (by - (q[a + 1] as number)) - ey * (bx - (q[a] as number))) * sign;
           if (c0 < 0 && c1 < 0) {
             hi = -1;
             break;

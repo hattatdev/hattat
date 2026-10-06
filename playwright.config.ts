@@ -1,7 +1,7 @@
 import { defineConfig } from "@playwright/test";
 export default defineConfig({
   testDir: "tests",
-  testMatch: ["browser.spec.ts", "visual.spec.ts", "cli.spec.ts"],
+  testMatch: ["browser.spec.ts", "performance.spec.ts", "visual.spec.ts", "cli.spec.ts"],
   snapshotPathTemplate: "{testDir}/references/{arg}{ext}",
   expect: { toHaveScreenshot: { maxDiffPixels: 20, threshold: 0.1 } },
   timeout: 60000,

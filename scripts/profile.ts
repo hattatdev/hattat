@@ -21,6 +21,8 @@ try {
   await page.addScriptTag({ content: code.outputFiles?.[0]?.text ?? "" });
   const cdp = await page.context().newCDPSession(page);
   await cdp.send("Emulation.setCPUThrottlingRate", { rate: 4 });
+  await cdp.send("Profiler.enable");
+  await cdp.send("Profiler.start");
   await page.evaluate(() => {
     const f = window.fixture;
     for (let i = 0; i < 20; i++) {
@@ -32,6 +34,7 @@ try {
       f.handles.push(f.mount(host, figure, { autoplay: true }));
     }
   });
+  const cold = await cdp.send("Profiler.stop");
   await page.waitForTimeout(2000);
   await cdp.send("Profiler.enable");
   await cdp.send("Profiler.start");
@@ -44,6 +47,7 @@ try {
   const cpu = await cdp.send("Profiler.stop"),
     heap = await cdp.send("HeapProfiler.stopSampling");
   await mkdir("artifacts", { recursive: true });
+  await writeFile("artifacts/cold-mount.cpuprofile", JSON.stringify(cold.profile));
   await writeFile("artifacts/runtime.cpuprofile", JSON.stringify(cpu.profile));
   await writeFile("artifacts/allocations.json", JSON.stringify(heap.profile));
   await writeFile(

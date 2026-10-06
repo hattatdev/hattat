@@ -124,6 +124,24 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 describe("shared DOM lifecycle", () => {
+  it("does not emit DOM mutations for unchanged SVG paths", () => {
+    const element = host();
+    add(element);
+    const paths = Array.from(element.querySelectorAll("path"));
+    const writes = paths.map((path) => vi.spyOn(path, "setAttribute"));
+    element.dispatchEvent(new PointerEvent("pointermove", { clientY: 200 }));
+    tick(1);
+    expect(writes.reduce((sum, spy) => sum + spy.mock.calls.length, 0)).toBe(2);
+    expect(writes[1]).not.toHaveBeenCalled();
+    expect(writes[3]).not.toHaveBeenCalled();
+    tick(90);
+    writes.forEach((spy) => {
+      spy.mockClear();
+    });
+    resize?.([], {} as ResizeObserver);
+    tick(1);
+    expect(writes.every((spy) => spy.mock.calls.length === 0)).toBe(true);
+  });
   it("reuses identical geometry and defers layout measurement until input", () => {
     const build = vi.fn(FIGURE.build),
       figure = { ...FIGURE, build };

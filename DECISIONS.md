@@ -87,3 +87,16 @@ actionable remedies while removing repetitive prose. Complete core is 6,126 gzip
 Local 20-instance 4x CPU measurements improved from max 5.8 ms to 2.5 ms, first generation
 13.5 ms, idle/offscreen callbacks zero. Fresh CI remains required. The benchmark repeats five
 synchronized figures; differing simultaneous poses must not inherit this performance claim.
+
+## 2026-10-06 — DOM mutation and timing isolation
+
+CPU profiles identified native SVG attribute writes and projection as substantial work.
+Skip writes when a path is unchanged; a regression verifies only two changing paths mutate
+and an unchanged resize emits none. Compute plate orientation once during projection setup.
+Complete core is 6,114 gzip bytes; all reference images remain unchanged. Separate the timing
+case into its own file with Playwright tracing disabled, so screenshot/DOM recording does not
+add work to enforcement; retain JSON/error context and independent cold-mount/runtime CPU
+profiles. Functional/visual cases retain failure traces. Add all twenty mount durations to
+the report instead of only their maximum. Do not relax timing limits: CI on 5780787 failed
+both platforms, while the latest isolated local sample is max 3.1 ms and first generation
+14.2 ms. Fresh CI must confirm these changes before the gate can pass.

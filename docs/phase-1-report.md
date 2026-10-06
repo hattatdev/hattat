@@ -12,7 +12,7 @@ skills, and agent evals remain later-phase work.
 
 ## Verification
 
-- 55 unit tests; core V8 line coverage 99.6%, exceeding 90%.
+- 56 unit tests; core V8 line coverage 99.6%, exceeding 90%.
 - Bundled Chromium integration covers pointer, keyboard, reduced motion, cleanup, and the
   compiled README example. Fifteen rest/full/reduced-motion references cover all five figures.
 - `look` renders intensity 0 / 0.5 / 1, with at least 10.5% sampled edge padding and 10.3:1
@@ -27,7 +27,7 @@ skills, and agent evals remain later-phase work.
 
 | Entry | Gzip bytes | Raw segments | Limit |
 | --- | ---: | ---: | ---: |
-| Complete public core | 6,126 | — | 6,144 bytes |
+| Complete public core | 6,114 | — | 6,144 bytes |
 | server-rack | 587 | 97 | 2,048 bytes / 400 segments |
 | padlock | 672 | 61 | 2,048 bytes / 400 segments |
 | drawer-stack | 551 | 72 | 2,048 bytes / 400 segments |
@@ -41,11 +41,15 @@ upstream compilation uses Turbo cache. Coordinates round to 0.001 only at serial
 ## Runtime budget and remaining gate
 
 The latest local 20-instance Chromium run used a 1200×900 viewport and 4× CPU throttling.
-It recorded p95 2.2 ms/frame, maximum 2.5 ms/frame, first SVG generation 13.5 ms,
+It recorded p95 2.6 ms/frame, maximum 3.1 ms/frame, first SVG generation 14.2 ms,
 zero idle callbacks, and zero offscreen callbacks. Local frame and generation budgets pass.
-The test enforces the maximum, not just the percentile. Raw JSON and traces live in
-`artifacts/performance.json` and `test-results`; fresh CI evidence is still required.
-The prior Ubuntu run exceeded both timing budgets (8.6 ms/frame and 23.3 ms first generation).
+The test enforces the maximum, not just the percentile. Raw JSON and error context live in
+`artifacts/performance.json` and `test-results`. CPU/heap profiles, including cold mount,
+run separately; timing enforcement disables Playwright screenshot/DOM tracing to isolate it
+from recording work. Functional and visual failures retain their traces.
+CI on 5780787 still exceeded both budgets: Ubuntu max 11.8 ms, p95 4.5 ms, first generation
+28.7 ms; Windows max 5.3 ms, p95 4.9 ms, first generation 23.9 ms. The latest DOM-write and
+plate-orientation changes require fresh CI evidence; the acceptance gate remains open.
 Local workstation contention changes timings, so this sample is not a portable guarantee.
 First draw measures owned SVG path generation; browser paint and layout are not included.
 
@@ -54,7 +58,8 @@ Each instance keeps independent springs and DOM paths; different poses recompute
 benchmark uses four synchronized instances of each figure, so it benefits from that reuse;
 arbitrary differing poses are not covered by these timing numbers. The cache invalidates
 before failed builds and is released after the final destroy. Layout measurement is deferred
-to observation or first input. Agent visual inspection recognizes the lock, coupled gears, rack, wave grid, and drawer
+to observation or first input. Unchanged SVG paths are not rewritten; plate orientation is
+computed once per plate instead of once per segment/plate pair. Agent visual inspection recognizes the lock, coupled gears, rack, wave grid, and drawer
 cabinet at 240 px. This is informed agent review; an independent human blind test has not
 been performed. The owner asked the agent to evaluate the images and not request this
 review again; no repeat request will be made. See
