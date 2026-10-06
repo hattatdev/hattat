@@ -25,7 +25,9 @@
     "look": "node packages/cli/dist/index.js look",
     "test:browser": "playwright test --grep-invert @performance",
     "test:performance": "playwright test --grep @performance",
-    "profile:runtime": "node scripts/profile.ts"
+    "profile:runtime": "node scripts/profile.ts",
+    "test:docs": "node scripts/check-docs.ts",
+    "preview:docs": "node scripts/serve-docs.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.15",

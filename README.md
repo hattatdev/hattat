@@ -2,6 +2,8 @@
 
 Hattat is a free, MIT-licensed library of interactive isometric line figures for the web, designed for integration by AI agents.
 
+[Explore the live gallery and playground](https://hattatdev.github.io/hattat/).
+
 **Pre-release:** the library, CLI, and skills are not published. The vanilla API works in this
 workspace; installation commands await their corresponding releases.
 
@@ -46,7 +48,8 @@ pnpm look padlock --yes --json
 `pnpm check` validates formatting, strict types, workspace builds, distribution sizes,
 repository rules, and the README example. Unit coverage exceeds 90%; browser checks cover
 packaged imports, interaction, accessibility, and 15 visual references.
-The 4× CPU timing check currently exceeds its 4 ms/frame budget, so Phase 1 remains open.
+The owner authorized advisory frame/first-draw timing for Phase 1; measurements and warnings
+remain visible in CI while size and idle/offscreen budgets stay enforced.
 Human blind recognition and later-phase agent evals are also pending. See the
 [Phase 1 evidence](docs/phase-1-report.md) for measured results and limitations.
 
@@ -58,7 +61,7 @@ Human blind recognition and later-phase agent evals are also pending. See the
 - [Decisions](DECISIONS.md) and [readiness](docs/bootstrap-status.json)
 
 The repository uses pnpm workspaces and Turborepo. Internal packages and the bundled `hattat`
-distribution remain private. Framework bindings, the docs application, skills, and evals have
-reserved directories. Core has zero runtime dependencies, telemetry, and runtime network calls.
+distribution remain private. The [gallery application](apps/docs/README.md) is hosted on
+GitHub Pages. Framework bindings, skills, and evals still have reserved directories. Core has zero runtime dependencies, telemetry, and runtime network calls.
 
 Licensed under [MIT](LICENSE).

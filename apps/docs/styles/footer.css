@@ -1,0 +1,44 @@
+.closing-note {
+  padding: 80px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 36px;
+}
+.closing-mark {
+  font: italic 92px var(--serif);
+  color: var(--accent);
+}
+.closing-note > div {
+  flex: 1;
+}
+.closing-note h2 {
+  font: 36px / 1.2 var(--serif);
+  letter-spacing: -0.025em;
+  margin-top: 16px;
+}
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 28px 0 32px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  font-size: 12px;
+}
+.site-footer > span {
+  font: bold 20px var(--serif);
+}
+.footer-description {
+  font: 11px var(--sans);
+  color: var(--muted);
+  margin-left: 14px;
+}
+.site-footer > div {
+  display: flex;
+  gap: 26px;
+  align-items: center;
+  font-size: 10px;
+}
+.site-footer > div > span {
+  color: var(--muted);
+}

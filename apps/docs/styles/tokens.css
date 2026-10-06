@@ -1,0 +1,247 @@
+:root {
+  color-scheme: light;
+  --paper: #f5f3ec;
+  --ink: #242820;
+  --muted: #62675b;
+  --line: #d6d7cc;
+  --accent: #a13f24;
+  --soft: #e9e8de;
+  --grid: #dddfd33b;
+  --live: #526b38;
+  --serif: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  --sans: "Trebuchet MS", "Lucida Grande", sans-serif;
+  --mono: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+}
+:root[data-theme="ink"] {
+  color-scheme: dark;
+  --paper: #20251f;
+  --ink: #f5f3ec;
+  --muted: #b0b6a5;
+  --line: #454d3f;
+  --accent: #eba383;
+  --soft: #2b3228;
+  --grid: #78866720;
+  --live: #a8c784;
+}
+:root[data-theme="blue"] {
+  --paper: #eaf0f4;
+  --ink: #183e61;
+  --muted: #4f6a81;
+  --line: #c3d0da;
+  --accent: #9c482c;
+  --soft: #dce6ed;
+  --grid: #597f9d18;
+  --live: #3e6746;
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 28px;
+}
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+button,
+input,
+select {
+  font: inherit;
+}
+button,
+a,
+input,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+button,
+select {
+  cursor: pointer;
+}
+button {
+  color: inherit;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button {
+  border: 0;
+}
+button:disabled {
+  cursor: default;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+.code-scroll:focus-visible,
+svg:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+}
+button,
+a {
+  touch-action: manipulation;
+}
+[hidden]:not([hidden="until-found"]) {
+  display: none;
+}
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+em {
+  font-weight: inherit;
+}
+svg {
+  display: block;
+}
+::selection {
+  background: var(--accent);
+  color: var(--paper);
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  padding: 14px 22px;
+  background: var(--ink);
+  color: var(--paper);
+  z-index: 20;
+  transform: translateY(-160%);
+}
+.skip-link:focus {
+  transform: none;
+}
+.page-shell {
+  width: min(1280px, calc(100% - 112px));
+  margin: auto;
+}
+.eyebrow {
+  font: 11px var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.status-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--live);
+  border-radius: 50%;
+}
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 15px 20px;
+  border: 1px solid var(--line);
+  background: transparent;
+  font-size: 13px;
+  min-height: 44px;
+  transition:
+    background 0.18s,
+    border-color 0.18s;
+}
+.button:hover {
+  border-color: var(--ink);
+  background: var(--soft);
+}
+.button-primary {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.button-primary:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.text-link {
+  font-size: 13px;
+  padding: 10px 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+}
+.text-link:hover {
+  color: var(--accent);
+}
+.section {
+  padding-top: 88px;
+}
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 36px;
+}
+.section-heading h2 {
+  margin-top: 18px;
+  font: 44px / 1.12 var(--serif);
+  letter-spacing: -0.035em;
+}
+.section-heading > p {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--muted);
+  padding-bottom: 3px;
+}
+@media (max-width: 900px) {
+  .page-shell {
+    width: calc(100% - 48px);
+  }
+  .section {
+    padding-top: 64px;
+  }
+  .section-heading h2 {
+    font-size: 38px;
+  }
+}
+@media (max-width: 600px) {
+  .page-shell {
+    width: calc(100% - 36px);
+  }
+  .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .section-heading > p br {
+    display: none;
+  }
+  .section-heading h2 {
+    font-size: 35px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .button {
+    transition: none;
+  }
+}
