@@ -65,6 +65,8 @@ jobs:
         run: node scripts/check-pr.ts
       - name: Check bootstrap
         run: pnpm check
+      - name: Core unit tests and coverage (TEST-01)
+        run: pnpm test
       - name: Audit dependency licenses (DEP-02)
         run: pnpm licenses list --json > dependency-licenses.json
       - name: Validate dependency licenses

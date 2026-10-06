@@ -5,9 +5,9 @@ All repository code, comments, commits, documentation, and skill text must be in
 
 ## Current phase gate
 
-The bootstrap prepares the monorepo and `docs/design/phase-1.md`.
-Wait for the owner's approval of that design before implementing Phase 1.
-The owner's approval to implement the bootstrap does not approve the engine design.
+The owner approved `docs/design/phase-1.md` on 2026-10-06 by asking to continue.
+Implement Phase 1, committing and pushing verified increments to the working branch.
+Report the Phase 1 results and wait at the phase boundary before starting Phase 2.
 
 ## Project rules
 

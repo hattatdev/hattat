@@ -1,7 +1,7 @@
 # Phase 1: core engine and five figures
 
-Status: **proposed — owner approval required before implementation**.
-This document describes future behavior. The bootstrap does not implement the APIs below.
+Status: **approved by the owner on 2026-10-06** (continue, commit, and push as work progresses).
+This document specifies Phase 1 behavior; implementation evidence is recorded separately.
 Source of truth: [SPEC](../SPEC.md); rules: [AGENTS](../../AGENTS.md).
 
 ## Outcome and boundaries

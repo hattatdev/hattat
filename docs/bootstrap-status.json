@@ -1,6 +1,6 @@
 {
-  "stage": "bootstrap",
-  "phase1Approved": false,
+  "stage": "phase-1",
+  "phase1Approved": true,
   "runtimeChecks": [
     {
       "id": "visual-look",
