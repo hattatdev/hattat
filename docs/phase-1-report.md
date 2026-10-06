@@ -1,7 +1,8 @@
 # Phase 1 implementation evidence
 
-Status: **implementation candidate; acceptance gate remains open**. Do not merge, publish,
-or start Phase 2 until the remaining checks pass. This is agent-authored work.
+Status: **owner authorized merging the Phase 1 candidate on 2026-10-06**. Runtime timing
+is advisory under the recorded exception; remaining review limitations are listed below.
+Do not publish or start Phase 2 without separate authorization. This is agent-authored work.
 
 The zero-dependency core now provides fixed buffers, deterministic geometry, isometric
 projection, depth-based hidden-line clipping, critical springs, shared scheduling, accessible
@@ -40,19 +41,21 @@ upstream compilation uses Turbo cache. Coordinates round to 0.001 only at serial
 
 ## Runtime budget and remaining gate
 
-The latest local 20-instance Chromium run used a 1200×900 viewport and 4× CPU throttling.
+The pre-exception local 20-instance Chromium run used a 1200×900 viewport and 4× CPU throttling.
 It recorded p95 2.0 ms/frame, maximum 2.5 ms/frame, first SVG generation 12.7 ms,
-zero idle callbacks, and zero offscreen callbacks. Local budgets pass.
-The test enforces the maximum, not just the percentile. Raw JSON and error context live in
+zero idle callbacks, and zero offscreen callbacks. That local sample met the original timing targets.
+The test records the maximum and percentile. Raw JSON and error context live in
 `artifacts/performance.json` and `test-results`. CPU/heap profiles, including cold mount,
 run separately; timing enforcement disables Playwright screenshot/DOM tracing to isolate it
 from recording work. Functional and visual failures retain their traces.
 
-CI on 78eaef6 passes frame timing but fails first mount: Ubuntu p95 3.0 ms, maximum 3.2 ms,
-first generation 21.3 ms; Windows p95 3.6 ms, maximum 3.9 ms, first generation 24.0 ms.
-Both have zero idle/offscreen callbacks. The latest setup/clipping changes require fresh CI;
-the acceptance gate remains open. All five first mounts are recorded, including the cold one;
-there is no prewarming of the measured mount or weakened threshold.
+CI on 787746d exceeds timing targets: Ubuntu maximum 3.3 ms, first generation 19.4 ms;
+Windows p95 4.1 ms, maximum 5.2 ms, first generation 22.5 ms. Both have zero idle/offscreen
+callbacks. The owner requested removal of the timing merge blocker and merging into main.
+RULE-EXCEPTION: PERF-01–05 Phase 1 frame/first-draw durations are advisory, with raw JSON
+and warnings retained. Size, idle/offscreen, functional, and accessibility checks still block
+CI. All twenty mounts are recorded, including the cold one, without prewarming. This is an
+authorized acceptance exception, not a claim that the original timing budgets pass.
 Local workstation contention changes timings, so this sample is not a portable guarantee.
 First draw measures owned SVG path generation; browser paint and layout are not included.
 
@@ -79,4 +82,6 @@ Wrapper hydration/CLS and agent evals remain pending in their designated later p
 
 Run `pnpm check`, `pnpm test`, `pnpm test:browser`, `pnpm test:performance`,
 `pnpm profile:runtime`, and `pnpm look padlock --yes --json` after installing Chromium.
-Local performance checks pass; CI timing must also pass before acceptance.
+Timing targets remain visible as advisory measurements under the owner-authorized exception.
+The exception verification run recorded max 5.8 ms, first draw 12.6 ms, and zero idle/offscreen
+callbacks; it emitted the timing warning and passed the retained assertions.

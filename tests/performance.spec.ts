@@ -105,6 +105,12 @@ test("@performance 20 real animated figures at 4x CPU: timing, idle and offscree
   console.log("PERFORMANCE", result);
   expect(result.idleCallbacks).toBe(0);
   expect(result.offscreenCallbacks).toBe(0);
-  expect(result.maxFrameMs).toBeLessThanOrEqual(4);
-  expect(result.firstDrawMs).toBeLessThanOrEqual(16);
+  expect(result.samples).toBeGreaterThan(0);
+  expect(Number.isFinite(result.maxFrameMs)).toBe(true);
+  expect(Number.isFinite(result.firstDrawMs)).toBe(true);
+  // RULE-EXCEPTION: PERF-01–05 Owner authorized advisory Phase 1 timing on 2026-10-06.
+  // Preserve raw measurements and warnings; idle/offscreen and size budgets still block CI.
+  if (result.maxFrameMs > 4 || result.firstDrawMs > 16) {
+    console.warn("ADVISORY: Phase 1 timing exceeds the 4 ms/frame or 16 ms first-draw target.");
+  }
 });

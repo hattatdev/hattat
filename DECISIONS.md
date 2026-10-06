@@ -125,3 +125,15 @@ first mount 12.7 ms; core is exactly 6,144 gzip bytes. CI on 78eaef6 still fails
 mount on both platforms (21.3/24.0 ms); do not substitute local results for that gate.
 An event-listener-object variant was measured and removed: it increased bundle size without
 a material startup benefit. Preserve the established listeners and their removal semantics.
+
+## 2026-10-06 — Owner-authorized timing exception and merge
+
+The owner explicitly requested removing the performance merge blocker and merging the
+working branch into main. RULE-EXCEPTION: PERF-01–05 applies only to Phase 1 frame
+and first-draw duration assertions. Retain the 4 ms/frame and 16 ms first-draw targets as
+advisory warnings and preserve all raw timings. Latest CI on 787746d reports Ubuntu maximum
+3.3 ms / first draw 19.4 ms, Windows maximum 5.2 ms / first draw 22.5 ms; these do not satisfy
+the original budgets. Enforce nonempty finite measurements, zero idle/offscreen callbacks,
+bundle sizes, functional tests, and accessibility checks. Merge through the existing PR,
+without direct pushes to main. This scoped owner override does not revise the canonical rules
+or authorize npm publication, Phase 2, or claims of completed independent visual/flashing audits.

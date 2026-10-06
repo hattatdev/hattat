@@ -78,7 +78,7 @@ jobs:
         run: pnpm test:browser
       - name: Diagnostic CPU and allocation profiles
         run: pnpm profile:runtime
-      - name: Enforce runtime budgets
+      - name: Enforce idle/offscreen budgets and report advisory timing
         run: pnpm test:performance
       - name: Upload runtime evidence, including failed gates
         if: always()
