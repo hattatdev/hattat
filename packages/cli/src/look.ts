@@ -82,12 +82,12 @@ export async function look(name: string, out = resolve("artifacts/look")): Promi
             mount: typeof import("@hattatdev/core").mount;
             Scene: typeof import("@hattatdev/core").Scene;
             Projection: new () => {
-              render(scene: import("@hattatdev/core").Scene): void;
-              minX: number;
-              maxX: number;
-              minY: number;
-              maxY: number;
-              visibleCount: number;
+              internalRender(scene: import("@hattatdev/core").Scene): void;
+              internalMinX: number;
+              internalMaxX: number;
+              internalMinY: number;
+              internalMaxY: number;
+              internalVisibleCount: number;
             };
           };
           handle?: import("@hattatdev/core").FigureHandle;
@@ -111,16 +111,16 @@ export async function look(name: string, out = resolve("artifacts/look")): Promi
           const start = performance.now();
           scene.reset();
           w.figure.build(scene, params);
-          projection.render(scene);
+          projection.internalRender(scene);
           frameMs = Math.max(frameMs, performance.now() - start);
-          lineCount = Math.max(lineCount, scene.count);
-          visibleCount = Math.max(visibleCount, projection.visibleCount);
+          lineCount = Math.max(lineCount, scene.internalCount);
+          visibleCount = Math.max(visibleCount, projection.internalVisibleCount);
           padding = Math.min(
             padding,
-            (projection.minX - b.x) / b.width,
-            (b.x + b.width - projection.maxX) / b.width,
-            (projection.minY - b.y) / b.height,
-            (b.y + b.height - projection.maxY) / b.height,
+            (projection.internalMinX - b.x) / b.width,
+            (b.x + b.width - projection.internalMaxX) / b.width,
+            (projection.internalMinY - b.y) / b.height,
+            (b.y + b.height - projection.internalMaxY) / b.height,
           );
         }
         return {

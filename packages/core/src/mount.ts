@@ -4,13 +4,19 @@ import { normalize, type Options } from "./options.js";
 import { Projection } from "./projection.js";
 import { Scene, TONES } from "./scene.js";
 import { register, unregister, wake } from "./scheduler.js";
-import { DARK, LIGHT, restSVG } from "./svg.js";
+import { DARK, LIGHT, markup } from "./svg.js";
 import type { FigureDefinition, FigureHandle, FigureOptions, SignalName } from "./types.js";
 
+interface Geometry {
+  internalScene: Scene;
+  internalProjection: Projection;
+  internalParams: Float64Array;
+  internalRefs: number;
+}
+const GEOMETRY = new WeakMap<FigureDefinition, Geometry>();
 const OWNERS = new WeakMap<HTMLElement, Instance>();
 class Instance implements FigureHandle {
-  readonly internalScene = new Scene();
-  readonly internalProjection = new Projection();
+  readonly internalGeometry: Geometry;
   readonly internalValues: Record<string, number> = { intensity: 0.5 };
   readonly internalSignals: Record<SignalName, number> = {
     "pointer.x": 0.5,
@@ -35,7 +41,7 @@ class Instance implements FigureHandle {
   internalDestroyed = false;
   internalVisible = true;
   internalDirty = true;
-  private internalBounds: DOMRect;
+  private internalBounds: DOMRect | undefined;
   private internalPreviousAspect: string;
   private internalPreviousTab: string | null;
   constructor(
@@ -47,10 +53,15 @@ class Instance implements FigureHandle {
       figure = this.internalFigure;
     this.internalOptions = normalize(figure, options);
     this.internalRaw = { ...options };
-    this.internalBounds = host.getBoundingClientRect();
     this.internalPreviousAspect = host.style.aspectRatio;
     this.internalPreviousTab = host.getAttribute("tabindex");
     this.internalNames = Object.keys(figure.params);
+    this.internalGeometry = GEOMETRY.get(figure) ?? {
+      internalScene: new Scene(),
+      internalProjection: new Projection(),
+      internalParams: new Float64Array(this.internalNames.length + 1).fill(NaN),
+      internalRefs: 0,
+    };
     this.internalSprings = this.internalNames.map((name) => {
       const p = figure.params[name];
       return {
@@ -65,13 +76,13 @@ class Instance implements FigureHandle {
         this.internalSprings[i] as Spring
       ).value;
     const template = host.ownerDocument.createElement("template");
-    // Trusted library-generated SVG; the accessibility label is escaped by renderSVG.
-    template.innerHTML = restSVG(
+    this.internalValues.intensity = this.internalOptions.intensity;
+    this.internalBuild();
+    // Trusted generated SVG; markup escapes the accessibility label.
+    template.innerHTML = markup(
       figure,
-      this.internalOptions.intensity,
       this.internalOptions.label,
-      this.internalScene,
-      this.internalProjection,
+      this.internalGeometry.internalProjection,
     );
     this.internalSvg = template.content.firstElementChild as unknown as SVGSVGElement;
     this.internalPaths = Array.from(this.internalSvg.querySelectorAll("path"));
@@ -91,6 +102,8 @@ class Instance implements FigureHandle {
         ? new IntersectionObserver(this.internalObserve)
         : undefined;
     this.internalIntersection?.observe(host);
+    this.internalGeometry.internalRefs++;
+    GEOMETRY.set(figure, this.internalGeometry);
     register(this);
     this.internalConfigure();
     this.internalDirty = false;
@@ -133,15 +146,37 @@ class Instance implements FigureHandle {
     this.internalValues.intensity = this.internalOptions.intensity;
     this.internalDirty = true;
   }
-  private internalDraw(): void {
-    this.internalScene.reset();
-    this.internalFigure.build(this.internalScene, this.internalValues);
-    if (this.internalScene.count > 400)
+  private internalBuild(): void {
+    const previous = this.internalGeometry.internalParams,
+      n = this.internalNames.length;
+    let same = true;
+    for (let i = 0; i <= n && same; i++)
+      same = previous[i] === this.internalValues[this.internalNames[i] ?? "intensity"];
+    if (same) return;
+    previous.fill(NaN);
+
+    this.internalGeometry.internalScene.reset();
+    this.internalFigure.build(this.internalGeometry.internalScene, this.internalValues);
+    if (this.internalGeometry.internalScene.internalCount > 400)
       throw failure(4, "SVG exceeds 400 segments", "Use fewer segments.");
-    this.internalProjection.render(this.internalScene, false);
-    this.internalPaths[0]?.setAttribute("d", this.internalProjection.platePath);
+    this.internalGeometry.internalProjection.internalRender(
+      this.internalGeometry.internalScene,
+      false,
+    );
+    for (let i = 0; i <= n; i++)
+      previous[i] = this.internalValues[this.internalNames[i] ?? "intensity"] ?? 0.5;
+  }
+  private internalDraw(): void {
+    this.internalBuild();
+    this.internalPaths[0]?.setAttribute(
+      "d",
+      this.internalGeometry.internalProjection.internalPlatePath,
+    );
     for (let i = 0; i < 5; i++)
-      this.internalPaths[i + 1]?.setAttribute("d", this.internalProjection.paths[i] ?? "");
+      this.internalPaths[i + 1]?.setAttribute(
+        "d",
+        this.internalGeometry.internalProjection.internalPaths[i] ?? "",
+      );
     this.internalDirty = false;
   }
   internalStep(dt: number, time: number): boolean {
@@ -191,7 +226,8 @@ class Instance implements FigureHandle {
   }
   private internalPointer = (event: PointerEvent): void => {
     if (!this.internalOptions.interactive || this.internalFrozen) return;
-    const b = this.internalBounds;
+    if (!this.internalBounds?.width) this.internalMeasure();
+    const b = this.internalBounds as DOMRect;
     this.internalSignals["pointer.x"] = Math.max(
       0,
       Math.min(1, (event.clientX - b.left) / Math.max(1, b.width)),
@@ -255,8 +291,7 @@ class Instance implements FigureHandle {
     else wake(this);
   };
   update(options: FigureOptions): void {
-    if (this.internalDestroyed)
-      throw failure(5, "Figure is destroyed", "Mount a new figure before updating.");
+    if (this.internalDestroyed) throw failure(5, "Figure is destroyed", "Mount a new figure.");
     const next = { ...this.internalRaw, ...options };
     const normalized = normalize(this.internalFigure, next);
     this.internalRaw = next;
@@ -270,6 +305,7 @@ class Instance implements FigureHandle {
     this.internalDestroyed = true;
     this.internalActive = false;
     unregister(this);
+    if (--this.internalGeometry.internalRefs === 0) GEOMETRY.delete(this.internalFigure);
     this.internalResize?.disconnect();
     this.internalIntersection?.disconnect();
     this.internalReduced?.removeEventListener("change", this.internalPreference);
@@ -295,9 +331,8 @@ export function mount(
 ): FigureHandle {
   const view = host?.ownerDocument?.defaultView;
   if (!view || !(host instanceof view.HTMLElement))
-    throw failure(2, "Invalid mount target", "Pass an HTMLElement from a live document.");
-  if (OWNERS.has(host))
-    throw failure(5, "Host already has a figure", "Destroy its handle or use another host.");
+    throw failure(2, "Invalid mount target", "Use a live HTMLElement.");
+  if (OWNERS.has(host)) throw failure(5, "Host already has a figure", "Destroy its handle first.");
   const instance = new Instance(host, figure, options);
   OWNERS.set(host, instance);
   return instance;

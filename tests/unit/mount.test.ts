@@ -2,6 +2,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { mount } from "../../packages/core/src/mount.js";
 import { normalize } from "../../packages/core/src/options.js";
+import { renderSVG } from "../../packages/core/src/svg.js";
 import type {
   FigureDefinition,
   FigureHandle,
@@ -123,6 +124,86 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 describe("shared DOM lifecycle", () => {
+  it("reuses identical geometry and defers layout measurement until input", () => {
+    const build = vi.fn(FIGURE.build),
+      figure = { ...FIGURE, build };
+    const a = host(),
+      b = host();
+    HANDLES.push(mount(a, figure), mount(b, figure));
+    expect(build).toHaveBeenCalledTimes(1);
+    expect(a.getBoundingClientRect).not.toHaveBeenCalled();
+    expect(b.getBoundingClientRect).not.toHaveBeenCalled();
+    b.dispatchEvent(new PointerEvent("pointermove", { clientY: 200 }));
+    tick(90);
+    expect(b.getBoundingClientRect).toHaveBeenCalledTimes(1);
+    expect(a.innerHTML).not.toBe(b.innerHTML);
+    expect(frames.size).toBe(0);
+  });
+  it("keeps parameters and intensity independent across shared instances", () => {
+    const a = host(),
+      b = host();
+    const figure: FigureDefinition = {
+      ...FIGURE,
+      build(ctx, p) {
+        ctx.box([0, 0, (p.lift ?? 0.5) * (p.intensity ?? 0.5)], SIZE);
+      },
+    };
+    const first = mount(a, figure),
+      second = mount(b, figure, { intensity: 0.8 });
+    HANDLES.push(first, second);
+    const rest = a.innerHTML;
+    b.dispatchEvent(new PointerEvent("pointermove", { clientY: 200 }));
+    tick(90);
+    const changed = b.innerHTML;
+    first.update({ label: "First" });
+    tick(90);
+    expect(a.querySelector("path")?.getAttribute("d")).toBe(
+      new DOMParser()
+        .parseFromString(renderSVG(figure), "image/svg+xml")
+        .querySelector("path")
+        ?.getAttribute("d"),
+    );
+    expect(b.innerHTML).toBe(changed);
+    expect(a.innerHTML.replace("First", "Moving box")).toBe(rest);
+    second.destroy();
+    first.update({ intensity: 0.3 });
+    tick(90);
+    expect(a.querySelector("path")?.getAttribute("d")).not.toBe(
+      new DOMParser()
+        .parseFromString(rest, "image/svg+xml")
+        .querySelector("path")
+        ?.getAttribute("d"),
+    );
+  });
+  it("invalidates failed builds and releases geometry after the final destroy", () => {
+    let fail = false;
+    const build = vi.fn<FigureDefinition["build"]>((ctx, params) => {
+      if (fail) {
+        ctx.line(POINT, SIZE);
+        throw Error("Builder failed");
+      }
+      FIGURE.build(ctx, params);
+    });
+    const figure = { ...FIGURE, build };
+    const a = host(),
+      b = host();
+    const first = mount(a, figure);
+    HANDLES.push(first);
+    const rest = a.innerHTML;
+    fail = true;
+    expect(() => mount(b, figure, { intensity: 0.8 })).toThrow("Builder failed");
+    expect(b.querySelector("svg")).toBeNull();
+    expect(a.innerHTML).toBe(rest);
+    fail = false;
+    const second = mount(b, figure);
+    HANDLES.push(second);
+    expect(build).toHaveBeenCalledTimes(3);
+    expect(b.innerHTML).toBe(rest);
+    first.destroy();
+    second.destroy();
+    HANDLES.push(mount(host(), figure));
+    expect(build).toHaveBeenCalledTimes(4);
+  });
   it("owns only its SVG and restores layout and focus on idempotent destroy", () => {
     const element = host();
     element.style.aspectRatio = "4/3";

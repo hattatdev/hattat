@@ -30,25 +30,22 @@ export function renderSVG(
   intensity = 0.5,
   label = figure.a11y.label,
 ): string {
-  return restSVG(figure, intensity, label, new Scene(), new Projection());
-}
-export function restSVG(
-  figure: FigureDefinition,
-  intensity: number,
-  label: string,
-  scene: Scene,
-  projection: Projection,
-): string {
+  const scene = new Scene(),
+    projection = new Projection();
   const params: Record<string, number> = { intensity };
   for (const [name, p] of Object.entries(figure.params)) params[name] = p.rest ?? 0.5;
   figure.build(scene, params);
-  if (scene.count > 400) throw failure(4, "SVG exceeds 400 segments", "Use fewer segments.");
-  projection.render(scene, false);
+  if (scene.internalCount > 400)
+    throw failure(4, "SVG exceeds 400 segments", "Use fewer segments.");
+  projection.internalRender(scene, false);
+  return markup(figure, label, projection);
+}
+export function markup(figure: FigureDefinition, label: string, projection: Projection): string {
   const b = figure.bounds;
-  let result = `<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${escapeText(label)}" viewBox="${b.x} ${b.y} ${b.width} ${b.height}" style="width:100%;height:100%;aspect-ratio:${figure.aspect.replace(":", "/")}"><path fill="var(--hattat-plate,${LIGHT.plate})" d="${projection.platePath}"/>`;
+  let result = `<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${escapeText(label)}" viewBox="${b.x} ${b.y} ${b.width} ${b.height}" style="width:100%;height:100%;aspect-ratio:${figure.aspect.replace(":", "/")}"><path fill="var(--hattat-plate,${LIGHT.plate})" d="${projection.internalPlatePath}"/>`;
   for (let i = 0; i < TONES.length; i++) {
     const tone = TONES[i] as keyof typeof LIGHT;
-    result += `<path fill="none" stroke="var(--hattat-${tone},${LIGHT[tone]})" stroke-width="var(--hattat-stroke,1)" vector-effect="non-scaling-stroke" d="${projection.paths[i]}"/>`;
+    result += `<path fill="none" stroke="var(--hattat-${tone},${LIGHT[tone]})" stroke-width="var(--hattat-stroke,1)" vector-effect="non-scaling-stroke" d="${projection.internalPaths[i]}"/>`;
   }
   return `${result}</svg>`;
 }

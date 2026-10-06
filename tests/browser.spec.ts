@@ -37,7 +37,24 @@ test("packaged imports, pointer, keyboard, cleanup and reduced motion", async ({
       f.handles.push(f.mount(document.querySelector("#host") as HTMLElement, figure));
     }, i);
     const before = await page.locator("#host").innerHTML();
-    await page.locator("#host").dispatchEvent("pointermove", { clientX: 228, clientY: 12 });
+    const responseMs = await page.locator("#host").evaluate(
+      (host) =>
+        new Promise<number>((resolve, reject) => {
+          const start = performance.now();
+          const observer = new MutationObserver(() => {
+            observer.disconnect();
+            clearTimeout(timeout);
+            resolve(performance.now() - start);
+          });
+          const timeout = setTimeout(() => {
+            observer.disconnect();
+            reject(Error("No response within 100 ms"));
+          }, 100);
+          observer.observe(host, { subtree: true, attributes: true, attributeFilter: ["d"] });
+          host.dispatchEvent(new PointerEvent("pointermove", { clientX: 228, clientY: 12 }));
+        }),
+    );
+    expect(responseMs).toBeLessThanOrEqual(100);
     await page.waitForTimeout(1400);
     expect(await page.locator("#host").innerHTML()).not.toBe(before);
     await page.locator("#host").focus();
@@ -48,6 +65,7 @@ test("packaged imports, pointer, keyboard, cleanup and reduced motion", async ({
     await page.locator("#host").dispatchEvent("pointerleave");
     await page.locator("#host").evaluate((e) => e.blur());
     await page.waitForTimeout(1400);
+    expect(await page.locator("#host").innerHTML()).toBe(before);
     await expect(page.locator("svg")).toHaveAttribute("role", "img");
   }
   await page.emulateMedia({ reducedMotion: "reduce" });
@@ -120,7 +138,7 @@ test("@performance 20 real animated figures at 4x CPU: timing, idle and offscree
     f.handles.forEach((h) => {
       h.update({ autoplay: false });
     });
-    await new Promise((done) => setTimeout(done, 1600));
+    await new Promise((done) => setTimeout(done, 1500));
     const idleStart = callbacks;
     await new Promise((done) => setTimeout(done, 200));
     const idleCallbacks = callbacks - idleStart;

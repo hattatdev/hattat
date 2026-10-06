@@ -29,12 +29,12 @@ export function defineFigure<const Name extends string>(
     throw failure(
       3,
       "Incomplete figure metadata",
-      "Add name, category, ≥3 intents, 1–3 moods, interaction, aspect, label, and build.",
+      "Supply all metadata, ≥3 intents and 1–3 moods.",
     );
   }
   const b = d.bounds;
   if (![b.x, b.y, b.width, b.height].every(Number.isFinite) || b.width <= 0 || b.height <= 0) {
-    throw failure(3, "Invalid projected bounds", "Use finite bounds with positive size.");
+    throw failure(3, "Invalid projected bounds", "Use finite bounds and positive size.");
   }
   for (const p of Object.values(d.params)) {
     if (
@@ -45,7 +45,7 @@ export function defineFigure<const Name extends string>(
       throw failure(
         3,
         "Invalid parameter mapping",
-        "Use supported input, spring, and rest in 0–1.",
+        "Use a supported signal, spring and rest in 0–1.",
       );
     }
     Object.freeze(p);

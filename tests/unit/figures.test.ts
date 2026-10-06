@@ -21,21 +21,21 @@ describe("original Phase 1 figures", () => {
               values[keys[k] as string] = pose <= 20 ? pose / 20 : ((pose - 21) >> k) & 1;
             s.reset();
             figure.build(s, values);
-            p.render(s);
-            const first = p.paths.join("");
+            p.internalRender(s);
+            const first = p.internalPaths.join("");
             s.reset();
             figure.build(s, values);
-            p.render(s);
-            expect(p.paths.join("")).toBe(first);
-            expect(s.count).toBeGreaterThanOrEqual(60);
-            expect(s.count).toBeLessThanOrEqual(400);
+            p.internalRender(s);
+            expect(p.internalPaths.join("")).toBe(first);
+            expect(s.internalCount).toBeGreaterThanOrEqual(60);
+            expect(s.internalCount).toBeLessThanOrEqual(400);
             const b = figure.bounds;
-            expect(p.minX).toBeGreaterThanOrEqual(b.x + b.width * 0.08);
-            expect(p.maxX).toBeLessThanOrEqual(b.x + b.width * 0.92);
-            expect(p.minY).toBeGreaterThanOrEqual(b.y + b.height * 0.08);
-            expect(p.maxY).toBeLessThanOrEqual(b.y + b.height * 0.92);
+            expect(p.internalMinX).toBeGreaterThanOrEqual(b.x + b.width * 0.08);
+            expect(p.internalMaxX).toBeLessThanOrEqual(b.x + b.width * 0.92);
+            expect(p.internalMinY).toBeGreaterThanOrEqual(b.y + b.height * 0.08);
+            expect(p.internalMaxY).toBeLessThanOrEqual(b.y + b.height * 0.92);
             expect(
-              [...s.tones.subarray(0, s.count)].filter((t) => t === 4).length,
+              [...s.internalTones.subarray(0, s.internalCount)].filter((t) => t === 4).length,
             ).toBeLessThanOrEqual(1);
           }
           expect(renderSVG(figure, intensity)).toContain(figure.a11y.label);

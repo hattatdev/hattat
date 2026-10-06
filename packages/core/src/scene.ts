@@ -6,31 +6,39 @@ const EMPTY: Style = {};
 /** Fixed-capacity scene. Allocate once on mount; reset reuses all numeric storage. */
 export class Scene implements BuildContext {
   readonly unit = 0.5;
-  readonly lines = new Float64Array(600 * 6);
-  readonly tones = new Uint8Array(600);
-  readonly plates = new Float64Array(160 * 12);
-  count = 0;
-  plateCount = 0;
-  private seed = 1;
+  readonly internalLines = new Float64Array(600 * 6);
+  readonly internalTones = new Uint8Array(600);
+  readonly internalPlates = new Float64Array(160 * 12);
+  internalCount = 0;
+  internalPlateCount = 0;
+  private internalSeed = 1;
   reset(): void {
-    this.count = 0;
-    this.plateCount = 0;
-    this.seed = 1;
+    this.internalCount = 0;
+    this.internalPlateCount = 0;
+    this.internalSeed = 1;
   }
-  segment(ax: number, ay: number, az: number, bx: number, by: number, bz: number, tone = 1): void {
-    if (this.count === 600)
-      throw failure(4, "Scene exceeds 600 segments", "Simplify figure geometry.");
-    const i = this.count * 6;
-    this.lines[i] = ax;
-    this.lines[i + 1] = ay;
-    this.lines[i + 2] = az;
-    this.lines[i + 3] = bx;
-    this.lines[i + 4] = by;
-    this.lines[i + 5] = bz;
-    this.tones[this.count++] = tone;
+  internalSegment(
+    ax: number,
+    ay: number,
+    az: number,
+    bx: number,
+    by: number,
+    bz: number,
+    tone = 1,
+  ): void {
+    if (this.internalCount === 600)
+      throw failure(4, "Scene exceeds 600 segments", "Use fewer segments or plates.");
+    const i = this.internalCount * 6;
+    this.internalLines[i] = ax;
+    this.internalLines[i + 1] = ay;
+    this.internalLines[i + 2] = az;
+    this.internalLines[i + 3] = bx;
+    this.internalLines[i + 4] = by;
+    this.internalLines[i + 5] = bz;
+    this.internalTones[this.internalCount++] = tone;
   }
   line(a: Vec3, b: Vec3, style = EMPTY): void {
-    this.segment(a[0], a[1], a[2], b[0], b[1], b[2], TONES.indexOf(style.tone ?? "edge"));
+    this.internalSegment(a[0], a[1], a[2], b[0], b[1], b[2], TONES.indexOf(style.tone ?? "edge"));
   }
   polyline(points: readonly Vec3[], style = EMPTY, closed = false): void {
     for (let i = 1; i < points.length; i++)
@@ -38,7 +46,7 @@ export class Scene implements BuildContext {
     if (closed && points.length > 1)
       this.line(points[points.length - 1] as Vec3, points[0] as Vec3, style);
   }
-  private face(
+  private internalFace(
     x: number,
     y: number,
     z: number,
@@ -49,9 +57,10 @@ export class Scene implements BuildContext {
     by: number,
     bz: number,
   ): void {
-    if (this.plateCount === 160) throw failure(4, "Too many plates", "Simplify figure geometry.");
-    const i = this.plateCount++ * 12;
-    const p = this.plates;
+    if (this.internalPlateCount === 160)
+      throw failure(4, "Too many plates", "Use fewer segments or plates.");
+    const i = this.internalPlateCount++ * 12;
+    const p = this.internalPlates;
     p[i] = x;
     p[i + 1] = y;
     p[i + 2] = z;
@@ -71,17 +80,17 @@ export class Scene implements BuildContext {
     const t = TONES.indexOf(style.tone ?? "edge");
     for (let k = 0; k < 2; k++) {
       const zz = z + k * h;
-      this.segment(x, y, zz, x + w, y, zz, t);
-      this.segment(x + w, y, zz, x + w, y + d, zz, t);
-      this.segment(x + w, y + d, zz, x, y + d, zz, t);
-      this.segment(x, y + d, zz, x, y, zz, t);
+      this.internalSegment(x, y, zz, x + w, y, zz, t);
+      this.internalSegment(x + w, y, zz, x + w, y + d, zz, t);
+      this.internalSegment(x + w, y + d, zz, x, y + d, zz, t);
+      this.internalSegment(x, y + d, zz, x, y, zz, t);
       for (let j = 0; j < 2; j++)
-        this.segment(x + k * w, y + j * d, z, x + k * w, y + j * d, z + h, t);
+        this.internalSegment(x + k * w, y + j * d, z, x + k * w, y + j * d, z + h, t);
     }
     if (style.plate !== false) {
-      this.face(x, y, z + h, w, 0, 0, 0, d, 0);
-      this.face(x + w, y, z, 0, d, 0, 0, 0, h);
-      this.face(x, y + d, z, w, 0, 0, 0, 0, h);
+      this.internalFace(x, y, z + h, w, 0, 0, 0, d, 0);
+      this.internalFace(x + w, y, z, 0, d, 0, 0, 0, h);
+      this.internalFace(x, y + d, z, w, 0, 0, 0, 0, h);
     }
   }
   cylinder(o: Vec3, r: number, h: number, style = EMPTY, n = 16): void {
@@ -94,9 +103,9 @@ export class Scene implements BuildContext {
       const ay = y + Math.sin(a) * r;
       const bx = x + Math.cos(b) * r;
       const by = y + Math.sin(b) * r;
-      this.segment(ax, ay, z, bx, by, z, t);
-      this.segment(ax, ay, z + h, bx, by, z + h, t);
-      if (i % 4 === 0) this.segment(ax, ay, z, ax, ay, z + h, t);
+      this.internalSegment(ax, ay, z, bx, by, z, t);
+      this.internalSegment(ax, ay, z + h, bx, by, z + h, t);
+      if (i % 4 === 0) this.internalSegment(ax, ay, z, ax, ay, z + h, t);
     }
   }
   prism(points: readonly Vec3[], h: number, style = EMPTY): void {
@@ -105,8 +114,8 @@ export class Scene implements BuildContext {
       const a = points[i] as Vec3;
       const b = points[(i + 1) % points.length] as Vec3;
       this.line(a, b, style);
-      this.segment(a[0], a[1], a[2] + h, b[0], b[1], b[2] + h, t);
-      this.segment(a[0], a[1], a[2], a[0], a[1], a[2] + h, t);
+      this.internalSegment(a[0], a[1], a[2] + h, b[0], b[1], b[2] + h, t);
+      this.internalSegment(a[0], a[1], a[2], a[0], a[1], a[2] + h, t);
     }
   }
   grid(o: Vec3, size: number, n: number, style = EMPTY): void {
@@ -114,8 +123,8 @@ export class Scene implements BuildContext {
     const t = TONES.indexOf(style.tone ?? "edge");
     for (let i = 0; i <= n; i++) {
       const v = (size * i) / n;
-      this.segment(x + v, y, z, x + v, y + size, z, t);
-      this.segment(x, y + v, z, x + size, y + v, z, t);
+      this.internalSegment(x + v, y, z, x + v, y + size, z, t);
+      this.internalSegment(x, y + v, z, x + size, y + v, z, t);
     }
   }
   arc(o: Vec3, r: number, start: number, end: number, style = EMPTY, n = 16): void {
@@ -124,7 +133,7 @@ export class Scene implements BuildContext {
     for (let i = 0; i < n; i++) {
       const a = start + ((end - start) * i) / n;
       const b = start + ((end - start) * (i + 1)) / n;
-      this.segment(
+      this.internalSegment(
         x + Math.cos(a) * r,
         y + Math.sin(a) * r,
         z,
@@ -146,7 +155,7 @@ export class Scene implements BuildContext {
       const nx = v * v * a[0] + 2 * v * u * c[0] + u * u * b[0];
       const ny = v * v * a[1] + 2 * v * u * c[1] + u * u * b[1];
       const nz = v * v * a[2] + 2 * v * u * c[2] + u * u * b[2];
-      this.segment(x, y, z, nx, ny, nz, t);
+      this.internalSegment(x, y, z, nx, ny, nz, t);
       x = nx;
       y = ny;
       z = nz;
@@ -165,7 +174,7 @@ export class Scene implements BuildContext {
     return a + (b - a) * t;
   }
   random(): number {
-    this.seed = (Math.imul(1664525, this.seed) + 1013904223) >>> 0;
-    return this.seed / 4294967296;
+    this.internalSeed = (Math.imul(1664525, this.internalSeed) + 1013904223) >>> 0;
+    return this.internalSeed / 4294967296;
   }
 }

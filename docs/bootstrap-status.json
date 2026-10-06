@@ -6,19 +6,19 @@
       "id": "visual-look",
       "status": "pending",
       "phase": 1,
-      "reason": "Five figures render at all three intensities with 15 regression references. Human blind recognition remains pending."
+      "reason": "Five figures render at three intensities with 15 unchanged regression references. Agent inspection recognizes all five; independent human blind review is not claimed or requested again per owner preference."
     },
     {
       "id": "performance-budgets",
       "status": "pending",
       "phase": 1,
-      "reason": "Gzip budgets pass. Latest local 4x CPU max frame 5.8 ms exceeds 4 ms; first SVG generation 14.6 ms, idle/offscreen callbacks zero. Gate remains open."
+      "reason": "Gzip budgets pass (core 6126 bytes). Latest local 4x CPU max frame 2.5 ms and first SVG generation 13.5 ms pass; idle/offscreen callbacks zero. Fresh CI timing remains required."
     },
     {
       "id": "core-coverage",
       "status": "measured",
       "phase": 1,
-      "reason": "52 unit tests pass; core V8 line coverage is 99.6%."
+      "reason": "55 unit tests pass; core V8 line coverage is 99.6%."
     },
     {
       "id": "runtime-accessibility",

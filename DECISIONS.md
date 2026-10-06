@@ -72,3 +72,18 @@ newlines to avoid native Windows newline translation when converting existing by
 The owner asked the agent to inspect the images without asking the owner to identify them
 again. Complete informed agent visual inspection and record it accurately; do not claim
 an independent human blind test or change VIS-08. Do not repeat the recognition question.
+
+## 2026-10-06 — Repeated figure geometry reuse
+
+Measured identical synchronized instances repeated the same numerical work. Share one latest
+scene/projection per figure definition, comparing all parameters and intensity without frame
+allocations. Keep independent instance state and write each SVG immediately; differing poses
+recompute. Invalidate cached parameters before a potentially failing build and release the
+cache after the last destroy. Regression tests exercise independence, intensity, failures,
+and lifetime. Defer layout reads until ResizeObserver or first pointer input to avoid forced
+layout between consecutive mounts. Prefix only private renderer storage/methods for safe
+mangling; keep every author-facing helper and metadata name intact. Preserve error codes and
+actionable remedies while removing repetitive prose. Complete core is 6,126 gzip bytes.
+Local 20-instance 4x CPU measurements improved from max 5.8 ms to 2.5 ms, first generation
+13.5 ms, idle/offscreen callbacks zero. Fresh CI remains required. The benchmark repeats five
+synchronized figures; differing simultaneous poses must not inherit this performance claim.

@@ -31,4 +31,10 @@ are implementation workspace APIs, excluded from the distribution's public expor
 The build enforces 6,144 gzip bytes for the complete public core entry and 2,048 for each
 figure excluding core. SVG coordinates round to 0.001 world units at serialization;
 projection, clipping, spring state, and padding measurements retain double precision.
-Private instance properties alone are mangled; DOM APIs and figure contracts remain intact.
+Explicitly prefixed private implementation properties are mangled; DOM APIs and figure contracts remain intact.
+
+Mounted copies of the same definition reuse geometry only when every parameter and intensity
+match. Springs, signals, options, labels, and SVG nodes remain independent. Keep `build` pure:
+results must depend on numeric values, not parameter-object identity or invocation count.
+The shared result is invalidated before rebuilding and released when the last copy is destroyed.
+Layout bounds are observed and measured on first pointer input if observation has not run yet.
