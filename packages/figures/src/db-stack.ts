@@ -79,13 +79,14 @@ export const dbStack = defineFigure({
     for (let layer = 0; layer < 3; layer++) {
       const z = HEIGHTS[layer] as number,
         style = layer === 2 - ctx.nearest(select, 3) ? HI : EDGE;
-      for (let ring = 0; ring < 4; ring++) {
-        const front = ring === 0 || ring === 3,
+      for (let ring = 0; ring < 3; ring++) {
+        if (ring === 2 && layer !== 2) continue;
+        const front = ring === 0,
           start = front ? -Math.PI / 4 : 0,
           span = front ? Math.PI : Math.PI * 2,
           count = front ? 16 : 32,
           radius = ring === 2 ? 1.75 : 2,
-          height = ring === 0 ? 0 : ring === 3 ? 0.25 : 0.75;
+          height = ring === 0 ? 0 : 0.75;
         for (let i = 0; i < count; i++) {
           const a = start + (i * span) / count,
             b = start + ((i + 1) * span) / count;
@@ -105,8 +106,8 @@ export const dbStack = defineFigure({
         B[2] = z + 0.75;
         visibleLine(ctx, layer, style);
       }
-      for (let port = 0; port < 3; port++) {
-        const angle = Math.PI / 4 + (port - 1) * 0.25;
+      for (let port = 0; port < 1; port++) {
+        const angle = Math.PI / 4;
         for (let side = 0; side < 4; side++) {
           const next = (side + 1) % 4;
           A[0] = Math.cos(angle + (side === 0 || side === 3 ? -0.0625 : 0.0625)) * 2;

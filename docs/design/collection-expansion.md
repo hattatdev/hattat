@@ -6,7 +6,10 @@ or publication work.
 
 Owner steering on 2026-10-07: improve physical detail and convincing solid geometry
 before adding more models. The first quality pass covers db-stack, shield-layers,
-server-rack, and desk-lamp. Resume the remaining additions after that review.
+server-rack, and desk-lamp. The owner subsequently rejected that pass as scribbly.
+Correct contour overlap and crowding at 240 px before resuming collection growth;
+more hardware detail and green tests do not establish usable visual quality.
+See docs/readability-review.md for matched evidence and explicit review limitations.
 
 ## Outcome and scope
 

@@ -211,3 +211,19 @@ rim previously drawn through a closed upper layer. Measure the added geometry
 and justify entry-size increases above 5% in review. The 32-model expansion remains
 planned; quality takes priority over the next additions. GEN-03/04, CODE-03–05,
 VIS-05/08/09, FIG-06, PERF-06, TEST-02/03, GIT-02–06.
+
+## 2026-10-07 — Correct visual crowding before adding more figures
+
+The owner rejected the physical-detail pass as scribbly and unsuitable for use.
+Treat automated checks as technical evidence, not proof of visual quality. Replace
+the lamp's overlapping double arm frames and coils with a single thick articulated
+arm, clipping covered edges against opaque pivot drums. Reduce repeated rims,
+fasteners, tiny openings, and rear-face details in the database, shield, and rack.
+Inspect matched 240 px rest/full/reduced images and maximum-intensity response;
+preserve the rejected pass as historical evidence. Add a reproducing regression
+for lines crossing the lamp's opaque pivot face, and justify clipping's bundle
+cost with measurements. Keep core/API/dependencies and fourteen-entry membership
+unchanged. The other ten models still need visual review; no commercial-quality,
+human blind-recognition, or flashing acceptance is claimed. Collection growth stays
+secondary to readable drawing design. GEN-03/04, CODE-03–05, VIS-05/08/09,
+PERF-06, TEST-02/03, GIT-02–06.

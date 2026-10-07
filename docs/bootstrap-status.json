@@ -6,19 +6,19 @@
       "id": "visual-look",
       "status": "pending",
       "phase": 1,
-      "reason": "Fourteen figures have 42 references. The physical-detail pass revises twelve references for database, shield, rack, and lamp, with matched before/after evidence. All four pass look at three intensities and agent inspection. Independent human blind review remains pending and is not requested again per owner preference."
+      "reason": "Fourteen figures have 42 references. The owner rejected the earlier physical-detail result as cluttered. A readability correction revises twelve references for database, shield, rack, and lamp with matched before/after evidence. Look checks pass at three intensities; the agent opened rest/full/reduced and maximum-response images. Technical success is not visual-quality acceptance. Independent human blind review remains pending and is not requested again per owner preference."
     },
     {
       "id": "performance-budgets",
       "status": "measured",
       "phase": 1,
-      "reason": "Core 6144 gzip bytes; all entries below 2048. Local twenty-instance cohort cycling fourteen definitions at 4x CPU: p95 7.5 ms, max 8.6 ms, first draw 18.6 ms, idle/offscreen zero. Both timing targets are exceeded under the existing timing-only exception. Entry size and timing increases are justified with raw evidence in docs/realism-review.md."
+      "reason": "Core 6144 gzip bytes; all entries below 2048. Local twenty-instance cohort cycling fourteen definitions at 4x CPU: p95 5.0 ms, max 5.1 ms, first draw 16.9 ms, idle/offscreen zero. Both timing targets remain exceeded under the existing timing-only exception. The lamp clipping cost is justified with raw evidence in docs/readability-review.md."
     },
     {
       "id": "core-coverage",
       "status": "measured",
       "phase": 1,
-      "reason": "66 unit tests pass; core V8 line coverage is 99.62%. The new occlusion regression fails on the original geometry and passes on the corrected figure."
+      "reason": "67 unit tests pass; core V8 line coverage is 99.62%. The new head-pivot overlap regression finds seven covered segment midpoints on 7ed9a15 and zero after correction. This is occlusion evidence, not a subjective quality test."
     },
     {
       "id": "runtime-accessibility",

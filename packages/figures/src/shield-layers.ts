@@ -4,11 +4,9 @@ const OUTLINE = [-2, 5, 0, 5.75, 2, 5, 1.75, 2.5, 1, 1.25, 0, 0.5, -1, 1.25, -1.
 const INSET = [
   -1.5, 4.75, 0, 5.25, 1.5, 4.75, 1.25, 2.75, 0.75, 1.75, 0, 1, -0.75, 1.75, -1.25, 2.75,
 ] as const;
-const FASTENERS = [-1, 4.5, 1, 4.5, -0.5, 2.25, 0.5, 2.25] as const;
+const FASTENERS = [-1, 4.5, 1, 4.5] as const;
 const A: [number, number, number] = [0, 0, 0],
   B: [number, number, number] = [0, 0, 0];
-const O: [number, number, number] = [0, 0, 0],
-  S: [number, number, number] = [0.5, 0.25, 1.5];
 const EDGE: Style = { tone: "edge" },
   HI: Style = { tone: "hi" },
   MID: Style = { tone: "mid" };
@@ -103,6 +101,7 @@ export const shieldLayers = defineFigure({
           }
         }
       }
+      if (layer !== 2) continue;
       for (let i = 0; i < 8; i++) {
         const next = (i + 1) % 8;
         A[0] = INSET[i * 2] as number;
@@ -112,7 +111,7 @@ export const shieldLayers = defineFigure({
         B[2] = INSET[next * 2 + 1] as number;
         visibleLine(ctx, layer, spacing, MID);
       }
-      for (let rivet = 0; rivet < 4; rivet++) {
+      for (let rivet = 0; rivet < 2; rivet++) {
         for (let i = 0; i < 8; i++) {
           const a = (i * Math.PI) / 4,
             b = ((i + 1) * Math.PI) / 4;
@@ -124,12 +123,11 @@ export const shieldLayers = defineFigure({
           visibleLine(ctx, layer, spacing, MID);
         }
       }
-      if (layer === 2) {
-        O[0] = -0.25;
-        O[1] = y + 0.25;
-        O[2] = 2.75;
-        ctx.box(O, S, MID);
-      }
+      A[0] = B[0] = 0;
+      A[1] = B[1] = y + 0.25;
+      A[2] = 1.5;
+      B[2] = 4.75;
+      ctx.line(A, B, MID);
     }
   },
 });
