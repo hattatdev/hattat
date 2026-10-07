@@ -1,5 +1,9 @@
 # Figure readability correction
 
+The lamp shown here is historical. Its subsequent
+[quality pilot](lamp-quality-review.md) replaces the arm geometry and shade while
+preserving this correction's images and measurements.
+
 This page records the first four-model correction. The owner then authorized
 the [remaining ten-model review](collection-readability-review.md), which completes
 this round of drawing corrections without claiming independent visual acceptance.

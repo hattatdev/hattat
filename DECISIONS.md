@@ -247,3 +247,22 @@ costs rather than presenting them as free optimizations. Agent inspection and
 technical checks remain distinct from independent visual acceptance; no further
 recognition question is requested from the owner. GEN-03/04, CODE-03–05,
 VIS-05/08/09, MOT-06, PERF-06, TEST-02/03, GIT-02–06.
+
+## 2026-10-07 — Rebuild one lamp before extending the visual language
+
+The owner approved a single desk-lamp quality pilot after comparing Hattat's
+illustrations with a more polished line-art library. Author the design independently
+from the physical brief; import no competitor code, geometry, or assets. Replace
+variable-length motion with fixed 2.5/2.75-unit arms, smaller pivots, a beveled base,
+and a shade with a defined lower lip. Use the existing shared tone/stroke mechanism.
+Subtract input displacement from world-space arm angles, correcting the approved
+sketch's signs so the head follows pointer x. Compile convex opaque faces into
+fixed buffers and subtract full projected hidden intervals before drawing; keep
+this private to the figure rather than expanding the core at its exact size cap.
+Replace the single-rest pivot test with independent ray checks across motion and
+prove the arm-length regression against the baseline. Preserve matched before/after
+references and compare packaged versions in one browser process with asserted
+segment counts. Record size, module scratch memory, and timing tradeoffs. Technical
+checks are distinct from visual quality and human blind acceptance. Evaluate this
+pilot before touching the other thirteen models or resuming expansion. GEN-02–05,
+CODE-03–05, API-06, VIS-01–09, MOT-03/05/06, PERF-06, TEST-02/03, GIT-02–06.
