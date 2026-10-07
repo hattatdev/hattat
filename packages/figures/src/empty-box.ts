@@ -50,14 +50,30 @@ export const emptyBox = defineFigure({
           B[0] = sign * (2 + (j === 1 || j === 2 ? dx : 0));
           B[1] = j < 2 ? -1.5 : 1.5;
           B[2] = 2.5 + (j === 1 || j === 2 ? dz : 0) - layer * 0.25;
-          ctx.line(A, B, layer ? MID : HI);
-          if (!layer) {
+          // Only exposed underside edges explain flap thickness; omit rear wireframes.
+          if (!layer || edge === 1 || (side === 0 && edge === 0) || (side === 1 && edge === 2))
+            ctx.line(A, B, layer ? MID : HI);
+          if (!layer && (edge === 1 || edge === 2)) {
             B[0] = A[0];
             B[1] = A[1];
             B[2] = A[2] - 0.25;
             ctx.line(A, B, EDGE);
           }
         }
+      }
+    }
+    // Short end flaps complete the carton silhouette without a second wire outline.
+    for (let side = 0; side < 2; side++) {
+      const sign = side ? 1 : -1;
+      for (let edge = 0; edge < 4; edge++) {
+        const next = (edge + 1) % 4;
+        A[0] = edge === 0 || edge === 3 ? -1.75 : 1.75;
+        B[0] = next === 0 || next === 3 ? -1.75 : 1.75;
+        A[1] = sign * (1.5 + (edge >= 2 ? dx * 0.5 : 0));
+        B[1] = sign * (1.5 + (next >= 2 ? dx * 0.5 : 0));
+        A[2] = 2.5 + (edge >= 2 ? dz * 0.5 : 0);
+        B[2] = 2.5 + (next >= 2 ? dz * 0.5 : 0);
+        ctx.line(A, B, HI);
       }
     }
   },

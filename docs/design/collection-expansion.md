@@ -10,6 +10,9 @@ server-rack, and desk-lamp. The owner subsequently rejected that pass as scribbl
 Correct contour overlap and crowding at 240 px before resuming collection growth;
 more hardware detail and green tests do not establish usable visual quality.
 See docs/readability-review.md for matched evidence and explicit review limitations.
+The owner approved the follow-up pass for the remaining ten models. Its matched
+evidence is in docs/collection-readability-review.md. Both passes preserve the
+fourteen-model count; they do not authorize a new engine or later-phase work.
 
 ## Outcome and scope
 

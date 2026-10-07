@@ -58,7 +58,9 @@ See [collection review](docs/collection-review.md) for the initial expansion and
 See the [readability correction](docs/readability-review.md) for current database,
 shield, rack, and lamp before/after images. The earlier
 [physical detail review](docs/realism-review.md) is historical; automated checks do
-not establish visual-quality acceptance.
+not establish visual-quality acceptance. The
+[remaining collection review](docs/collection-readability-review.md) records the
+follow-up corrections and comparisons for the other ten models.
 
 ## Project documents
 

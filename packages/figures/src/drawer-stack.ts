@@ -26,6 +26,13 @@ export const drawerStack = defineFigure({
     ORIGIN[1] = 0;
     ORIGIN[2] = 0;
     ctx.box(ORIGIN, SIZE, EDGE);
+    for (let foot = 0; foot < 4; foot++) {
+      ORIGIN[0] = foot % 2 ? 3.25 : 0.25;
+      ORIGIN[1] = foot < 2 ? 0.25 : 2.25;
+      ORIGIN[2] = -0.5;
+      SIZE[0] = SIZE[1] = SIZE[2] = 0.5;
+      ctx.box(ORIGIN, SIZE, MID);
+    }
     for (let i = 0; i < 4; i++) {
       const pull = ctx.falloff(open, 1 - i / 3) * intensity * 2;
       ORIGIN[0] = 0.5;
@@ -33,21 +40,24 @@ export const drawerStack = defineFigure({
       ORIGIN[2] = 0.5 + i * 1.5;
       SIZE[0] = 3;
       SIZE[1] = 3;
-      SIZE[2] = 1;
-      ctx.box(ORIGIN, SIZE, i === ctx.nearest(1 - open, 4) ? HI : MID);
+      SIZE[2] = 0.25;
+      ctx.box(ORIGIN, SIZE, MID);
+      // A drawer is an open tray, with a floor and four opaque walls.
+      for (let side = 0; side < 4; side++) {
+        ORIGIN[0] = side === 1 ? 3.25 : 0.5;
+        ORIGIN[1] = pull + (side === 3 ? 2.75 : side < 2 ? 0.25 : 0);
+        ORIGIN[2] = 0.75 + i * 1.5;
+        SIZE[0] = side < 2 ? 0.25 : 3;
+        SIZE[1] = side < 2 ? 2.5 : 0.25;
+        SIZE[2] = 0.75;
+        ctx.box(ORIGIN, SIZE, i === ctx.nearest(1 - open, 4) ? HI : MID);
+      }
       ORIGIN[0] = 1.5;
       ORIGIN[1] = 3 + pull;
-      ORIGIN[2] += 0.5;
-      SIZE[0] = 1.5;
-      SIZE[1] = ORIGIN[1] + 0.5;
-      SIZE[2] = ORIGIN[2];
-      ctx.line(ORIGIN, SIZE, EDGE);
-      ORIGIN[1] += 0.5;
-      SIZE[0] = 2.5;
-      ctx.line(ORIGIN, SIZE, EDGE);
-      ORIGIN[0] = 2.5;
-      SIZE[1] -= 0.5;
-      ctx.line(ORIGIN, SIZE, EDGE);
+      ORIGIN[2] = 1 + i * 1.5;
+      SIZE[0] = 1;
+      SIZE[1] = SIZE[2] = 0.25;
+      ctx.box(ORIGIN, SIZE, EDGE);
     }
   },
 });

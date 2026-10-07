@@ -227,3 +227,23 @@ unchanged. The other ten models still need visual review; no commercial-quality,
 human blind-recognition, or flashing acceptance is claimed. Collection growth stays
 secondary to readable drawing design. GEN-03/04, CODE-03–05, VIS-05/08/09,
 PERF-06, TEST-02/03, GIT-02–06.
+
+## 2026-10-07 — Review and correct the remaining ten illustrations
+
+The owner approved extending the readability pass to the other ten figures.
+Inspect every resting illustration at 240 px and every maximum-response pose;
+correct concrete overlap and shape problems before growing the collection.
+Use hollow drawer trays with opaque walls, a thicker shackle and connected keyhole,
+non-intersecting stylized gear profiles, a meaningful static wave, a data scale,
+clear bridge curbs, a tapered turbine mast with opaque rotor clipping, a solid
+pendulum disk, a single envelope flap, and four carton flaps with fewer rear lines.
+Keep existing metadata, signals, API, dependencies, and fourteen-model membership.
+Figure-local convex interval clipping masks turbine body lines without expanding
+the core at its exact size cap. Reusable numeric buffers avoid frame allocations.
+Add reproducing checks for gear crossings, hub overlap, and blade transparency;
+preserve ten matched before/after triplets from ccc03fc, updating only the
+thirty affected references. Record the drawer's extra geometry and turbine clipping
+costs rather than presenting them as free optimizations. Agent inspection and
+technical checks remain distinct from independent visual acceptance; no further
+recognition question is requested from the owner. GEN-03/04, CODE-03–05,
+VIS-05/08/09, MOT-06, PERF-06, TEST-02/03, GIT-02–06.

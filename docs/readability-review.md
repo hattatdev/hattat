@@ -1,5 +1,9 @@
 # Figure readability correction
 
+This page records the first four-model correction. The owner then authorized
+the [remaining ten-model review](collection-readability-review.md), which completes
+this round of drawing corrections without claiming independent visual acceptance.
+
 The owner rejected the physical-detail pass on 2026-10-07: the models still looked
 like scribbles. Passing automated checks and inspecting images did not establish
 usable visual quality. This correction prioritizes coherent silhouettes and solid

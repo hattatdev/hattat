@@ -27,6 +27,19 @@ export const bridge = defineFigure({
     S[1] = 3;
     S[2] = 0.5;
     ctx.box(O, S, EDGE);
+    for (let side = 0; side < 2; side++) {
+      O[0] = -4;
+      O[1] = side ? 1.25 : -1.5;
+      O[2] = 0.5;
+      S[0] = 8;
+      S[1] = S[2] = 0.25;
+      ctx.box(O, S, MID);
+      A[0] = -4;
+      B[0] = 4;
+      A[1] = B[1] = side ? 0.5 : -0.5;
+      A[2] = B[2] = 0.5;
+      ctx.line(A, B, MID);
+    }
     for (let tower = 0; tower < 2; tower++) {
       const x = tower ? 2.5 : -2.5;
       for (let side = 0; side < 2; side++) {
@@ -59,15 +72,15 @@ export const bridge = defineFigure({
       B[0] = 4;
       B[2] = 0.5;
       ctx.line(A, B, HI);
-      for (let i = 0; i < 16; i++) {
-        const t = i / 16,
-          next = (i + 1) / 16;
+      for (let i = 0; i < 24; i++) {
+        const t = i / 24,
+          next = (i + 1) / 24;
         A[0] = -2.5 + 5 * t;
         A[2] = 4.75 - (3 - rise) * 4 * t * (1 - t);
         B[0] = -2.5 + 5 * next;
         B[2] = 4.75 - (3 - rise) * 4 * next * (1 - next);
         ctx.line(A, B, HI);
-        if (i % 2 === 0) {
+        if (i > 0 && i % 3 === 0) {
           B[0] = A[0];
           B[2] = 0.5;
           ctx.line(A, B, MID);
