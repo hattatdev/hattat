@@ -1,0 +1,128 @@
+[
+  {
+    "name": "bar-city",
+    "beforeGzip": 633,
+    "afterGzip": 634,
+    "beforeTypedBytes": 0,
+    "afterTypedBytes": 0,
+    "maxSegments": 83,
+    "minPadding": 0.11956521739130435
+  },
+  {
+    "name": "bridge",
+    "beforeGzip": 702,
+    "afterGzip": 716,
+    "beforeTypedBytes": 0,
+    "afterTypedBytes": 0,
+    "maxSegments": 224,
+    "minPadding": 0.11538461538461539
+  },
+  {
+    "name": "db-stack",
+    "beforeGzip": 1079,
+    "afterGzip": 1134,
+    "beforeTypedBytes": 24,
+    "afterTypedBytes": 24,
+    "maxSegments": 208,
+    "minPadding": 0.09286515973632278
+  },
+  {
+    "name": "desk-lamp",
+    "beforeGzip": 1880,
+    "afterGzip": 1894,
+    "beforeTypedBytes": 54464,
+    "afterTypedBytes": 54848,
+    "maxSegments": 312,
+    "minPadding": 0.13214886980224205
+  },
+  {
+    "name": "drawer-stack",
+    "beforeGzip": 612,
+    "afterGzip": 675,
+    "beforeTypedBytes": 0,
+    "afterTypedBytes": 0,
+    "maxSegments": 328,
+    "minPadding": 0.1111111111111111
+  },
+  {
+    "name": "empty-box",
+    "beforeGzip": 767,
+    "afterGzip": 1990,
+    "beforeTypedBytes": 0,
+    "afterTypedBytes": 54944,
+    "maxSegments": 69,
+    "minPadding": 0.12607239322293826
+  },
+  {
+    "name": "envelope",
+    "beforeGzip": 771,
+    "afterGzip": 1955,
+    "beforeTypedBytes": 0,
+    "afterTypedBytes": 55360,
+    "maxSegments": 126,
+    "minPadding": 0.16304347826086957
+  },
+  {
+    "name": "gear-train",
+    "beforeGzip": 776,
+    "afterGzip": 870,
+    "beforeTypedBytes": 528,
+    "afterTypedBytes": 784,
+    "maxSegments": 336,
+    "minPadding": 0.1083997772223787
+  },
+  {
+    "name": "padlock",
+    "beforeGzip": 760,
+    "afterGzip": 1983,
+    "beforeTypedBytes": 0,
+    "afterTypedBytes": 55296,
+    "maxSegments": 186,
+    "minPadding": 0.0906716256966001
+  },
+  {
+    "name": "pendulum",
+    "beforeGzip": 749,
+    "afterGzip": 886,
+    "beforeTypedBytes": 0,
+    "afterTypedBytes": 0,
+    "maxSegments": 148,
+    "minPadding": 0.10869565217391304
+  },
+  {
+    "name": "server-rack",
+    "beforeGzip": 766,
+    "afterGzip": 825,
+    "beforeTypedBytes": 0,
+    "afterTypedBytes": 0,
+    "maxSegments": 329,
+    "minPadding": 0.09615384615384616
+  },
+  {
+    "name": "shield-layers",
+    "beforeGzip": 1036,
+    "afterGzip": 1062,
+    "beforeTypedBytes": 0,
+    "afterTypedBytes": 0,
+    "maxSegments": 87,
+    "minPadding": 0.09090909090909091
+  },
+  {
+    "name": "wave-field",
+    "beforeGzip": 670,
+    "afterGzip": 639,
+    "beforeTypedBytes": 648,
+    "afterTypedBytes": 0,
+    "maxSegments": 360,
+    "minPadding": 0.11509982054024948
+  },
+  {
+    "name": "wind-turbine",
+    "beforeGzip": 1606,
+    "afterGzip": 1716,
+    "beforeTypedBytes": 256,
+    "afterTypedBytes": 352,
+    "maxSegments": 94,
+    "minPadding": 0.08333333333333333
+  }
+]

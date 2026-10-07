@@ -68,13 +68,18 @@ export const serverRack = defineFigure({
       S[1] = 3;
       S[2] = 0.75;
       ctx.box(O, S, i === ctx.nearest(1 - select, 5) ? HI : MID);
-      for (let vent = 0; vent < 2; vent++) {
-        A[0] = 1.25;
-        B[0] = 2.5;
-        A[1] = B[1] = 3 + pull;
-        A[2] = B[2] = O[2] + 0.25 + vent * 0.25;
-        ctx.line(A, B, MID);
-      }
+      // Two recessed fan apertures give each removable server a readable front panel.
+      for (let fan = 0; fan < 2; fan++)
+        for (let segment = 0; segment < 16; segment++) {
+          const a = (segment * Math.PI) / 8,
+            b = ((segment + 1) * Math.PI) / 8;
+          A[0] = 1.5 + fan + Math.cos(a) * 0.25;
+          B[0] = 1.5 + fan + Math.cos(b) * 0.25;
+          A[1] = B[1] = 3 + pull;
+          A[2] = O[2] + 0.5 + Math.sin(a) * 0.25;
+          B[2] = O[2] + 0.5 + Math.sin(b) * 0.25;
+          ctx.line(A, B, MID);
+        }
       for (let handle = 0; handle < 2; handle++) {
         A[0] = B[0] = handle ? 3.25 : 0.75;
         A[1] = 3 + pull;

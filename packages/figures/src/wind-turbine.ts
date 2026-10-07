@@ -7,8 +7,11 @@ const A: [number, number, number] = [0, 0, 0],
 const EDGE: Style = { tone: "edge" },
   HI: Style = { tone: "hi" },
   MID: Style = { tone: "mid" };
-const BLADE = [0.5, -0.25, 3, 0, 2.5, 0.5, 0.5, 0.25] as const;
-const ROTOR = new Float64Array(24),
+const BLADE = [0.5, -0.25, 2.75, 0, 3, 0.25, 2.5, 0.5, 1, 0.5, 0.5, 0.25] as const;
+const HOUSING = [
+  -0.25, 6, 0.25, 6, 0.5, 5.75, 0.5, 5.25, 0.25, 5, -0.25, 5, -0.5, 5.25, -0.5, 5.75,
+] as const;
+const ROTOR = new Float64Array(36),
   INTERVALS = new Float64Array(8);
 
 function bladeLine(ctx: BuildContext, style: Style): void {
@@ -31,9 +34,9 @@ function bladeLine(ctx: BuildContext, style: Style): void {
     if (ay >= 1 - 1e-7 && by >= 1 - 1e-7) break;
     if (ay >= 1 - 1e-7) low = (1 - 1e-7 - ay) / (by - ay);
     if (by >= 1 - 1e-7) high = (1 - 1e-7 - ay) / (by - ay);
-    for (let edge = 0; edge < 4; edge++) {
-      const i = blade * 8 + edge * 2,
-        j = blade * 8 + ((edge + 1) % 4) * 2,
+    for (let edge = 0; edge < 6; edge++) {
+      const i = blade * 12 + edge * 2,
+        j = blade * 12 + ((edge + 1) % 6) * 2,
         x = ROTOR[i] as number,
         z = ROTOR[i + 1] as number,
         dx = (ROTOR[j] as number) - x,
@@ -163,11 +166,11 @@ export const windTurbine = defineFigure({
       const angle = (blade * Math.PI * 2) / 3 + turn + Math.PI / 2,
         c = Math.cos(angle),
         s = Math.sin(angle);
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < 6; i++) {
         const x = BLADE[i * 2] as number,
           z = BLADE[i * 2 + 1] as number;
-        ROTOR[blade * 8 + i * 2] = x * c - z * s;
-        ROTOR[blade * 8 + i * 2 + 1] = 5.5 + x * s + z * c;
+        ROTOR[blade * 12 + i * 2] = x * c - z * s;
+        ROTOR[blade * 12 + i * 2 + 1] = 5.5 + x * s + z * c;
       }
     }
     O[0] = O[1] = -1;
@@ -206,14 +209,34 @@ export const windTurbine = defineFigure({
     O[2] = 5;
     S[0] = S[2] = 1;
     S[1] = 1.5;
-    enclosure(ctx);
+    // VIS-09: chamfered nacelle edges describe a casing rather than a raw cube.
+    for (let i = 0; i < 8; i++) {
+      const j = (i + 1) % 8,
+        ax = HOUSING[i * 2] as number,
+        az = HOUSING[i * 2 + 1] as number,
+        bx = HOUSING[j * 2] as number,
+        bz = HOUSING[j * 2 + 1] as number;
+      A[0] = ax;
+      A[2] = az;
+      B[0] = bx;
+      B[2] = bz;
+      A[1] = B[1] = 0.5;
+      rotorLine(ctx, EDGE);
+      if (bx - ax - bz + az <= 0) continue;
+      A[1] = B[1] = -1;
+      rotorLine(ctx, MID);
+      B[0] = ax;
+      B[2] = az;
+      B[1] = 0.5;
+      rotorLine(ctx, EDGE);
+    }
     for (let blade = 0; blade < 3; blade++) {
       const angle = (blade * Math.PI * 2) / 3 + turn + Math.PI / 2;
       const c = Math.cos(angle),
         s = Math.sin(angle);
       for (let layer = 0; layer < 2; layer++) {
-        for (let i = 0; i < 4; i++) {
-          const j = (i + 1) % 4,
+        for (let i = 0; i < 6; i++) {
+          const j = (i + 1) % 6,
             ax = BLADE[i * 2] ?? 0,
             az = BLADE[i * 2 + 1] ?? 0;
           const bx = BLADE[j * 2] ?? 0,

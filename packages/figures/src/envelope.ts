@@ -1,13 +1,15 @@
-import { defineFigure, type Style } from "@hattatdev/core";
+import { defineFigure } from "@hattatdev/core";
+import { extrude, face, line, point, reset } from "./internal/solid.js";
 
-const O: [number, number, number] = [0, 0, 0],
-  S: [number, number, number] = [0, 0, 0];
-const A: [number, number, number] = [0, 0, 0],
-  B: [number, number, number] = [0, 0, 0];
-const EDGE: Style = { tone: "edge" },
-  HI: Style = { tone: "hi" },
-  MID: Style = { tone: "mid" };
-
+const BODY = new Float64Array(64),
+  LETTER = new Float64Array(8);
+for (let corner = 0; corner < 4; corner++)
+  for (let i = 0; i < 8; i++) {
+    const a = (corner * Math.PI) / 2 + (i * Math.PI) / 14;
+    BODY[(corner * 8 + i) * 2] = (corner < 2 ? 2.25 : -2.25) + Math.sin(a) * 0.25;
+    BODY[(corner * 8 + i) * 2 + 1] =
+      (corner === 0 || corner === 3 ? 3.25 : 0.25) + Math.cos(a) * 0.25;
+  }
 /** An envelope opens to reveal a letter. @example mount(host, envelope); */
 export const envelope = defineFigure({
   name: "envelope",
@@ -21,72 +23,57 @@ export const envelope = defineFigure({
   bounds: { x: -5.5, y: -8.25, width: 11.5, height: 11.5 },
   build(ctx, p) {
     const open = (p.open ?? 0) * (p.intensity ?? 0.5),
-      angle = open * 2.1;
-    const c = Math.cos(angle),
+      angle = open * 2.1,
+      c = Math.cos(angle),
       s = Math.sin(angle),
       top = 3.25 + open * 2;
-    O[0] = -2.5;
-    O[1] = -0.25;
-    O[2] = 0;
-    S[0] = 5;
-    S[1] = 0.5;
-    S[2] = 3.5;
-    ctx.box(O, S, EDGE);
-    O[0] = -2;
-    O[1] = -0.25;
-    O[2] = 0.5 + open * 2;
-    S[0] = 4;
-    S[1] = 0.25;
-    S[2] = 2.75;
-    ctx.box(O, S, MID);
-    for (let side = 0; side < 2; side++) {
-      A[0] = side ? 2.5 : -2.5;
-      A[1] = B[1] = 0.25;
-      A[2] = 0;
-      B[0] = 0;
-      B[2] = 1.5;
-      ctx.line(A, B, MID);
-    }
-    // One front flap outline avoids the transparent doubled triangle at rest.
-    for (let edge = 0; edge < 3; edge++) {
-      const ax = edge === 0 ? -2.5 : edge === 1 ? 2.5 : 0;
-      const bx = edge === 0 ? 2.5 : edge === 1 ? 0 : -2.5;
-      A[0] = ax;
-      A[1] = 0.25 + (edge === 2 ? 2 * s : 0);
-      A[2] = 3.5 - (edge === 2 ? 2 * c : 0);
-      B[0] = bx;
-      B[1] = 0.25 + (edge === 1 ? 2 * s : 0);
-      B[2] = 3.5 - (edge === 1 ? 2 * c : 0);
-      ctx.line(A, B, HI);
-    }
-    for (let i = 0; i < 5; i++) {
-      A[0] = -1.5;
-      A[1] = B[1] = 0;
-      A[2] = B[2] = top - 0.5 - i * 0.5;
-      B[0] = i === 4 ? 0 : 0.75;
-      ctx.line(A, B, MID);
-    }
-    for (let i = 0; i < 4; i++) {
-      A[0] = i === 0 || i === 3 ? 1 : 1.5;
-      A[1] = B[1] = 0;
-      A[2] = top - (i < 2 ? 0.5 : 1);
-      const j = (i + 1) % 4;
-      B[0] = j === 0 || j === 3 ? 1 : 1.5;
-      B[2] = top - (j < 2 ? 0.5 : 1);
-      ctx.line(A, B, MID);
-    }
-    for (let i = 0; i < 32; i++) {
-      const a = (i * Math.PI) / 16,
-        b = ((i + 1) * Math.PI) / 16;
-      const ta = 1.25 + Math.sin(a) * 0.5,
-        tb = 1.25 + Math.sin(b) * 0.5;
-      A[0] = Math.cos(a) * 0.5;
-      A[1] = 0.25 + ta * s;
-      A[2] = 3.5 - ta * c;
-      B[0] = Math.cos(b) * 0.5;
-      B[1] = 0.25 + tb * s;
-      B[2] = 3.5 - tb * c;
-      ctx.line(A, B, MID);
+    LETTER[0] = -2;
+    LETTER[1] = top;
+    LETTER[2] = 2;
+    LETTER[3] = top;
+    LETTER[4] = 2;
+    LETTER[5] = top - 2.75;
+    LETTER[6] = -2;
+    LETTER[7] = top - 2.75;
+    reset();
+    for (let pass = 0; pass < 2; pass++) {
+      extrude(ctx, BODY, 0, 0.25, 1, 1, pass);
+      extrude(ctx, LETTER, -0.25, 0, 1, 2, pass);
+      point(0, -2.5, 0.25, 3.5);
+      point(1, 2.5, 0.25, 3.5);
+      point(2, 0, 0.25 + 2 * s, 3.5 - 2 * c);
+      if (!pass) {
+        face(3);
+        // Both sides of the paper are opaque when the flap turns over.
+        point(0, 2.5, 0.25, 3.5);
+        point(1, -2.5, 0.25, 3.5);
+        face(3);
+      } else {
+        line(ctx, 0, 1, 0);
+        line(ctx, 1, 2, 0);
+        line(ctx, 2, 0, 0);
+        for (let side = 0; side < 2; side++) {
+          point(0, side ? 2.5 : -2.5, 0.25, 0.25);
+          point(1, 0, 0.25, 1.5);
+          line(ctx, 0, 1, 2);
+        }
+        for (let i = 0; i < 5; i++) {
+          point(0, -1.5, 0, top - 0.5 - i * 0.5);
+          point(1, i === 4 ? 0 : 1, 0, top - 0.5 - i * 0.5);
+          line(ctx, 0, 1, 2);
+        }
+        for (let ring = 0; ring < 2; ring++)
+          for (let i = 0; i < 32; i++) {
+            const a = (i * Math.PI) / 16,
+              b = ((i + 1) * Math.PI) / 16,
+              r = ring ? 0.25 : 0.5,
+              ta = 1.25 + Math.sin(a) * r,
+              tb = 1.25 + Math.sin(b) * r;
+            point(0, Math.cos(a) * r, 0.25 + ta * s, 3.5 - ta * c);
+            point(1, Math.cos(b) * r, 0.25 + tb * s, 3.5 - tb * c);
+            line(ctx, 0, 1, ring ? 2 : 1);
+          }
+      }
     }
   },
 });

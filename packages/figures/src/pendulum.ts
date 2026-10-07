@@ -41,13 +41,29 @@ export const pendulum = defineFigure({
     S[0] = 3.5;
     S[1] = S[2] = 0.5;
     ctx.box(O, S, EDGE);
+    // A visible bearing hangs from the crossbar instead of suspending the rod in air.
+    for (let i = 0; i < 24; i++) {
+      const a = (i * Math.PI) / 12,
+        b = ((i + 1) * Math.PI) / 12;
+      A[0] = Math.cos(a) * 0.25;
+      B[0] = Math.cos(b) * 0.25;
+      A[1] = B[1] = 0.75;
+      A[2] = 5.5 + Math.sin(a) * 0.25;
+      B[2] = 5.5 + Math.sin(b) * 0.25;
+      ctx.line(A, B, HI);
+    }
     const angle = ((p.swing ?? 0.5) - 0.5) * (p.intensity ?? 0.5) * 1.2;
     const x = Math.sin(angle) * 3.25,
       z = 5.5 - Math.cos(angle) * 3.25;
     for (let side = 0; side < 2; side++) {
       A[0] = 0;
       A[1] = B[1] = 0.5 + side * 0.25;
-      A[2] = 5.5;
+      const ray = side ? 0 : 0.25,
+        along = ray * (Math.sin(angle) - Math.cos(angle)),
+        discriminant = along * along - (2 * ray * ray - 0.25 * 0.25),
+        start = discriminant > 0 ? Math.max(0.25, -along + Math.sqrt(discriminant)) : 0.25;
+      A[0] = Math.sin(angle) * start;
+      A[2] = 5.5 - Math.cos(angle) * start;
       // Rods attach above the solid bob rather than passing through its face.
       B[0] = Math.sin(angle) * 2.75;
       B[2] = 5.5 - Math.cos(angle) * 2.75;
@@ -80,6 +96,17 @@ export const pendulum = defineFigure({
       A[2] = B[2] = z + Math.sin(a) * 0.5;
       A[1] = 0.5;
       B[1] = 0.75;
+      ctx.line(A, B, MID);
+    }
+    // Inset machining ring gives the bob a face without decorative spokes.
+    for (let i = 0; i < 24; i++) {
+      const a = (i * Math.PI) / 12,
+        b = ((i + 1) * Math.PI) / 12;
+      A[0] = x + Math.cos(a) * 0.25;
+      B[0] = x + Math.cos(b) * 0.25;
+      A[1] = B[1] = 0.75;
+      A[2] = z + Math.sin(a) * 0.25;
+      B[2] = z + Math.sin(b) * 0.25;
       ctx.line(A, B, MID);
     }
   },

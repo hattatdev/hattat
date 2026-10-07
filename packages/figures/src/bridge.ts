@@ -58,6 +58,15 @@ export const bridge = defineFigure({
       S[1] = 2.5;
       S[2] = 0.5;
       ctx.box(O, S, EDGE);
+      // Tower footings carry the uprights; avoid poles planted directly on a thin road.
+      for (let side = 0; side < 2; side++) {
+        O[0] = x - 0.5;
+        O[1] = side ? 0.5 : -1.5;
+        O[2] = 0.5;
+        S[0] = S[1] = 1;
+        S[2] = 0.25;
+        ctx.box(O, S, MID);
+      }
     }
     const rise = (p.tension ?? 0) * (p.intensity ?? 0.5) * 0.75;
     for (let side = 0; side < 2; side++) {

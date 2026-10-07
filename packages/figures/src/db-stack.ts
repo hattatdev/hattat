@@ -14,9 +14,19 @@ function hidden(x: number, y: number, z: number, layer: number): boolean {
   const root = Math.sqrt(discriminant),
     near = (-x - y - root) / 2,
     far = (-x - y + root) / 2;
-  for (let i = layer + 1; i < 3; i++) {
+  for (let i = layer; i < 3; i++) {
     const bottom = HEIGHTS[i] as number;
-    if (Math.min(far, bottom + 0.75 - z) > Math.max(0.0001, near, bottom - z)) return true;
+    if (Math.min(far, bottom + 0.5 - z) > Math.max(0.0001, near, bottom - z)) return true;
+    // The upper quarter is a bevel, not an opaque cylinder outside its actual shape.
+    const q = 2.5 + bottom - z,
+      b = x + y + q,
+      d = b * b - x * x - y * y + q * q;
+    if (
+      d >= 0 &&
+      Math.min(-b + Math.sqrt(d), bottom + 0.75 - z) >
+        Math.max(0.0001, -b - Math.sqrt(d), bottom + 0.5 - z)
+    )
+      return true;
   }
   return false;
 }
@@ -80,13 +90,12 @@ export const dbStack = defineFigure({
       const z = HEIGHTS[layer] as number,
         style = layer === 2 - ctx.nearest(select, 3) ? HI : EDGE;
       for (let ring = 0; ring < 3; ring++) {
-        if (ring === 2 && layer !== 2) continue;
         const front = ring === 0,
           start = front ? -Math.PI / 4 : 0,
           span = front ? Math.PI : Math.PI * 2,
           count = front ? 16 : 32,
           radius = ring === 2 ? 1.75 : 2,
-          height = ring === 0 ? 0 : 0.75;
+          height = ring === 0 ? 0 : ring === 1 ? 0.5 : 0.75;
         for (let i = 0; i < count; i++) {
           const a = start + (i * span) / count,
             b = start + ((i + 1) * span) / count;
@@ -103,6 +112,11 @@ export const dbStack = defineFigure({
         A[0] = B[0] = Math.cos(angle) * 2;
         A[1] = B[1] = Math.sin(angle) * 2;
         A[2] = z;
+        B[2] = z + 0.5;
+        visibleLine(ctx, layer, style);
+        A[2] = z + 0.5;
+        B[0] = Math.cos(angle) * 1.75;
+        B[1] = Math.sin(angle) * 1.75;
         B[2] = z + 0.75;
         visibleLine(ctx, layer, style);
       }

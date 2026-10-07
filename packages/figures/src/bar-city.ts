@@ -52,10 +52,10 @@ export const barCity = defineFigure({
       intensity = (p.intensity ?? 0.5) * (p.inside ?? 0);
     for (let i = 0; i < 5; i++) {
       O[0] = -2.5 + i;
-      O[1] = -0.75;
+      O[1] = -0.5;
       O[2] = 0.5;
       S[0] = 0.75;
-      S[1] = 1.5;
+      S[1] = 1;
       S[2] = (HEIGHTS[i] ?? 2) + ctx.falloff(select, i / 4, 0.35) * intensity * 1.5;
       ctx.box(O, S, i === ctx.nearest(select, 5) ? HI : MID);
     }

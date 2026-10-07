@@ -60,7 +60,7 @@ describe("collection readability defects", () => {
 
   it("turbine body contours do not pass through the front blade surfaces", () => {
     const scene = new Scene(),
-      outline = [0.5, -0.25, 3, 0, 2.5, 0.5, 0.5, 0.25];
+      outline = [0.5, -0.25, 2.75, 0, 3, 0.25, 2.5, 0.5, 1, 0.5, 0.5, 0.25];
     for (let pose = 0; pose <= 20; pose++) {
       scene.internalReset();
       FIGURES["wind-turbine"].build(scene, { intensity: 1, turn: pose / 20 });
@@ -79,9 +79,9 @@ describe("collection readability defects", () => {
             px = x * c + z * s,
             pz = -x * s + z * c;
           let inside = true;
-          for (let edge = 0; edge < 4; edge++) {
+          for (let edge = 0; edge < 6; edge++) {
             const a = edge * 2,
-              b = ((edge + 1) % 4) * 2;
+              b = ((edge + 1) % 6) * 2;
             if (
               cross(
                 outline[a] as number,
