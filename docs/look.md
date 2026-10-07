@@ -33,3 +33,6 @@ entries in Chromium. Initial references and intentional simplification are docum
 The expanded twelve-figure collection and intentional before/after images are recorded in
 [collection review](collection-review.md). See [expansion review](expansion-review.md) for subsequent additions.
 All built-in entries are accepted by name.
+
+The [physical detail review](realism-review.md) preserves matched before/after
+triplets for intentional changes to database, shield, rack, and lamp geometry.

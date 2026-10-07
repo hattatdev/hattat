@@ -4,6 +4,10 @@ Status: collection implementation authorized by the owner on 2026-10-06 by askin
 to start. This plan does not authorize later-phase engine, agent-layer, wrapper,
 or publication work.
 
+Owner steering on 2026-10-07: improve physical detail and convincing solid geometry
+before adding more models. The first quality pass covers db-stack, shield-layers,
+server-rack, and desk-lamp. Resume the remaining additions after that review.
+
 ## Outcome and scope
 
 Grow the collection from 12 to 32 original figures, with four choices in each of
