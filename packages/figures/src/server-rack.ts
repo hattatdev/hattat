@@ -59,18 +59,6 @@ export const serverRack = defineFigure({
       A[2] = B[2] = 1.25 + vent * 0.5;
       ctx.line(A, B, MID);
     }
-    for (let bolt = 0; bolt < 4; bolt++) {
-      for (let i = 0; i < 8; i++) {
-        const a = (i * Math.PI) / 4,
-          b = ((i + 1) * Math.PI) / 4;
-        A[0] = B[0] = 4;
-        A[1] = (bolt % 2 ? 2.25 : 0.75) + Math.cos(a) * 0.25;
-        A[2] = (bolt < 2 ? 5.25 : 1) + Math.sin(a) * 0.25;
-        B[1] = (bolt % 2 ? 2.25 : 0.75) + Math.cos(b) * 0.25;
-        B[2] = (bolt < 2 ? 5.25 : 1) + Math.sin(b) * 0.25;
-        ctx.line(A, B, MID);
-      }
-    }
     for (let i = 0; i < 5; i++) {
       const pull = ctx.falloff(select, 1 - i / 4, 0.3) * intensity * 1.5;
       O[0] = 0.5;
@@ -80,16 +68,12 @@ export const serverRack = defineFigure({
       S[1] = 3;
       S[2] = 0.75;
       ctx.box(O, S, i === ctx.nearest(1 - select, 5) ? HI : MID);
-      for (let j = 0; j < 4; j++) {
-        for (let side = 0; side < 4; side++) {
-          const next = (side + 1) % 4;
-          A[0] = 1 + j * 0.5 + (side === 0 || side === 3 ? 0 : 0.25);
-          A[1] = B[1] = 3 + pull;
-          A[2] = O[2] + (side < 2 ? 0.25 : 0.5);
-          B[0] = 1 + j * 0.5 + (next === 0 || next === 3 ? 0 : 0.25);
-          B[2] = O[2] + (next < 2 ? 0.25 : 0.5);
-          ctx.line(A, B, MID);
-        }
+      for (let vent = 0; vent < 2; vent++) {
+        A[0] = 1.25;
+        B[0] = 2.5;
+        A[1] = B[1] = 3 + pull;
+        A[2] = B[2] = O[2] + 0.25 + vent * 0.25;
+        ctx.line(A, B, MID);
       }
       for (let handle = 0; handle < 2; handle++) {
         A[0] = B[0] = handle ? 3.25 : 0.75;

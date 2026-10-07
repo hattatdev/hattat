@@ -1,5 +1,10 @@
 # Physical detail and solid geometry review
 
+Historical review: the owner rejected this result as visually cluttered on
+2026-10-07. Automated success and the agent's inspection did not establish usable
+quality. See the [readability correction](readability-review.md) for current
+geometry and matched evidence; preserve this page as a record of the earlier pass.
+
 The owner requested less basic, more convincing models on 2026-10-07. Inspecting
 the existing 240 px images exposed transparent overlaps, empty cabinet surfaces,
 and lamp arms represented by isolated lines. Improve four models before continuing
