@@ -56,7 +56,8 @@ Human blind recognition and later-phase agent evals are also pending. See the
 See [collection review](docs/collection-review.md) for the initial expansion and
 [ongoing expansion evidence](docs/expansion-review.md) for the latest additions.
 See the [readability correction](docs/readability-review.md) for current database,
-shield, rack, and lamp before/after images. The earlier
+shield and rack before/after images, and the new
+[desk lamp pilot](docs/lamp-quality-review.md) for the lamp redesign. The earlier
 [physical detail review](docs/realism-review.md) is historical; automated checks do
 not establish visual-quality acceptance. The
 [remaining collection review](docs/collection-readability-review.md) records the

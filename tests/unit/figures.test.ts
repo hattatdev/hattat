@@ -5,49 +5,6 @@ import { renderSVG } from "../../packages/core/src/svg.js";
 import { FIGURES } from "../../packages/figures/src/index.js";
 
 describe("original figure collection", () => {
-  it("desk lamp edges do not cross the opaque head pivot face", () => {
-    const scene = new Scene();
-    FIGURES["desk-lamp"].build(scene, { intensity: 0.5, aim: 0.5 });
-    let frontY = 0,
-      minX = Infinity,
-      maxX = -Infinity;
-    // Find the foremost pivot plane from vertical edges, independent of its depth.
-    for (let i = 0; i < scene.internalCount; i++) {
-      const k = i * 6,
-        lines = scene.internalLines;
-      if (
-        lines[k + 1] === lines[k + 4] &&
-        lines[k + 2] !== lines[k + 5] &&
-        (lines[k + 2] as number) > 4.5 &&
-        (lines[k + 5] as number) > 4.5
-      )
-        frontY = Math.max(frontY, lines[k + 1] as number);
-    }
-    for (let i = 0; i < scene.internalCount; i++) {
-      const k = i * 6,
-        lines = scene.internalLines;
-      if (lines[k + 1] !== frontY || lines[k + 4] !== frontY) continue;
-      for (const offset of [k, k + 3]) {
-        if ((lines[offset + 2] as number) > 4.5) {
-          minX = Math.min(minX, lines[offset] as number);
-          maxX = Math.max(maxX, lines[offset] as number);
-        }
-      }
-    }
-    expect(Number.isFinite(minX)).toBe(true);
-    const centerX = (minX + maxX) / 2;
-    let overlaps = 0;
-    for (let i = 0; i < scene.internalCount; i++) {
-      const k = i * 6,
-        lines = scene.internalLines,
-        x = ((lines[k] as number) + (lines[k + 3] as number)) / 2,
-        y = ((lines[k + 1] as number) + (lines[k + 4] as number)) / 2,
-        z = ((lines[k + 2] as number) + (lines[k + 5] as number)) / 2,
-        ray = frontY - y;
-      if (ray > 0.001 && Math.hypot(x + ray - centerX, z + ray - 5.25) < 0.48) overlaps++;
-    }
-    expect(overlaps).toBe(0);
-  });
   it("closed database layers hide the lower rear rim instead of drawing through it", () => {
     const scene = new Scene();
     FIGURES["db-stack"].build(scene, { intensity: 0.5, select: 0.5, inside: 0 });

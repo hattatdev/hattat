@@ -14,6 +14,11 @@ The owner approved the follow-up pass for the remaining ten models. Its matched
 evidence is in docs/collection-readability-review.md. Both passes preserve the
 fourteen-model count; they do not authorize a new engine or later-phase work.
 
+The owner then approved a single desk-lamp quality pilot before any further growth.
+See docs/lamp-quality-review.md for original geometry, fixed-length motion, matched
+references, and measured limits. Evaluate this pilot before redesigning the other
+thirteen figures; do not resume additions automatically.
+
 ## Outcome and scope
 
 Grow the collection from 12 to 32 original figures, with four choices in each of
