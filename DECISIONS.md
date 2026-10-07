@@ -266,3 +266,22 @@ segment counts. Record size, module scratch memory, and timing tradeoffs. Techni
 checks are distinct from visual quality and human blind acceptance. Evaluate this
 pilot before touching the other thirteen models or resuming expansion. GEN-02–05,
 CODE-03–05, API-06, VIS-01–09, MOT-03/05/06, PERF-06, TEST-02/03, GIT-02–06.
+
+## 2026-10-07 — Inspect and correct all fourteen existing models individually
+
+The owner explicitly requested individual inspection and correction after the
+lamp pilot. Extend review to every existing figure, preserving the approved lamp
+geometry and improving thirteen profiles, proportions, fixtures, and opaque folds.
+Keep authored geometry original and record model-specific findings with matched
+before/after references and 240/480 px light/dark input-extreme strips. Reuse the
+lamp's original convex clipping as private figure support, outside the unchanged
+core; each definition remains in one file. Compile both flap faces before drawing
+and clip the rear pendulum rod against its front bearing. Fixed typed storage is
+54,784 bytes per loaded shared helper, plus per-figure scratch storage; no frame
+objects are introduced. Justify larger entries and timing costs with paired
+packaged measurements, retaining the existing timing-only exception. Add ray
+regressions and prove the paper defect against d7fe38a with existing plate masks
+accounted for. Record the full review in docs/model-quality-review.md. Technical
+success and agent inspection remain distinct from independent VIS-08 acceptance;
+no owner recognition questionnaire is requested. GEN-02–05, CODE-03–07,
+VIS-01–09, MOT-03/05/06, FIG-01, PERF-06, TEST-02/03, GIT-02–06.

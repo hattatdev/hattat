@@ -1,13 +1,15 @@
-import { defineFigure, type Style } from "@hattatdev/core";
+import { defineFigure } from "@hattatdev/core";
+import { extrude, face, line, point, reset } from "./internal/solid.js";
 
-const O: [number, number, number] = [0, 0, 0],
-  S: [number, number, number] = [0, 0, 0];
-const A: [number, number, number] = [0, 0, 0],
-  B: [number, number, number] = [0, 0, 0];
-const EDGE: Style = { tone: "edge" },
-  HI: Style = { tone: "hi" },
-  MID: Style = { tone: "mid" };
-/** A lock that opens on approach. @example mount(host, padlock); */
+const BODY = new Float64Array(32 * 2);
+for (let corner = 0; corner < 4; corner++) {
+  for (let i = 0; i < 8; i++) {
+    const a = (corner * Math.PI) / 2 + (i * Math.PI) / 14;
+    BODY[(corner * 8 + i) * 2] = (corner < 2 ? 2.5 : 0.5) + Math.sin(a) * 0.5;
+    BODY[(corner * 8 + i) * 2 + 1] = (corner === 0 || corner === 3 ? 2.5 : 0.5) + Math.cos(a) * 0.5;
+  }
+}
+/** A rounded metal lock opens on approach. @example mount(host, padlock); */
 export const padlock = defineFigure({
   name: "padlock",
   category: "security",
@@ -16,85 +18,82 @@ export const padlock = defineFigure({
   interaction: "Pointer approach lifts the padlock shackle.",
   aspect: "1:1",
   a11y: { label: "A padlock whose shackle opens as the pointer approaches" },
-  params: { open: { input: "pointer.inside", rest: 0 } },
-  bounds: { x: -4.25, y: -6.25, width: 9.5, height: 9.5 },
+  params: { open: { input: "pointer.inside", rest: 0, spring: "heavy" } },
+  bounds: { x: -4, y: -6.25, width: 9, height: 9 },
   build(ctx, p) {
-    const lift = (p.open ?? 0) * (p.intensity ?? 0.5) * 1.5;
-    O[0] = 0;
-    O[1] = 0;
-    O[2] = 0;
-    S[0] = 3;
-    S[1] = 1.5;
-    S[2] = 3;
-    ctx.box(O, S, EDGE);
-    for (let ring = 0; ring < 2; ring++) {
-      const radius = ring ? 0.75 : 1;
-      for (let i = 0; i < 24; i++) {
-        const a = (i * Math.PI) / 24,
-          b = ((i + 1) * Math.PI) / 24;
-        A[0] = 1.5 + Math.cos(a) * radius;
-        B[0] = 1.5 + Math.cos(b) * radius;
-        A[1] = B[1] = 1;
-        A[2] = 3.5 + lift + Math.sin(a) * radius;
-        B[2] = 3.5 + lift + Math.sin(b) * radius;
-        ctx.line(A, B, HI);
+    const lift = (p.open ?? 0) * (p.intensity ?? 0.5) * 1;
+    reset();
+    for (let pass = 0; pass < 2; pass++) {
+      extrude(ctx, BODY, 0, 1.25, 1, 0, pass);
+      // VIS-05: each section of the U band is an opaque plate, never a transparent loop.
+      for (let i = 0; i < 26; i++) {
+        const a = (Math.max(0, i - 1) * Math.PI) / 24,
+          b = (Math.min(24, i) * Math.PI) / 24;
+        for (let side = 0; side < 2; side++) {
+          const y = 0.75 + side * 0.25;
+          for (let v = 0; v < 4; v++) {
+            const r = v < 2 ? 1.25 : 0.75,
+              angle = v === 0 || v === 3 ? a : b,
+              end = i === 0 || i === 25;
+            point(
+              v,
+              1.5 + Math.cos(angle) * r,
+              y,
+              3.5 +
+                lift +
+                Math.sin(angle) * r -
+                (end && (v === 0 || v === 3) ? (i === 0 ? 2 : 1) : 0),
+            );
+          }
+          if (!pass) {
+            // Reverse the front face to face the camera.
+            if (side) {
+              for (let v = 0; v < 4; v++) {
+                const r = v < 2 ? 0.75 : 1.25,
+                  angle = v === 0 || v === 3 ? a : b,
+                  end = i === 0 || i === 25;
+                point(
+                  v,
+                  1.5 + Math.cos(angle) * r,
+                  y,
+                  3.5 +
+                    lift +
+                    Math.sin(angle) * r -
+                    (end && (v === 0 || v === 3) ? (i === 0 ? 2 : 1) : 0),
+                );
+              }
+              face(4);
+            }
+          } else {
+            line(ctx, 0, 1, side ? 0 : 2);
+            line(ctx, 3, 2, side ? 1 : 2);
+            if (i === 0 || i === 25) line(ctx, 0, 3, 1);
+          }
+        }
       }
-      A[0] = B[0] = 1.5 - radius;
-      A[1] = B[1] = 1;
-      A[2] = 3.5 + lift;
-      B[2] = 2.5 + lift;
-      ctx.line(A, B, HI);
-      A[0] = B[0] = 1.5 + radius;
-      B[2] = 2.5;
-      ctx.line(A, B, HI);
+      if (!pass) continue;
+      // The keyway is a connected opening in a small circular escutcheon.
+      for (let ring = 0; ring < 2; ring++) {
+        const radius = ring ? 0.25 : 0.5,
+          count = ring ? 20 : 32,
+          start = ring ? -Math.PI / 3 : 0,
+          span = ring ? (Math.PI * 5) / 3 : Math.PI * 2;
+        for (let i = 0; i < count; i++) {
+          const a = start + (i * span) / count,
+            b = start + ((i + 1) * span) / count;
+          point(0, 1.5 + Math.cos(a) * radius, 1.25, 1.5 + Math.sin(a) * radius);
+          point(1, 1.5 + Math.cos(b) * radius, 1.25, 1.5 + Math.sin(b) * radius);
+          line(ctx, 0, 1, ring ? 0 : 2);
+        }
+      }
+      point(0, 1.625, 1.25, 1.5 - Math.sqrt(3) / 8);
+      point(1, 1.625, 1.25, 1);
+      point(2, 1.375, 1.25, 1);
+      point(3, 1.375, 1.25, 1.5 - Math.sqrt(3) / 8);
+      line(ctx, 0, 1, 0);
+      line(ctx, 1, 2, 0);
+      line(ctx, 2, 3, 0);
     }
-    for (let i = 0; i < 12; i++) {
-      const a = (i * Math.PI) / 16,
-        b = ((i + 1) * Math.PI) / 16;
-      A[0] = 1.5 + Math.cos(a);
-      B[0] = 1.5 + Math.cos(b);
-      A[1] = B[1] = 0.75;
-      A[2] = 3.5 + lift + Math.sin(a);
-      B[2] = 3.5 + lift + Math.sin(b);
-      ctx.line(A, B, MID);
-    }
-    for (let side = 0; side < 2; side++) {
-      A[0] = side ? 2.25 : 0.5;
-      B[0] = A[0] + 0.25;
-      A[1] = B[1] = 1;
-      A[2] = B[2] = side ? 2.5 : 2.5 + lift;
-      ctx.line(A, B, HI);
-    }
-    for (let edge = 0; edge < 4; edge++) {
-      const next = (edge + 1) % 4;
-      A[0] = edge === 0 || edge === 3 ? 0.25 : 2.75;
-      B[0] = next === 0 || next === 3 ? 0.25 : 2.75;
-      A[1] = B[1] = 1.5;
-      A[2] = edge < 2 ? 0.25 : 2.75;
-      B[2] = next < 2 ? 0.25 : 2.75;
-      ctx.line(A, B, MID);
-    }
-    for (let i = 0; i < 24; i++) {
-      const a = -Math.PI / 3 + (i * Math.PI * 5) / 72,
-        b = -Math.PI / 3 + ((i + 1) * Math.PI * 5) / 72;
-      A[0] = 1.5 + Math.cos(a) * 0.25;
-      A[1] = 1.5;
-      A[2] = 1.75 + Math.sin(a) * 0.25;
-      B[0] = 1.5 + Math.cos(b) * 0.25;
-      B[1] = 1.5;
-      B[2] = 1.75 + Math.sin(b) * 0.25;
-      ctx.line(A, B, MID);
-    }
-    A[0] = B[0] = 1.5 + Math.cos(-Math.PI / 3) * 0.25;
-    A[2] = 1.75 + Math.sin(-Math.PI / 3) * 0.25;
-    B[2] = 1;
-    ctx.line(A, B, EDGE);
-    A[0] = B[0] = 1.5 + Math.cos((4 * Math.PI) / 3) * 0.25;
-    A[2] = 1.75 + Math.sin((4 * Math.PI) / 3) * 0.25;
-    ctx.line(A, B, EDGE);
-    A[0] = 1.5 + Math.cos(-Math.PI / 3) * 0.25;
-    A[2] = 1;
-    ctx.line(A, B, EDGE);
   },
 });
 export default padlock;

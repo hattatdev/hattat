@@ -5,6 +5,8 @@ const ORIGIN: [number, number, number] = [0, 0, 0],
 const EDGE: Style = { tone: "edge" },
   MID: Style = { tone: "mid" },
   HI: Style = { tone: "hi" };
+const A: [number, number, number] = [0, 0, 0],
+  B: [number, number, number] = [0, 0, 0];
 /** A cabinet whose drawers open toward pointer height. @example mount(host, drawerStack); */
 export const drawerStack = defineFigure({
   name: "drawer-stack",
@@ -52,12 +54,32 @@ export const drawerStack = defineFigure({
         SIZE[2] = 0.75;
         ctx.box(ORIGIN, SIZE, i === ctx.nearest(1 - open, 4) ? HI : MID);
       }
-      ORIGIN[0] = 1.5;
-      ORIGIN[1] = 3 + pull;
-      ORIGIN[2] = 1 + i * 1.5;
-      SIZE[0] = 1;
-      SIZE[1] = SIZE[2] = 0.25;
-      ctx.box(ORIGIN, SIZE, EDGE);
+      // VIS-09: an open bent-metal pull has a real gap behind its grip.
+      for (let side = 0; side < 2; side++) {
+        A[0] = B[0] = side ? 2.5 : 1.5;
+        A[1] = 3 + pull;
+        B[1] = 3.25 + pull;
+        A[2] = B[2] = 1 + i * 1.5;
+        ctx.line(A, B, EDGE);
+      }
+      A[0] = 1.5;
+      B[0] = 2.5;
+      A[1] = B[1] = 3.25 + pull;
+      ctx.line(A, B, EDGE);
+      A[2] = B[2] = 1.25 + i * 1.5;
+      ctx.line(A, B, EDGE);
+      for (let side = 0; side < 2; side++) {
+        A[0] = B[0] = side ? 2.5 : 1.5;
+        A[2] = 1 + i * 1.5;
+        B[2] = 1.25 + i * 1.5;
+        ctx.line(A, B, EDGE);
+      }
+      // A recessed label holder stays on the drawer face, below its rim.
+      A[0] = 1.5;
+      B[0] = 2.5;
+      A[1] = B[1] = 3 + pull;
+      A[2] = B[2] = 0.75 + i * 1.5;
+      ctx.line(A, B, MID);
     }
   },
 });

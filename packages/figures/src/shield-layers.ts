@@ -109,6 +109,8 @@ export const shieldLayers = defineFigure({
         A[2] = INSET[i * 2 + 1] as number;
         B[0] = INSET[next * 2] as number;
         B[2] = INSET[next * 2 + 1] as number;
+        if (i === 1 || i === 5) A[1] = y + 0.5;
+        if (next === 1 || next === 5) B[1] = y + 0.5;
         visibleLine(ctx, layer, spacing, MID);
       }
       for (let rivet = 0; rivet < 2; rivet++) {
@@ -124,9 +126,9 @@ export const shieldLayers = defineFigure({
         }
       }
       A[0] = B[0] = 0;
-      A[1] = B[1] = y + 0.25;
-      A[2] = 1.5;
-      B[2] = 4.75;
+      A[1] = B[1] = y + 0.5;
+      A[2] = 1;
+      B[2] = 5.25;
       ctx.line(A, B, MID);
     }
   },

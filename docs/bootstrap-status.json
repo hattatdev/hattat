@@ -6,19 +6,19 @@
       "id": "visual-look",
       "status": "pending",
       "phase": 1,
-      "reason": "Fourteen figures retain 42 references. The owner-approved desk-lamp quality pilot intentionally replaces only its three references, preserving matched baseline e16aefe images. The agent inspected 240/480 px light/dark left/rest/right poses and look output at three intensities. Fixed arms, solid pivot/shade masking and padding pass geometric checks. Technical success is not independent visual acceptance. Human blind recognition remains pending and is not requested again per owner preference."
+      "reason": "The owner requested individual review of all fourteen models. Thirteen receive proportion, solid-surface, fixture, and curve corrections; the lamp pilot geometry and its three references are retained. The other 39 references are intentionally updated with matched d7fe38a before/after images. The agent inspected every model at 240/480 px in light/dark input extremes, rest, and reduced motion. Individual findings and costs are recorded in docs/model-quality-review.md. Independent VIS-08 acceptance remains pending and is not requested again per owner preference."
     },
     {
       "id": "performance-budgets",
       "status": "measured",
       "phase": 1,
-      "reason": "Core 6144 gzip bytes; desk-lamp 1880 and all entries below 2048. Paired packaged versions in one Chromium process at 4x CPU: mixed twenty-instance p95/max/first draw 11.0/13.1/11.4 ms; twenty lamps 7.2/9.3/17.3 ms; idle/offscreen zero. Timing targets remain exceeded under the existing timing-only exception. Size, fixed module memory and duration costs are recorded in docs/lamp-quality-review.md with raw paired evidence."
+      "reason": "Core stays at 6144 gzip bytes; all fourteen entries are 634-1990 bytes, below 2048. Paired packaged versions in one Chromium process at 4x CPU: mixed twenty-instance p95/max/first draw 11.8/17.7/11.9 ms, with zero idle/offscreen callbacks in every cohort. The standard harness measured 13.3/14.5/34.8 ms and zero idle/offscreen callbacks. Frame and first-draw targets remain exceeded under the existing timing-only exception. Self-contained packaged entries have 221608 fixed typed bytes versus 55920 before; source imports share the private helper. Sizes, sampling, memory, and timing costs are recorded in docs/model-quality-review.md with raw evidence."
     },
     {
       "id": "core-coverage",
       "status": "measured",
       "phase": 1,
-      "reason": "73 unit tests pass with 99.62% core line coverage. The pilot replaces one resting-pivot test with four checks for fixed arm lengths, three opaque pivot faces across 101 poses, shade opacity, direction and intensity zero. The arm-length regression fails against e16aefe. Eighteen browser cases and all fourteen executable gallery examples pass."
+      "reason": "79 unit tests pass with 99.62% core line coverage. Individual model review adds checks for retained shackle connection, distinct gear extremes, rear rod/bearing opacity, covered middle intervals, opaque flap undersides, and paper-flap ray occlusion. The paper regression fails against d7fe38a at pose 14 after accounting for existing renderer plates. Lamp lengths, pivots and shade checks remain intact. Eighteen packaged browser cases and fourteen executable gallery examples pass."
     },
     {
       "id": "runtime-accessibility",
