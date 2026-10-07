@@ -55,6 +55,8 @@ Human blind recognition and later-phase agent evals are also pending. See the
 [Phase 1 evidence](docs/phase-1-report.md) for measured results and limitations.
 See [collection review](docs/collection-review.md) for the initial expansion and
 [ongoing expansion evidence](docs/expansion-review.md) for the latest additions.
+See [physical detail review](docs/realism-review.md) for database, shield, rack, and
+lamp before/after images and measured quality changes.
 
 ## Project documents
 

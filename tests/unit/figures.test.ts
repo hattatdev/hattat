@@ -5,6 +5,27 @@ import { renderSVG } from "../../packages/core/src/svg.js";
 import { FIGURES } from "../../packages/figures/src/index.js";
 
 describe("original figure collection", () => {
+  it("closed database layers hide the lower rear rim instead of drawing through it", () => {
+    const scene = new Scene();
+    FIGURES["db-stack"].build(scene, { intensity: 0.5, select: 0.5, inside: 0 });
+    let rearRim = 0;
+    for (let i = 0; i < scene.internalCount; i++) {
+      const offset = i * 6,
+        ax = scene.internalLines[offset] as number,
+        ay = scene.internalLines[offset + 1] as number,
+        bx = scene.internalLines[offset + 3] as number,
+        by = scene.internalLines[offset + 4] as number;
+      if (
+        scene.internalLines[offset + 2] === 0.75 &&
+        scene.internalLines[offset + 5] === 0.75 &&
+        Math.abs(Math.hypot(ax, ay) - 2) < 0.001 &&
+        Math.abs(Math.hypot(bx, by) - 2) < 0.001 &&
+        (ax + ay + bx + by) / 2 < -1
+      )
+        rearRim++;
+    }
+    expect(rearRim).toBe(0);
+  });
   for (const figure of Object.values(FIGURES)) {
     it(
       figure.name +

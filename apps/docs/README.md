@@ -10,6 +10,7 @@ The copyable example follows the current selection, including palette and intens
 The npm package is not published; the site labels examples as an API preview.
 The collection covers eight categories, with larger single-column previews on phones.
 See [expansion review](../../docs/expansion-review.md) for the additions and screenshots.
+See [physical detail review](../../docs/realism-review.md) for the latest model revisions.
 
 ## Local preview and checks
 

@@ -5,6 +5,10 @@ the owner's instruction to start on 2026-10-06. This report records delivered
 increments; unimplemented concepts remain in the plan. The previous twelve-model
 baseline and its visual changes remain in [collection review](collection-review.md).
 
+On 2026-10-07, the owner prioritized more convincing physical detail before further
+additions. See [physical detail review](realism-review.md) for the four revised
+models. Measurements below describe the original fourteen-model increment.
+
 ## First increment: database and protection
 
 Fourteen figures now span the same eight categories. Technology and security each

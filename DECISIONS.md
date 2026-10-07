@@ -194,3 +194,20 @@ typed registry, and let introductory copy and the runtime count accommodate grow
 Keep the independent human recognition/flashing limitations and timing-only owner
 exception visible. New models receive six references; existing images are untouched.
 GEN-03/04, FIG-01–06, VIS-02/08, API-06, TEST-03, GIT-02–06.
+
+## 2026-10-07 — Prioritize physical detail before further collection growth
+
+The owner asked for convincing, less basic models. Inspection found transparent
+overlaps and empty surfaces in db-stack, shield-layers, server-rack, and desk-lamp.
+Improve those four first within the existing isometric line language: physically
+motivated seams, rims, handles, fasteners, service panels, pivots, and spring hardware.
+Remove covered rear contours rather than adding decorative lines over them.
+For coaxial cylinders and convex shield extrusions, figure-local camera-ray tests
+clip only occluded contour intervals, using fixed numeric buffers and no frame
+allocations. Keep the core, API, runtime dependencies, figure names, and primary
+input mappings intact. Preserve all before images and update only the twelve
+intentionally changed references. Add a reproducing check for the lower database
+rim previously drawn through a closed upper layer. Measure the added geometry
+and justify entry-size increases above 5% in review. The 32-model expansion remains
+planned; quality takes priority over the next additions. GEN-03/04, CODE-03–05,
+VIS-05/08/09, FIG-06, PERF-06, TEST-02/03, GIT-02–06.
