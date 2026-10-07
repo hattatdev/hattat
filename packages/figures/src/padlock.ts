@@ -7,11 +7,6 @@ const A: [number, number, number] = [0, 0, 0],
 const EDGE: Style = { tone: "edge" },
   HI: Style = { tone: "hi" },
   MID: Style = { tone: "mid" };
-const SHACKLE = new Float64Array(17 * 2);
-for (let i = 0; i <= 16; i++) {
-  SHACKLE[i * 2] = Math.cos((Math.PI * i) / 16);
-  SHACKLE[i * 2 + 1] = Math.sin((Math.PI * i) / 16);
-}
 /** A lock that opens on approach. @example mount(host, padlock); */
 export const padlock = defineFigure({
   name: "padlock",
@@ -32,39 +27,56 @@ export const padlock = defineFigure({
     S[1] = 1.5;
     S[2] = 3;
     ctx.box(O, S, EDGE);
-    for (let layer = 0; layer < 2; layer++) {
-      const y = 0.5 + layer * 0.5;
-      for (let i = 0; i < 16; i++) {
-        A[0] = 1.5 + (SHACKLE[i * 2] as number);
-        A[1] = y;
-        A[2] = 3.5 + lift + (SHACKLE[i * 2 + 1] as number);
-        B[0] = 1.5 + (SHACKLE[(i + 1) * 2] as number);
-        B[1] = y;
-        B[2] = 3.5 + lift + (SHACKLE[(i + 1) * 2 + 1] as number);
+    for (let ring = 0; ring < 2; ring++) {
+      const radius = ring ? 0.75 : 1;
+      for (let i = 0; i < 24; i++) {
+        const a = (i * Math.PI) / 24,
+          b = ((i + 1) * Math.PI) / 24;
+        A[0] = 1.5 + Math.cos(a) * radius;
+        B[0] = 1.5 + Math.cos(b) * radius;
+        A[1] = B[1] = 1;
+        A[2] = 3.5 + lift + Math.sin(a) * radius;
+        B[2] = 3.5 + lift + Math.sin(b) * radius;
         ctx.line(A, B, HI);
       }
-      A[0] = 0.5;
-      A[1] = y;
+      A[0] = B[0] = 1.5 - radius;
+      A[1] = B[1] = 1;
       A[2] = 3.5 + lift;
-      B[0] = 0.5;
-      B[1] = y;
       B[2] = 2.5 + lift;
       ctx.line(A, B, HI);
-      A[0] = 2.5;
-      B[0] = 2.5;
+      A[0] = B[0] = 1.5 + radius;
       B[2] = 2.5;
       ctx.line(A, B, HI);
     }
-    for (let i = 0; i <= 16; i += 8) {
-      A[0] = B[0] = 1.5 + (SHACKLE[i * 2] as number);
-      A[1] = 0.5;
-      B[1] = 1;
-      A[2] = B[2] = 3.5 + lift + (SHACKLE[i * 2 + 1] as number);
+    for (let i = 0; i < 12; i++) {
+      const a = (i * Math.PI) / 16,
+        b = ((i + 1) * Math.PI) / 16;
+      A[0] = 1.5 + Math.cos(a);
+      B[0] = 1.5 + Math.cos(b);
+      A[1] = B[1] = 0.75;
+      A[2] = 3.5 + lift + Math.sin(a);
+      B[2] = 3.5 + lift + Math.sin(b);
       ctx.line(A, B, MID);
     }
-    for (let i = 0; i < 12; i++) {
-      const a = (i * Math.PI * 2) / 12,
-        b = ((i + 1) * Math.PI * 2) / 12;
+    for (let side = 0; side < 2; side++) {
+      A[0] = side ? 2.25 : 0.5;
+      B[0] = A[0] + 0.25;
+      A[1] = B[1] = 1;
+      A[2] = B[2] = side ? 2.5 : 2.5 + lift;
+      ctx.line(A, B, HI);
+    }
+    for (let edge = 0; edge < 4; edge++) {
+      const next = (edge + 1) % 4;
+      A[0] = edge === 0 || edge === 3 ? 0.25 : 2.75;
+      B[0] = next === 0 || next === 3 ? 0.25 : 2.75;
+      A[1] = B[1] = 1.5;
+      A[2] = edge < 2 ? 0.25 : 2.75;
+      B[2] = next < 2 ? 0.25 : 2.75;
+      ctx.line(A, B, MID);
+    }
+    for (let i = 0; i < 24; i++) {
+      const a = -Math.PI / 3 + (i * Math.PI * 5) / 72,
+        b = -Math.PI / 3 + ((i + 1) * Math.PI * 5) / 72;
       A[0] = 1.5 + Math.cos(a) * 0.25;
       A[1] = 1.5;
       A[2] = 1.75 + Math.sin(a) * 0.25;
@@ -73,12 +85,15 @@ export const padlock = defineFigure({
       B[2] = 1.75 + Math.sin(b) * 0.25;
       ctx.line(A, B, MID);
     }
-    A[0] = 1.5;
-    A[1] = 1.5;
-    A[2] = 1.5;
-    B[0] = 1.5;
-    B[1] = 1.5;
+    A[0] = B[0] = 1.5 + Math.cos(-Math.PI / 3) * 0.25;
+    A[2] = 1.75 + Math.sin(-Math.PI / 3) * 0.25;
     B[2] = 1;
+    ctx.line(A, B, EDGE);
+    A[0] = B[0] = 1.5 + Math.cos((4 * Math.PI) / 3) * 0.25;
+    A[2] = 1.75 + Math.sin((4 * Math.PI) / 3) * 0.25;
+    ctx.line(A, B, EDGE);
+    A[0] = 1.5 + Math.cos(-Math.PI / 3) * 0.25;
+    A[2] = 1;
     ctx.line(A, B, EDGE);
   },
 });

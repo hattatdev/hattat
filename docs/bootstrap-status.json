@@ -6,19 +6,19 @@
       "id": "visual-look",
       "status": "pending",
       "phase": 1,
-      "reason": "Fourteen figures have 42 references. The owner rejected the earlier physical-detail result as cluttered. A readability correction revises twelve references for database, shield, rack, and lamp with matched before/after evidence. Look checks pass at three intensities; the agent opened rest/full/reduced and maximum-response images. Technical success is not visual-quality acceptance. Independent human blind review remains pending and is not requested again per owner preference."
+      "reason": "Fourteen figures have 42 references. The first four-model readability correction is followed by a pass over the other ten models, revising thirty references with matched before/after evidence from ccc03fc. The agent opened all ten rest/full images at 240 px and maximum response; reduced references are identical to rest. Look checks pass at three intensities. Technical success is not independent visual-quality acceptance. Human blind recognition remains pending and is not requested again per owner preference."
     },
     {
       "id": "performance-budgets",
       "status": "measured",
       "phase": 1,
-      "reason": "Core 6144 gzip bytes; all entries below 2048. Local twenty-instance cohort cycling fourteen definitions at 4x CPU: p95 5.0 ms, max 5.1 ms, first draw 16.9 ms, idle/offscreen zero. Both timing targets remain exceeded under the existing timing-only exception. The lamp clipping cost is justified with raw evidence in docs/readability-review.md."
+      "reason": "Core 6144 gzip bytes; all entries below 2048. Local twenty-instance cohort cycling fourteen definitions at 4x CPU: p95 6.2 ms, max 9.4 ms, first draw 16.1 ms, idle/offscreen zero. Both timing targets remain exceeded under the existing timing-only exception. Hollow drawer geometry and turbine clipping costs and timing regression are recorded with raw evidence in docs/collection-readability-review.md."
     },
     {
       "id": "core-coverage",
       "status": "measured",
       "phase": 1,
-      "reason": "67 unit tests pass; core V8 line coverage is 99.62%. The new head-pivot overlap regression finds seven covered segment midpoints on 7ed9a15 and zero after correction. This is occlusion evidence, not a subjective quality test."
+      "reason": "70 unit tests pass; core V8 line coverage is 99.62%. Three new regressions for gear intersections, turbine hub overlap, and blade transparency fail on ccc03fc and pass after correction. These check geometric defects, not subjective quality."
     },
     {
       "id": "runtime-accessibility",

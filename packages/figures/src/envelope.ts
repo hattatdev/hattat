@@ -47,25 +47,17 @@ export const envelope = defineFigure({
       B[2] = 1.5;
       ctx.line(A, B, MID);
     }
-    for (let layer = 0; layer < 2; layer++) {
-      const y = 0.25 + layer * 0.25;
-      for (let edge = 0; edge < 3; edge++) {
-        const ax = edge === 0 ? -2.5 : edge === 1 ? 2.5 : 0;
-        const bx = edge === 0 ? 2.5 : edge === 1 ? 0 : -2.5;
-        A[0] = ax;
-        A[1] = y + (edge === 2 ? 2 * s : 0);
-        A[2] = 3.5 - (edge === 2 ? 2 * c : 0);
-        B[0] = bx;
-        B[1] = y + (edge === 1 ? 2 * s : 0);
-        B[2] = 3.5 - (edge === 1 ? 2 * c : 0);
-        ctx.line(A, B, HI);
-        if (!layer) {
-          B[0] = A[0];
-          B[1] = A[1] + 0.25;
-          B[2] = A[2];
-          ctx.line(A, B, EDGE);
-        }
-      }
+    // One front flap outline avoids the transparent doubled triangle at rest.
+    for (let edge = 0; edge < 3; edge++) {
+      const ax = edge === 0 ? -2.5 : edge === 1 ? 2.5 : 0;
+      const bx = edge === 0 ? 2.5 : edge === 1 ? 0 : -2.5;
+      A[0] = ax;
+      A[1] = 0.25 + (edge === 2 ? 2 * s : 0);
+      A[2] = 3.5 - (edge === 2 ? 2 * c : 0);
+      B[0] = bx;
+      B[1] = 0.25 + (edge === 1 ? 2 * s : 0);
+      B[2] = 3.5 - (edge === 1 ? 2 * c : 0);
+      ctx.line(A, B, HI);
     }
     for (let i = 0; i < 5; i++) {
       A[0] = -1.5;
@@ -83,16 +75,16 @@ export const envelope = defineFigure({
       B[2] = top - (j < 2 ? 0.5 : 1);
       ctx.line(A, B, MID);
     }
-    for (let i = 0; i < 16; i++) {
-      const a = (i * Math.PI) / 8,
-        b = ((i + 1) * Math.PI) / 8;
-      const ta = 1.25 + Math.sin(a) * 0.25,
-        tb = 1.25 + Math.sin(b) * 0.25;
-      A[0] = Math.cos(a) * 0.25;
-      A[1] = 0.5 + ta * s;
+    for (let i = 0; i < 32; i++) {
+      const a = (i * Math.PI) / 16,
+        b = ((i + 1) * Math.PI) / 16;
+      const ta = 1.25 + Math.sin(a) * 0.5,
+        tb = 1.25 + Math.sin(b) * 0.5;
+      A[0] = Math.cos(a) * 0.5;
+      A[1] = 0.25 + ta * s;
       A[2] = 3.5 - ta * c;
-      B[0] = Math.cos(b) * 0.25;
-      B[1] = 0.5 + tb * s;
+      B[0] = Math.cos(b) * 0.5;
+      B[1] = 0.25 + tb * s;
       B[2] = 3.5 - tb * c;
       ctx.line(A, B, MID);
     }

@@ -48,22 +48,39 @@ export const pendulum = defineFigure({
       A[0] = 0;
       A[1] = B[1] = 0.5 + side * 0.25;
       A[2] = 5.5;
-      B[0] = x;
-      B[2] = z;
+      // Rods attach above the solid bob rather than passing through its face.
+      B[0] = Math.sin(angle) * 2.75;
+      B[2] = 5.5 - Math.cos(angle) * 2.75;
       ctx.line(A, B, EDGE);
     }
-    for (let ring = 0; ring < 3; ring++) {
-      for (let i = 0; i < 16; i++) {
-        const a = (i * Math.PI) / 8,
-          b = ((i + 1) * Math.PI) / 8;
-        A[0] = x + (ring === 1 ? 0 : Math.cos(a) * 0.5);
-        A[1] = 0.75 + (ring === 0 ? 0 : (ring === 1 ? Math.cos(a) : Math.sin(a)) * 0.5);
-        A[2] = z + (ring === 2 ? 0 : Math.sin(a) * 0.5);
-        B[0] = x + (ring === 1 ? 0 : Math.cos(b) * 0.5);
-        B[1] = 0.75 + (ring === 0 ? 0 : (ring === 1 ? Math.cos(b) : Math.sin(b)) * 0.5);
-        B[2] = z + (ring === 2 ? 0 : Math.sin(b) * 0.5);
-        ctx.line(A, B, ring === 0 ? HI : MID);
+    for (let ring = 0; ring < 2; ring++) {
+      // Only the camera-facing rear arc is exposed beside the foremost disk.
+      const count = ring ? 32 : 16,
+        start = ring ? 0 : -Math.PI / 4,
+        span = ring ? Math.PI * 2 : Math.PI;
+      for (let i = 0; i < count; i++) {
+        const a = start + (i * span) / count,
+          b = start + ((i + 1) * span) / count;
+        A[0] = x + Math.cos(a) * 0.5;
+        A[2] = z + Math.sin(a) * 0.5;
+        B[0] = x + Math.cos(b) * 0.5;
+        B[2] = z + Math.sin(b) * 0.5;
+        A[1] = B[1] = ring ? 0.75 : 0.5;
+        if (!ring) {
+          const rayX = (A[0] + B[0]) / 2 + 0.25 - x,
+            rayZ = (A[2] + B[2]) / 2 + 0.25 - z;
+          if (Math.hypot(rayX, rayZ) < 0.5) continue;
+        }
+        ctx.line(A, B, ring ? HI : MID);
       }
+    }
+    for (let side = 0; side < 2; side++) {
+      const a = -Math.PI / 4 + side * Math.PI;
+      A[0] = B[0] = x + Math.cos(a) * 0.5;
+      A[2] = B[2] = z + Math.sin(a) * 0.5;
+      A[1] = 0.5;
+      B[1] = 0.75;
+      ctx.line(A, B, MID);
     }
   },
 });
